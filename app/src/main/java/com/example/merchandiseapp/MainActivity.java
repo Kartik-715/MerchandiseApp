@@ -14,13 +14,15 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
-    //FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-
-
+public class MainActivity extends AppCompatActivity
+{
 
     private Button btn;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("/Merchandise/abc");
+
+
     public static final String Database_PATH = "Merchandise";
     private TextView mTextMessage;
 
@@ -49,16 +51,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // final DatabaseReference myRef = database.getReference();
-        //String recordId = myRef.push().getKey();
-        //myRef.child(recordId).setValue("Reebok");
         btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-
-                myRef.setValue("Hello, World!");
+//                final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+                //myRef.setValue(new Merchandise("Reebok", "Blahh", "Blahh"));
+                myRef.setValue("Something") ;
             }
         });
 
