@@ -36,4 +36,21 @@
         tools:layout_editor_absoluteX="173dp"
         tools:layout_editor_absoluteY="480dp" />
 
+    <Button
+        android:id="@+id/Update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:text="Update"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="102dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="110dp"
+        android:layout_height="43dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="107dp" />
+
 </android.support.constraint.ConstraintLayout>

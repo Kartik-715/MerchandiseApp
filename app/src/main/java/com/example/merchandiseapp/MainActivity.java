@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,16 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity
 {
 
     private Button btn;
-
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("/Merchandise/abc");
+    DatabaseReference myRef ;
 
 
     public static final String Database_PATH = "Merchandise";
@@ -51,13 +55,33 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        myRef = FirebaseDatabase.getInstance().getReference("/abc") ;
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                HashMap<String,Object> a = (HashMap<String, Object>) dataSnapshot.getValue() ;
+                System.out.println(a);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Nah", "Failed to read value.", error.toException());
+
+            }
+        });
+
         btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-                //myRef.setValue(new Merchandise("Reebok", "Blahh", "Blahh"));
-                myRef.setValue("Something") ;
+
+                myRef = FirebaseDatabase.getInstance().getReference("/def") ;
+
+
             }
         });
 
