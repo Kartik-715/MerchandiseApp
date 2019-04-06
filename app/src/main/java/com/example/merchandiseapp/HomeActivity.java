@@ -3,6 +3,7 @@ package com.example.merchandiseapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +13,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.google.firebase.auth.FirebaseAuth;
+
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        FirebaseAuth mauth = FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
+        Log.d("name",user.getDisplayName());
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,6 +54,12 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.NameTextView);
+        navUsername.setText(user.getDisplayName());
+        ImageView imageView =(ImageView) headerView.findViewById(R.id.imageView);
+        imageView.setImageURI(user.getPhotoUrl());
     }
 
     @Override
