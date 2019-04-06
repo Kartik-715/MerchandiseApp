@@ -3,4 +3,5 @@
     <string name="title_home">Hello World</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="default_web_client_id">"193577885559-pkhsmce1ocfisjg4jign6eu4l25iato3.apps.googleusercontent.com"</string>
 </resources>
