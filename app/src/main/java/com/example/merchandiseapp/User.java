@@ -4,11 +4,11 @@ package com.example.merchandiseapp;
 import java.util.HashMap;
 
 public class User {
-    String email;
-    Integer Contact;
-    Double WalletMoney;
-    Integer AccessLevel;
-    String HomeAddress;
+    private String email;
+    private Integer Contact;
+    private Double WalletMoney;
+    private Integer AccessLevel;
+    private String HomeAddress;
 
     public User(String email, Integer contact, Double walletMoney, Integer accessLevel, String homeAddress) {
         this.email = email;

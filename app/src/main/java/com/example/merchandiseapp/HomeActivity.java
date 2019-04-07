@@ -45,17 +45,6 @@ public class HomeActivity extends AppCompatActivity
         FirebaseUser user = mauth.getCurrentUser();
         Log.d("name",user.getDisplayName());
 
-        btnLogout = (Button)findViewById(R.id.button4);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
-                mauth.signOut();
-
-            }
-        });
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
