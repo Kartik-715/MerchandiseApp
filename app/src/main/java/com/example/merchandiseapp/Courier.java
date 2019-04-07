@@ -1,5 +1,7 @@
 package com.example.merchandiseapp;
 
+import java.util.HashMap;
+
 public class Courier {
     private String email;
     private Integer Contact;
@@ -14,5 +16,25 @@ public class Courier {
         AccessLevel = accessLevel;
         Address = address;
     }
+
+    public Courier()
+    {
+
+    }
+
+
+    public HashMap<String, Object> toMap()
+    {
+        HashMap<String, Object> result = new HashMap<>() ;
+        result.put("Email", email) ;
+        result.put("Contact", Contact) ;
+        result.put("Organisation", Organisation) ;
+        result.put("AccessLevel", AccessLevel) ;
+        result.put("Address", Address) ;
+
+        return result ;
+
+    }
+
 
 }
