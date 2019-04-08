@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".productDetailActivity">
+
+    <android.support.v7.widget.AppCompatImageView
+
+        android:id="@+id/productImage"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:scaleType="centerCrop"
+        android:src="@color/colorAccent"
+
+        />
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productImage"
+        android:layout_marginTop="18dp"
+
+        android:gravity="center"
+        android:text="T-Shirt"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/productPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productName"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:text="499"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+
+        android:id="@+id/numberBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_below="@+id/productPrice"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        app:backGroundColor="#FF3659"
+        android:elevation="6dp"
+        android:gravity="center"
+        app:finalNumber="10"
+        app:initialNumber="1"
+        app:textSize="16sp"
+
+        />
+
+    <android.support.design.widget.FloatingActionButton
+
+        android:id="@+id/addToCart"
+        android:layout_width="107dp"
+        android:layout_height="78dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#ffffff"
+        android:elevation="6dp"
+        android:src="@drawable/cart"
+
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+
+</RelativeLayout>
