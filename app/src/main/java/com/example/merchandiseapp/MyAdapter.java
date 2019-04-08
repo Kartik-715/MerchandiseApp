@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,17 +22,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private Context mContext ;
     private String imageUrl;
-    private String userName;
+    private String brandName;
+    private String category;
     private itemClickListener listener;
 
-    public MyAdapter(Context mContext, String url, String name) {
+    public MyAdapter(Context mContext, String url, String brandname, String category) {
 
-
+        System.out.println("HELLO"+brandname);
         this.mContext = mContext;
         this.imageUrl = url;
-        this.userName = name;
-
-
+        this.brandName = brandname;
+        this.category =category;
+        System.out.println("HELLO1"+brandName);
     }
 
     @Override
@@ -59,10 +62,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         //holder.ImageProduct.setImageBitmap();
-        holder.price.setText(userName);
-        //holder.productName.setText();
-        //holder.productDescription.setText();
+        //holder.price.setText();
+        System.out.println("HELLO"+brandName);
 
+        holder.productName.setText(brandName);
+        holder.productDescription.setText(category);
+        Picasso.get().load(imageUrl).into(holder.ImageProduct);
 
         // load image from the internet using Glide
         //Glide.with(mContext).load(mData.get(position).getImage_url()).apply(options).into(holder.AnimeThumbnail);

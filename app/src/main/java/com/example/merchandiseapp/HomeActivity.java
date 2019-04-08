@@ -45,7 +45,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,7 +58,8 @@ public class HomeActivity extends AppCompatActivity
     private Button btnLogout;
     private RecyclerView rv;
     private List<Merchandise> list;
-
+    private HashMap<String, Object> a = new HashMap<String, Object>();
+    private HashMap<String, Object> b = new HashMap<String, Object>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +69,34 @@ public class HomeActivity extends AppCompatActivity
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
         Log.d("name",user.getDisplayName());
+
+
+        rv = (RecyclerView) findViewById(R.id.recycler_menu);
+        rv.setLayoutManager(new LinearLayoutManager(this));
         ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
-        String key =ProductRef.push().getKey();
-        ProductRef.child(key).setValue("Sample");
+        ProductRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Log.d(TAG,"*******sample3**********");
+                a = (HashMap<String, Object>) dataSnapshot.getValue();
+                System.out.println(a);
+                b = (HashMap<String , Object>) a.get("P01");
+                System.out.println("1"+b.get("BrandName"));
+                String br = (String) b.get("BrandName");
+                System.out.println("dflj"+br);
+
+                rv.setAdapter(new MyAdapter(HomeActivity.this, (String) b.get("Image"),br,(String) b.get("Category")));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Nah", "Failed to read value.", error.toException());
+
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,26 +129,15 @@ public class HomeActivity extends AppCompatActivity
                 .execute(user.getPhotoUrl().toString());
 
 
-        rv = (RecyclerView) findViewById(R.id.recycler_menu);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
         //rv.setHasFixedSize(true);
 
-        ProductRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                list = new ArrayList<>();
-                Merchandise product = dataSnapshot.getValue(Merchandise.class);
-                String name=product.getBrandName();
-                Log.d(TAG,"***********sample stage*****************");
-                Log.d(TAG,name);
-            }
+        System.out.println(b.get("Image"));
+        System.out.println(b.get("BrandName"));
+        //System.out.println(b.get("Category").toString());
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(TAG,"***********sample error stage*****************");
 
-            }
-        });
+
 
     }
 
@@ -155,7 +172,7 @@ public class HomeActivity extends AppCompatActivity
                     }
                 };
         Log.d(TAG,"*****************stage5***************");
-        rv.setAdapter(adapter);
+        //rv.setAdapter(adapter);
     }
 
     @Override
