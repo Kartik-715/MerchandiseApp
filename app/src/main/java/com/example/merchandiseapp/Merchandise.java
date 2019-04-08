@@ -61,8 +61,91 @@ public class Merchandise {
 
     }
 
+    public String getBrandName() {
+        return BrandName;
+    }
 
+    public void setBrandName(String brandName) {
+        BrandName = brandName;
+    }
 
+    public String getImage() {
+        return Image;
+    }
 
+    public void setImage(String image) {
+        Image = image;
+    }
 
+    public String getManuAddress() {
+        return ManuAddress;
+    }
+
+    public void setManuAddress(String manuAddress) {
+        ManuAddress = manuAddress;
+    }
+
+    public String getMaterial() {
+        return Material;
+    }
+
+    public void setMaterial(String material) {
+        Material = material;
+    }
+
+    public String getProdID() {
+        return ProdID;
+    }
+
+    public void setProdID(String prodID) {
+        ProdID = prodID;
+    }
+
+    public boolean isReturnApplicable() {
+        return ReturnApplicable;
+    }
+
+    public void setReturnApplicable(boolean returnApplicable) {
+        ReturnApplicable = returnApplicable;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public String getVendorID() {
+        return VendorID;
+    }
+
+    public void setVendorID(String vendorID) {
+        VendorID = vendorID;
+    }
+
+    public Integer[] getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer[] price) {
+        this.price = price;
+    }
+
+    public Integer[] getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer[] quantity) {
+        this.quantity = quantity;
+    }
+
+    public boolean isMale() {
+        return isMale;
+    }
+
+    public void setMale(boolean male) {
+        isMale = male;
+    }
 }
