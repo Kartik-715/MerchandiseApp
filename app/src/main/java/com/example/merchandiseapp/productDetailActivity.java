@@ -20,7 +20,6 @@ public class productDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-
         addToCart = (FloatingActionButton) findViewById(R.id.addToCart);
         numberButton = (ElegantNumberButton) findViewById(R.id.numberBtn);
         productImage = (ImageView) findViewById(R.id.productImage);

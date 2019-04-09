@@ -136,44 +136,8 @@ public class HomeActivity extends AppCompatActivity
         System.out.println(b.get("BrandName"));
         //System.out.println(b.get("Category").toString());
 
-
-
-
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG,"*****************stage1***************");
-        FirebaseRecyclerOptions<Merchandise> options =
-                new FirebaseRecyclerOptions.Builder<Merchandise>()
-                .setQuery(ProductRef, Merchandise.class)
-                .build();
-        Log.d(TAG,"*****************stage2***************");
-        FirebaseRecyclerAdapter<Merchandise, MyAdapter.MyViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Merchandise, MyAdapter.MyViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position, @NonNull Merchandise model) {
-                        Log.d(TAG,"*****************stage3***************");
-                        Log.d(TAG,model.getCategory());
-                        holder.productDescription.setText(model.getCategory());
-                        holder.productName.setText(model.getBrandName());
-                        holder.price.setText(model.getPrice().toString());
-                        Picasso.get().load(model.getImage()).into(holder.ImageProduct);
-                    }
-
-                    @NonNull
-                    @Override
-                    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                        Log.d(TAG,"*****************stage4***************");
-                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_list,viewGroup,false);
-                        MyAdapter.MyViewHolder holder = new MyAdapter.MyViewHolder(view);
-                        return holder;
-                    }
-                };
-        Log.d(TAG,"*****************stage5***************");
-        //rv.setAdapter(adapter);
-    }
 
     @Override
     public void onBackPressed() {
