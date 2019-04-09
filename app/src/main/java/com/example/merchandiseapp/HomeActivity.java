@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,7 +88,7 @@ public class HomeActivity extends AppCompatActivity
                 String br = (String) b.get("BrandName");
                 System.out.println("dflj"+br);
 
-                rv.setAdapter(new MyAdapter(HomeActivity.this, (String) b.get("Image"),br,(String) b.get("Category")));
+                rv.setAdapter(new MyAdapter(HomeActivity.this, (String) b.get("Image"),br,(String) b.get("Category") ,(ArrayList<Long>) b.get("price")));
             }
 
             @Override

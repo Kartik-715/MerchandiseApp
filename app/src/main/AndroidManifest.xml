@@ -13,8 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:replace="android:theme"
         <activity android:name=".productDetailActivity"></activity>
         <activity
             android:name=".HomeActivity"
