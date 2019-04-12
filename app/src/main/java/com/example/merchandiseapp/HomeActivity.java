@@ -46,8 +46,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = HomeActivity.class.getSimpleName();
     private Button btnLogout;
     private RecyclerView rv;
-    private List<Merchandise> list;
+    private List<Merchandise> list= new ArrayList<>();
     private HashMap<String, Object> a = new HashMap<String, Object>();
     private HashMap<String, Object> b = new HashMap<String, Object>();
     @Override
@@ -71,8 +73,9 @@ public class HomeActivity extends AppCompatActivity
         Log.d("name",user.getDisplayName());
 
 
-        rv = (RecyclerView) findViewById(R.id.recycler_menu);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
+        //rv.setHasFixedSize(true);
+
         ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
         ProductRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,18 +85,55 @@ public class HomeActivity extends AppCompatActivity
                 Log.d(TAG,"*******sample3**********");
                 a = (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println(a);
-                b = (HashMap<String , Object>) a.get("P01");
-                System.out.println("1"+b.get("BrandName"));
-                String br = (String) b.get("BrandName");
-                System.out.println("dflj"+br);
+                Iterator it = a.entrySet().iterator();
+                while (it.hasNext()) {
+                    HashMap.Entry pair = (HashMap.Entry)it.next();
 
-                rv.setAdapter(new MyAdapter(HomeActivity.this, (String) b.get("Image"),br,(String) b.get("Category")));
+                    System.out.println(pair.getKey() + " = " + pair.getValue());
+                    b = (HashMap<String , Object>) pair.getValue();
+                    Merchandise mr = new Merchandise();
+                    mr.setBrandName ((String)b.get("BrandName"));
+                    mr.setImage((String)b.get("Image"));
+                    mr.setManuAddress((String)b.get("ManuAddress"));
+                    mr.setMaterial((String)b.get("Material"));
+                    mr.setProdID((String)b.get("ProdID"));
+                    mr.setReturnApplicable(true);
+                    mr.setCategory((String)b.get("Category"));
+                    mr.setVendorID((String)b.get("VendorID"));
+                    Long price[] = new Long[5];
+                    Long qty[] = new Long[5];
+                    ArrayList<Long> arrprice = (ArrayList<Long>) b.get("price");
+                    ArrayList<Long> arrqty = (ArrayList<Long>)b.get("quantity");
+
+
+
+                    price[0] = arrprice.get(0);
+                    price[1] = arrprice.get(1);
+                    price[2] = arrprice.get(2);
+                    price[3] = arrprice.get(3);
+                    price[4] = arrprice.get(4);
+
+                    qty[0] = arrqty.get(0);
+                    qty[1] = arrqty.get(1);
+                    qty[2] = arrqty.get(2);
+                    qty[3] = arrqty.get(3);
+                    qty[4] = arrqty.get(4);
+
+
+                    mr.setMale(true);
+                    System.out.println(b);
+                    list.add(mr);
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
+                rv = (RecyclerView) findViewById(R.id.recycler_menu);
+                rv.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                rv.setAdapter(new MyAdapter(HomeActivity.this, list));
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w("Nah", "Failed to read value.", error.toException());
+                Log.w(TAG, "Failed to read value.", error.toException());
 
             }
         });
@@ -120,6 +160,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
+
         TextView navUsername = (TextView) headerView.findViewById(R.id.NameTextView);
         TextView navemail = (TextView) headerView.findViewById(R.id.emailtextView);
         navUsername.setText(user.getDisplayName());
@@ -129,12 +170,6 @@ public class HomeActivity extends AppCompatActivity
                 .execute(user.getPhotoUrl().toString());
 
 
-
-        //rv.setHasFixedSize(true);
-
-        System.out.println(b.get("Image"));
-        System.out.println(b.get("BrandName"));
-        //System.out.println(b.get("Category").toString());
 
     }
 

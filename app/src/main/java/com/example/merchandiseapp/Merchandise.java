@@ -4,21 +4,21 @@ package com.example.merchandiseapp;
 import java.util.HashMap;
 
 public class Merchandise {
-      private String BrandName ;
-      private String Image ;
-      private String ManuAddress ;
-      private String Material;
-      private String ProdID;
-      private boolean ReturnApplicable;
-      private String Category;
-      private String VendorID;
-      private Integer price[];
-      private Integer quantity[];
-      private boolean isMale ;
+    private String BrandName ;
+    private String Image ;
+    private String ManuAddress ;
+    private String Material;
+    private String ProdID;
+    private boolean ReturnApplicable;
+    private String Category;
+    private String VendorID;
+    private Long price[];
+    private Long quantity[];
+    private boolean isMale ;
 
 
     public Merchandise(String brandName, String image, String manuAddress, String material,
-                       String prodID, boolean returnApplicable, String category, String vendorID, Integer[] Price, Integer[] Quantity, boolean _isMale) {
+                       String prodID, boolean returnApplicable, String category, String vendorID, Long[] Price, Long[] Quantity, boolean _isMale) {
         BrandName = brandName;
         Image = image;
         ManuAddress = manuAddress;
@@ -27,8 +27,8 @@ public class Merchandise {
         ReturnApplicable = returnApplicable;
         Category = category;
         VendorID = vendorID;
-        price = new Integer[5] ;
-        quantity = new Integer[5] ;
+        price = new Long[5] ;
+        quantity = new Long[5] ;
         price = Price.clone() ;
         quantity = Quantity.clone();
         isMale = _isMale ;
@@ -125,19 +125,19 @@ public class Merchandise {
         VendorID = vendorID;
     }
 
-    public Integer[] getPrice() {
+    public Long[] getPrice() {
         return price;
     }
 
-    public void setPrice(Integer[] price) {
+    public void setPrice(Long[] price) {
         this.price = price;
     }
 
-    public Integer[] getQuantity() {
+    public Long[] getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer[] quantity) {
+    public void setQuantity(Long[] quantity) {
         this.quantity = quantity;
     }
 

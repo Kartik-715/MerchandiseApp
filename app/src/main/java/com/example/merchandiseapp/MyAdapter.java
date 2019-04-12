@@ -24,15 +24,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private String imageUrl;
     private String brandName;
     private String category;
+    private List<Merchandise> mData;
     private itemClickListener listener;
 
-    public MyAdapter(Context mContext, String url, String brandname, String category) {
+    public MyAdapter(Context mContext, List<Merchandise>lst) {
 
-        System.out.println("HELLO"+brandname);
+       // System.out.println("HELLO"+brandname);
         this.mContext = mContext;
-        this.imageUrl = url;
-        this.brandName = brandname;
-        this.category =category;
+        //this.imageUrl = url;
+        //this.brandName = brandname;
+        //this.category =category;
+        this.mData=lst;
         System.out.println("HELLO1"+brandName);
     }
 
@@ -63,20 +65,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         //holder.ImageProduct.setImageBitmap();
         //holder.price.setText();
-        System.out.println("HELLO"+brandName);
+        System.out.println("HELLO"+mData.get(position).getBrandName());
 
-        holder.productName.setText(brandName);
-        holder.productDescription.setText(category);
-        Picasso.get().load(imageUrl).into(holder.ImageProduct);
-
-        // load image from the internet using Glide
-        //Glide.with(mContext).load(mData.get(position).getImage_url()).apply(options).into(holder.AnimeThumbnail);
+        holder.productName.setText(mData.get(position).getBrandName());
+        holder.productDescription.setText(mData.get(position).getCategory());
+        Picasso.get().load(mData.get(position).getImage()).into(holder.ImageProduct);
 
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return mData.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:layout_marginBottom="20dp"
             android:src="@drawable/fui_ic_check_circle_black_128dp" />
 
