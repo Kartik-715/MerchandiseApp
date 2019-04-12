@@ -38,8 +38,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         //this.imageUrl = url;
         //this.brandName = brandname;
         //this.category =category;
+
         this.mData=lst;
-        System.out.println("HELLO1"+brandName);
+        System.out.println("HELLO1"+ lst.get(0).getBrandName());
+        System.out.println("HELLO1"+ lst.get(0).getBrandName());
     }
 
     @Override
@@ -73,16 +75,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         //holder.ImageProduct.setImageBitmap();
-        //holder.price.setText();
-        System.out.println("HELLO"+mData.get(position).getBrandName());
+        holder.price.setText("Rs."+mData.get(position).getPrice()[0].toString());
+        System.out.println("HELLO"+mData.get(position).getPrice());
 
         holder.productName.setText(mData.get(position).getBrandName());
         holder.productDescription.setText(mData.get(position).getCategory());
         Picasso.get().load(mData.get(position).getImage()).into(holder.ImageProduct);
-        holder.productName.setText(brandName);
-        holder.productDescription.setText(category);
-        Picasso.get().load(imageUrl).into(holder.ImageProduct);
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
+        /*holder.itemView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick (View view)
@@ -98,7 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         }
 
-        );
+        );*/
 
         // load image from the internet using Glide
         //Glide.with(mContext).load(mData.get(position).getImage_url()).apply(options).into(holder.AnimeThumbnail);

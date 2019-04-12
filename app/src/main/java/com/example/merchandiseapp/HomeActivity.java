@@ -60,8 +60,9 @@ public class HomeActivity extends AppCompatActivity
     private Button btnLogout;
     private RecyclerView rv;
     private List<Merchandise> list= new ArrayList<>();
-    private HashMap<String, Object> a = new HashMap<String, Object>();
-    private HashMap<String, Object> b = new HashMap<String, Object>();
+    private HashMap<String, Object> All_merchandise = new HashMap<String, Object>();
+    private HashMap<String, Object> Type = new HashMap<String, Object>();
+    private HashMap<String, Object> Product = new HashMap<String, Object>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,54 +77,60 @@ public class HomeActivity extends AppCompatActivity
 
         //rv.setHasFixedSize(true);
 
-        ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
+        ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise");
         ProductRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Log.d(TAG,"*******sample3**********");
-                a = (HashMap<String, Object>) dataSnapshot.getValue();
-                System.out.println(a);
-                Iterator it = a.entrySet().iterator();
-                while (it.hasNext()) {
-                    HashMap.Entry pair = (HashMap.Entry)it.next();
+                All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
+                System.out.println(All_merchandise);
+                Iterator it1 = All_merchandise.entrySet().iterator();
+                while (it1.hasNext()) {
+                    HashMap.Entry pair1 = (HashMap.Entry) it1.next();
+                    Type = (HashMap<String, Object>) pair1.getValue();
+                    Iterator it = Type.entrySet().iterator();
+                    while (it.hasNext()) {
+                        HashMap.Entry pair = (HashMap.Entry) it.next();
 
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                    b = (HashMap<String , Object>) pair.getValue();
-                    Merchandise mr = new Merchandise();
-                    mr.setBrandName ((String)b.get("BrandName"));
-                    mr.setImage((String)b.get("Image"));
-                    mr.setManuAddress((String)b.get("ManuAddress"));
-                    mr.setMaterial((String)b.get("Material"));
-                    mr.setProdID((String)b.get("ProdID"));
-                    mr.setReturnApplicable(true);
-                    mr.setCategory((String)b.get("Category"));
-                    mr.setVendorID((String)b.get("VendorID"));
-                    Long price[] = new Long[5];
-                    Long qty[] = new Long[5];
-                    ArrayList<Long> arrprice = (ArrayList<Long>) b.get("price");
-                    ArrayList<Long> arrqty = (ArrayList<Long>)b.get("quantity");
-
-
-
-                    price[0] = arrprice.get(0);
-                    price[1] = arrprice.get(1);
-                    price[2] = arrprice.get(2);
-                    price[3] = arrprice.get(3);
-                    price[4] = arrprice.get(4);
-
-                    qty[0] = arrqty.get(0);
-                    qty[1] = arrqty.get(1);
-                    qty[2] = arrqty.get(2);
-                    qty[3] = arrqty.get(3);
-                    qty[4] = arrqty.get(4);
+                        System.out.println(pair.getKey() + " = " + pair.getValue());
+                        Product = (HashMap<String, Object>) pair.getValue();
+                        Merchandise mr = new Merchandise();
+                        mr.setBrandName((String) Product.get("BrandName"));
+                        mr.setImage((String) Product.get("Image"));
+                        mr.setManuAddress((String) Product.get("ManuAddress"));
+                        mr.setMaterial((String) Product.get("Material"));
+                        mr.setProdID((String) Product.get("ProdID"));
+                        mr.setReturnApplicable(true);
+                        mr.setCategory((String) Product.get("Category"));
+                        mr.setVendorID((String) Product.get("VendorID"));
+                        Long price[] = new Long[5];
+                        Long qty[] = new Long[5];
+                        ArrayList<Long> arrprice = (ArrayList<Long>) Product.get("price");
+                        ArrayList<Long> arrqty = (ArrayList<Long>) Product.get("quantity");
 
 
-                    mr.setMale(true);
-                    System.out.println(b);
-                    list.add(mr);
-                    it.remove(); // avoids a ConcurrentModificationException
+                        price[0] = arrprice.get(0);
+                        price[1] = arrprice.get(1);
+                        price[2] = arrprice.get(2);
+                        price[3] = arrprice.get(3);
+                        price[4] = arrprice.get(4);
+
+                        qty[0] = arrqty.get(0);
+                        qty[1] = arrqty.get(1);
+                        qty[2] = arrqty.get(2);
+                        qty[3] = arrqty.get(3);
+                        qty[4] = arrqty.get(4);
+
+                        mr.setPrice(price);
+                        mr.setQuantity(qty);
+                        mr.setMale(true);
+                        System.out.println(Product);
+                        list.add(mr);
+                        it.remove(); // avoids a ConcurrentModificationException
+                    }
+                    it1.remove();
                 }
                 rv = (RecyclerView) findViewById(R.id.recycler_menu);
                 rv.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
