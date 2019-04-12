@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private String brandName;
     private String category;
     private List<Merchandise> mData;
+    private ArrayList<Long> price;
+
     private itemClickListener listener;
 
     public MyAdapter(Context mContext, List<Merchandise>lst) {
@@ -56,7 +60,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public void onClick(View view)
     {
-        //listener.onClick(view,getAdapterPosition(),false);
+
+//        System.out.println("hgello hoeny bunny");
+//        Intent intent = new Intent( mContext , productDetailActivity.class);
+
+
+        listener.onClick(view,1,false);
     }
 
     @SuppressLint("SetTextI18n")
@@ -70,6 +79,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.productName.setText(mData.get(position).getBrandName());
         holder.productDescription.setText(mData.get(position).getCategory());
         Picasso.get().load(mData.get(position).getImage()).into(holder.ImageProduct);
+        holder.productName.setText(brandName);
+        holder.productDescription.setText(category);
+        Picasso.get().load(imageUrl).into(holder.ImageProduct);
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick (View view)
+            {
+
+                Intent intent = new Intent( mContext , productDetailActivity.class);
+                intent.putExtra( "brandName", brandName );
+                intent.putExtra( "ImageUrl", imageUrl  );
+                intent.putExtra( "price",  price.get(0));
+                mContext.startActivity(intent);
+
+            }
+
+        }
+
+        );
+
+        // load image from the internet using Glide
+        //Glide.with(mContext).load(mData.get(position).getImage_url()).apply(options).into(holder.AnimeThumbnail);
 
     }
 
