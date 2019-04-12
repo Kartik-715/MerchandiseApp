@@ -78,18 +78,16 @@
                     android:textSize="25sp"
                     android:textStyle="bold"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="abc@gmail.com"
                     android:gravity="left"
+                    android:textColor="@color/Black"
                     android:background="#F2F2F2"
-                    android:hint="Enter Your Email Here"
                     android:padding="15dp"
-                    android:textColorHint="#000"
-                    android:textStyle="bold|italic"
-                    android:inputType="text"/>
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
 
@@ -149,20 +147,62 @@
                     android:textStyle="bold|italic"
                     android:inputType="text"/>
             </LinearLayout>
-        </LinearLayout>
 
+            <Button
+                android:id="@+id/updateBtn"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Update"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="5dp"
+                android:text="Photo:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/Gray"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/chooseBtn"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text = "Choose Photo"/>
+
+                <Button
+                    android:id="@+id/uploadBtn"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text = "Choose Photo"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
 
     </ScrollView>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint" />
-    </android.support.design.widget.TextInputLayout>
 </LinearLayout>
 
 

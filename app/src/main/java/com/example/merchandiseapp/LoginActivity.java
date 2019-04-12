@@ -22,6 +22,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,13 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private static final String TAG = LoginActivity.class.getSimpleName();
+    public G_var global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        global = (G_var) getApplicationContext();
 
 // ...
 // Initialize Firebase Auth
@@ -101,7 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, user.getDisplayName());
                             Log.d(TAG, user.getEmail());
 
-                            updateUI(user);
+                            checkDatabase(user);
+                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -114,11 +122,56 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void checkDatabase(final FirebaseUser user){
+
+        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        UserData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    updateglobals(dataSnapshot,user);
+                    updateUI(user);
+                }
+
+                else{
+                    UserNode userNode = new UserNode("0",user.getDisplayName(),user.getEmail(),"0");
+                    updateDatabase.child(user.getUid()).setValue(userNode);
+                    firstlogin(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void updateUI(FirebaseUser user)
     {
         Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
+    }
+
+    private void firstlogin(FirebaseUser user){
+        Intent intent=new Intent(getApplicationContext(),StartProfileUser.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void updateglobals(DataSnapshot dataSnapshot,FirebaseUser user){
+
+        global.setUsername(dataSnapshot.child("Name").getValue().toString());
+        global.setAddress(dataSnapshot.child("Address").getValue().toString());
+        global.setGender(dataSnapshot.child("Gender").getValue().toString());
+        global.setContact(dataSnapshot.child("Contact").getValue().toString());
+        global.setUid(mAuth.getUid());
+        global.setImageRef(FirebaseStorage.getInstance().getReference("images/"+mAuth.getUid()));
+        global.setEmail(user.getEmail());
+
     }
 
 }
