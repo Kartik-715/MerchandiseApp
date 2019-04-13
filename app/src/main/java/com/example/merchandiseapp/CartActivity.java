@@ -40,7 +40,7 @@ public class CartActivity extends AppCompatActivity
         NextProcessBtn = (Button) findViewById(R.id.next_process_btn);
     }
 
-    /*@Override
+    @Override
     protected void onStart()
     {
         super.onStart();
@@ -57,8 +57,8 @@ public class CartActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Merchandise model)
             {
-                holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price" + model.getPrice() + "$");
+                holder.txtProductQuantity.setText("Quantity = " + model.getQuantity().get(0));
+                holder.txtProductPrice.setText("Price" + model.getPrice().get(0) + "$");
                 holder.txtProductName.setText(model.getBrandName());
             }
 
@@ -67,7 +67,6 @@ public class CartActivity extends AppCompatActivity
             @Exclude
             public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
             {
-                Log.d("Chirag", "*****************3***********");
                 View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cart_items_layout, viewGroup, false);
                 OrderViewHolder holder = new OrderViewHolder(view);
                 return holder;
@@ -76,6 +75,6 @@ public class CartActivity extends AppCompatActivity
 
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-    }*/
+    }
 
 }

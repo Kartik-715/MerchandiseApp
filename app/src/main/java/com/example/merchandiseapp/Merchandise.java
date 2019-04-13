@@ -1,260 +1,150 @@
 package com.example.merchandiseapp;
-
-
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Merchandise implements Parcelable {
+public class Merchandise
+{
     private String BrandName ;
     private String Image ;
     private String ManuAddress ;
     private String Material;
     private String ProdID;
-    private boolean ReturnApplicable;
+    private String ReturnApplicable;
     private String Category;
     private String VendorID;
-    private Long price[];
-    private Long quantity[];
-    private boolean isMale ;
-
-
-    public Merchandise(String brandName, String image, String manuAddress, String material,
-                       String prodID, boolean returnApplicable, String category, String vendorID, Long[] Price, Long[] Quantity, boolean _isMale) {
-        BrandName = brandName;
-        Image = image;
-        ManuAddress = manuAddress;
-        Material = material;
-        ProdID = prodID;
-        ReturnApplicable = returnApplicable;
-        Category = category;
-        VendorID = vendorID;
-        price = new Long[5] ;
-        quantity = new Long[5] ;
-        price = Price.clone() ;
-        quantity = Quantity.clone();
-        isMale = _isMale ;
-
-    }
-
-    protected Merchandise(Parcel in) {
-
-
-        BrandName = in.readString();
-        Image  = in.readString();
-        ManuAddress = in.readString();
-        Material = in.readString();
-        ProdID = in.readString();
-        ReturnApplicable = in.readByte() != 0 ;
-        Category = in.readString();
-        VendorID = in.readString();
-
-        Object[] price1 = in.readArray(getClass().getClassLoader());
-
-        price = new Long[5];
-
-        for(int i=0; i<price1.length; i++){
-            price[i] = Long.parseLong(price1[i].toString());
-
-            System.out.println(price1[i].toString());
-        }
-
-        Object[] qty1= in.readArray(getClass().getClassLoader());
-        quantity = new Long[5];
-
-        for(int i=0; i<qty1.length; i++){
-
-            quantity[i]  = Long.parseLong(qty1[i].toString());
-            System.out.println("hi1" + qty1[i].toString());
-        }
-
-        isMale = in.readByte() != 0;
-
-    }
-
-    public static final Creator<Merchandise> CREATOR = new Creator<Merchandise>() {
-        @Override
-        public Merchandise createFromParcel(Parcel in) {
-            return new Merchandise(in);
-        }
-
-        @Override
-        public Merchandise[] newArray(int size) {
-            return new Merchandise[size];
-        }
-    };
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static Creator<Merchandise> getCREATOR() {
-        return CREATOR;
-    }
-
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-        parcel.writeString(BrandName);
-        parcel.writeString(Image);
-        parcel.writeString(ManuAddress);
-        parcel.writeString(Material);
-        parcel.writeString(ProdID);
-
-        parcel.writeByte((byte) ( ReturnApplicable ? 1 : 0));
-        parcel.writeString(Category);
-        parcel.writeString(VendorID);
-        parcel.writeArray((Long[]) price);
-        parcel.writeArray((Long[]) quantity);
-        
-        parcel.writeByte((byte) ( isMale ? 1 : 0));
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private ArrayList<String> price;
+    private ArrayList<String> quantity;
+    private String isMale ;
 
     public Merchandise()
     {
 
     }
 
-    public HashMap<String, Object> toMap()
+    public Merchandise(String brandName, String image, String manuAddress, String material, String prodID, String returnApplicable, String category, String vendorID, ArrayList<String> price, ArrayList<String> quantity, String isMale)
     {
-        HashMap<String, Object> result = new HashMap<>() ;
-        result.put("BrandName", BrandName) ;
-        result.put("Image", Image) ;
-        result.put("ManuAddress", ManuAddress) ;
-        result.put("Material", Material) ;
-        result.put("ProdID", ProdID) ;
-        result.put("ReturnApplicable", ReturnApplicable) ;
-        result.put("Category", Category) ;
-        result.put("VendorId", VendorID) ;
-        result.put("Price", price) ;
-        result.put("Quantity", quantity) ;
-        result.put("isMale", isMale) ;
-
-        return result ;
-
+        BrandName = brandName;
+        Image = image;
+        ManuAddress = manuAddress;
+        Material = material;
+        ProdID = prodID;
+        ReturnApplicable = returnApplicable;
+        Category = category;
+        VendorID = vendorID;
+        this.price = price;
+        this.quantity = quantity;
+        this.isMale = isMale;
     }
 
-    public String getBrandName() {
+    public String getBrandName()
+    {
         return BrandName;
     }
 
-    public void setBrandName(String brandName) {
+    public void setBrandName(String brandName)
+    {
         BrandName = brandName;
     }
 
-    public String getImage() {
+    public String getImage()
+    {
         return Image;
     }
 
-    public void setImage(String image) {
+    public void setImage(String image)
+    {
         Image = image;
     }
 
-    public String getManuAddress() {
+    public String getManuAddress()
+    {
         return ManuAddress;
     }
 
-    public void setManuAddress(String manuAddress) {
+    public void setManuAddress(String manuAddress)
+    {
         ManuAddress = manuAddress;
     }
 
-    public String getMaterial() {
+    public String getMaterial()
+    {
         return Material;
     }
 
-    public void setMaterial(String material) {
+    public void setMaterial(String material)
+    {
         Material = material;
     }
 
-    public String getProdID() {
+    public String getProdID()
+    {
         return ProdID;
     }
 
-    public void setProdID(String prodID) {
+    public void setProdID(String prodID)
+    {
         ProdID = prodID;
     }
 
-    public boolean isReturnApplicable() {
+    public String getReturnApplicable()
+    {
         return ReturnApplicable;
     }
 
-    public void setReturnApplicable(boolean returnApplicable) {
+    public void setReturnApplicable(String returnApplicable)
+    {
         ReturnApplicable = returnApplicable;
     }
 
-    public String getCategory() {
+    public String getCategory()
+    {
         return Category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(String category)
+    {
         Category = category;
     }
 
-    public String getVendorID() {
+    public String getVendorID()
+    {
         return VendorID;
     }
 
-    public void setVendorID(String vendorID) {
+    public void setVendorID(String vendorID)
+    {
         VendorID = vendorID;
     }
 
-    public Long[] getPrice() {
+    public ArrayList<String> getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Long[] price) {
+    public void setPrice(ArrayList<String> price)
+    {
         this.price = price;
     }
 
-    public Long[] getQuantity() {
+    public ArrayList<String> getQuantity()
+    {
         return quantity;
     }
 
-    public void setQuantity(Long[] quantity) {
+    public void setQuantity(ArrayList<String> quantity)
+    {
         this.quantity = quantity;
     }
 
-    public boolean isMale() {
+    public String getIsMale()
+    {
         return isMale;
     }
 
-    public void setMale(boolean male) {
-        isMale = male;
+    public void setIsMale(String isMale)
+    {
+        this.isMale = isMale;
     }
-
 }

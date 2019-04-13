@@ -55,102 +55,39 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseReference ProductRef;
+    private DatabaseReference ProductsRef;
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private Button btnLogout;
-    private RecyclerView rv;
-    private List<Merchandise> list= new ArrayList<>();
-    private HashMap<String, Object> a = new HashMap<String, Object>();
-    private HashMap<String, Object> b = new HashMap<String, Object>();
+    private RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        final FirebaseAuth mauth = FirebaseAuth.getInstance();
-        FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name",user.getDisplayName());
-
-
-
-        //rv.setHasFixedSize(true);
-
-        ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
-        ProductRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Log.d(TAG,"*******sample3**********");
-                a = (HashMap<String, Object>) dataSnapshot.getValue();
-                System.out.println(a);
-                Iterator it = a.entrySet().iterator();
-                while (it.hasNext()) {
-                    HashMap.Entry pair = (HashMap.Entry)it.next();
-
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                    b = (HashMap<String , Object>) pair.getValue();
-                    Merchandise mr = new Merchandise();
-                    mr.setBrandName ((String)b.get("BrandName"));
-                    mr.setImage((String)b.get("Image"));
-                    mr.setManuAddress((String)b.get("ManuAddress"));
-                    mr.setMaterial((String)b.get("Material"));
-                    mr.setProdID((String)b.get("ProdID"));
-                    mr.setReturnApplicable(true);
-                    mr.setCategory((String)b.get("Category"));
-                    mr.setVendorID((String)b.get("VendorID"));
-                    Long price[] = new Long[5];
-                    Long qty[] = new Long[5];
-                    ArrayList<Long> arrprice = (ArrayList<Long>) b.get("price");
-                    ArrayList<Long> arrqty = (ArrayList<Long>)b.get("quantity");
-
-
-
-                    price[0] = arrprice.get(0);
-                    price[1] = arrprice.get(1);
-                    price[2] = arrprice.get(2);
-                    price[3] = arrprice.get(3);
-                    price[4] = arrprice.get(4);
-
-                    qty[0] = arrqty.get(0);
-                    qty[1] = arrqty.get(1);
-                    qty[2] = arrqty.get(2);
-                    qty[3] = arrqty.get(3);
-                    qty[4] = arrqty.get(4);
-
-                    mr.setPrice(price);
-                    mr.setQuantity(qty);
-                    mr.setMale(true);
-                    System.out.println(b);
-                    list.add(mr);
-                    it.remove(); // avoids a ConcurrentModificationException
-                }
-                rv = (RecyclerView) findViewById(R.id.recycler_menu);
-                rv.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                rv.setAdapter(new MyAdapter(HomeActivity.this, list));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-
-            }
-        });
-
+        ProductsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
+
             }
         });
+
+        final FirebaseAuth mauth = FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
+        Log.d("name",user.getDisplayName());
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -160,6 +97,12 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        recyclerView = findViewById(R.id.recycler_menu);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
 
         View headerView = navigationView.getHeaderView(0);
 
@@ -186,11 +129,55 @@ public class HomeActivity extends AppCompatActivity
         ImageView imageView =(ImageView) headerView.findViewById(R.id.imageView);
         new DownloadImageTask(imageView)
                 .execute(user.getPhotoUrl().toString());
-
-
-
     }
 
+
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
+                        .setQuery(ProductsRef, Merchandise.class)
+                        .build();
+
+        FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder>(options)
+                {
+                    @Override
+                    protected void onBindViewHolder(@NonNull MerchandiseViewHolder holder, int position, final Merchandise model)
+                    {
+                        holder.txtProductName.setText(model.getBrandName());
+                        holder.txtProductDescription.setText(model.getCategory());
+                        holder.txtProductPrice.setText("Price = " + model.getPrice().get(0) + "$");
+                        Picasso.get().load(model.getImage()).into(holder.imageView);
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                Intent intent = new Intent(HomeActivity.this, productDetailActivity.class);
+                                intent.putExtra("pid", model.getProdID());
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                    @NonNull
+                    @Override
+                    public MerchandiseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+                    {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
+                        MerchandiseViewHolder holder = new MerchandiseViewHolder(view);
+                        return holder;
+                    }
+                };
+
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+    }
 
     @Override
     public void onBackPressed() {
@@ -204,19 +191,14 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

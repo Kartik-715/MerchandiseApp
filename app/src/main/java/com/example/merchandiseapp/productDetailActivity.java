@@ -17,27 +17,27 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class productDetailActivity extends AppCompatActivity {
+public class productDetailActivity extends AppCompatActivity
+{
 
-private FloatingActionButton addToCart;
+    private FloatingActionButton addToCart;
 
     private Button addToCartButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
-    private TextView productPrice , productName;
-    private String bName;
-    private String imgURL;
-    private Long price;
+    private TextView productPrice, productName;
     private String productID = "";
-    private String productCategory = "";
     private String User_ID = "";
 
     @Override
@@ -45,7 +45,9 @@ private FloatingActionButton addToCart;
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        Merchandise obj = (Merchandise) getIntent().getParcelableExtra("merchandiseObj");
+
+        productID = getIntent().getStringExtra("pid");
+        User_ID = Prevalent.currentOnlineUser;
 
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         numberButton = findViewById(R.id.numberBtn);
@@ -53,13 +55,7 @@ private FloatingActionButton addToCart;
         productName = findViewById(R.id.productName);
         productPrice = findViewById(R.id.productPrice);
 
-        productName.setText(obj.getBrandName());
-        productPrice.setText(obj.getPrice()[0].toString());
-        productID = obj.getProdID();
-        productCategory = obj.getCategory();
-        User_ID = Prevalent.currentOnlineUser.toString();
-
-        Picasso.get().load(obj.getImage()).into(productImage);
+        getProductDetails(productID);
 
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +79,7 @@ private FloatingActionButton addToCart;
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
+
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("pid",productID);
         cartMap.put("pname",productName.getText().toString());
@@ -91,7 +88,7 @@ private FloatingActionButton addToCart;
         cartMap.put("time",saveCurrentTime);
         cartMap.put("quantity",numberButton.getNumber());
         cartMap.put("discount ","");
-        cartMap.put("isplaced", "false");
+        cartMap.put("isplaced", "no");
 
         cartListRef.child(User_ID).child(productID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
@@ -110,5 +107,33 @@ private FloatingActionButton addToCart;
                         }
                     }
                 });
+    }
+
+
+    private void getProductDetails(String productID)
+    {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
+
+        productsRef.child(productID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.exists())
+                {
+                    Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
+
+                    productName.setText(merchandises.getBrandName());
+                    productPrice.setText(merchandises.getPrice().get(0));
+                    Picasso.get().load(merchandises.getImage()).into(productImage);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
     }
 }

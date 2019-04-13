@@ -6,11 +6,16 @@ public class Order
 {
     private String buyer;
     private Merchandise item ;
-    private Integer size ;
-    private Integer quantity ;
-    private boolean placed= false;
+    private String size ;
+    private String quantity ;
+    private String placed= "no";
 
-    public Order(String buyer, Merchandise item, Integer size, Integer quantity, boolean placed)
+    public Order()
+    {
+
+    }
+
+    public Order(String buyer, Merchandise item, String size, String quantity, String placed)
     {
         this.buyer = buyer;
         this.item = item;
@@ -19,20 +24,54 @@ public class Order
         this.placed = placed;
     }
 
-    public Order()
-        {
 
-    }
-    public HashMap<String, Object> toMap()
+    public String getBuyer()
     {
-        HashMap<String, Object> result = new HashMap<>() ;
-        result.put("buyer", buyer) ;
-        result.put("item", item.toMap()) ;
-        result.put("size", size) ;
-        result.put("quantity", quantity) ;
-        result.put("placed", placed) ;
+        return buyer;
+    }
 
-        return result ;
+    public void setBuyer(String buyer)
+    {
+        this.buyer = buyer;
+    }
 
+    public Merchandise getItem()
+    {
+        return item;
+    }
+
+    public void setItem(Merchandise item)
+    {
+        this.item = item;
+    }
+
+    public String getSize()
+    {
+        return size;
+    }
+
+    public void setSize(String size)
+    {
+        this.size = size;
+    }
+
+    public String getQuantity()
+    {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity)
+    {
+        this.quantity = quantity;
+    }
+
+    public String getPlaced()
+    {
+        return placed;
+    }
+
+    public void setPlaced(String placed)
+    {
+        this.placed = placed;
     }
 }
