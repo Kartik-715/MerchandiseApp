@@ -66,8 +66,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         //holder.ImageProduct.setImageBitmap();
-        //holder.price.setText();
-        System.out.println("HELLO"+mData.get(position).getBrandName());
+        holder.price.setText("Rs."+mData.get(position).getPrice()[0].toString());
+        System.out.println("HELLO"+mData.get(position).getPrice());
 
         holder.productName.setText(mData.get(position).getBrandName());
         holder.productDescription.setText(mData.get(position).getCategory());
@@ -90,9 +90,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
 
         );
-
-        // load image from the internet using Glide
-        //Glide.with(mContext).load(mData.get(position).getImage_url()).apply(options).into(holder.AnimeThumbnail);
 
     }
 

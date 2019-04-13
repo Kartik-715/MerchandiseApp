@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity
 
         //rv.setHasFixedSize(true);
 
-        ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
+        ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise");
         ProductRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
