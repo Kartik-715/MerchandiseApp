@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,8 +153,8 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -172,6 +173,22 @@ public class HomeActivity extends AppCompatActivity
         TextView navemail = (TextView) headerView.findViewById(R.id.emailtextView);
         navUsername.setText(user.getDisplayName());
         navemail.setText(user.getEmail());
+
+        String User_ID, User_Email;
+        User_Email = user.getEmail();
+        User_ID = "";
+
+        for (int i = 0; i < User_Email.length(); i++){
+            char c = User_Email.charAt(i);
+            if(c == '@')
+                break;
+            else
+            {
+                User_ID += c;
+            }
+        }
+
+        Prevalent.currentOnlineUser = User_ID;
         ImageView imageView =(ImageView) headerView.findViewById(R.id.imageView);
         new DownloadImageTask(imageView)
                 .execute(user.getPhotoUrl().toString());
@@ -222,6 +239,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+
 
         } else if (id == R.id.nav_slideshow) {
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+    //Prevalent.currentOnlineUser = usersData;
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d("AUTH msg","qwert2");
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
