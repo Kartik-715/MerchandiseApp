@@ -39,6 +39,7 @@ public class productDetailActivity extends AppCompatActivity
     private TextView productPrice, productName;
     private String productID = "";
     private String User_ID = "";
+    private String orderID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,7 +77,7 @@ public class productDetailActivity extends AppCompatActivity
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-
+        orderID = saveCurrentDate + saveCurrentTime;
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 
@@ -95,7 +96,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
 
-        cartListRef.child(User_ID).child(productID).updateChildren(cartMap)
+        cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
                 {
                     @Override

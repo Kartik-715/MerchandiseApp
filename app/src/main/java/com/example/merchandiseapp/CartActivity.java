@@ -52,7 +52,7 @@ public class CartActivity extends AppCompatActivity
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(cartListRef.child(Prevalent.currentOnlineUser), Order.class)
+                .setQuery(cartListRef.child(Prevalent.currentOnlineUser).orderByChild("isplaced").equalTo("no"), Order.class)
                 .build();
 
         FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter
@@ -62,15 +62,16 @@ public class CartActivity extends AppCompatActivity
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull final Order model)
             {
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price" + model.getPrice() + "$");
+                holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
                 holder.txtProductName.setText(model.getPname());
+
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getPid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getDate() + model.getTime()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
                             public void onComplete(@NonNull Task<Void> task)
@@ -89,8 +90,22 @@ public class CartActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v)
                     {
+
                         Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
                         intent.putExtra("pid", model.getPid());
+
+                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getDate() + model.getTime()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+                                if(task.isSuccessful())
+                                {
+                                    //Toast.makeText(CartActivity.this, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                         startActivity(intent);
                     }
                 });
