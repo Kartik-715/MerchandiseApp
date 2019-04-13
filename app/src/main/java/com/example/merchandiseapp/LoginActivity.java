@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user)
     {
-        Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+        Intent intent=new Intent(getApplicationContext(),CourierActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }
