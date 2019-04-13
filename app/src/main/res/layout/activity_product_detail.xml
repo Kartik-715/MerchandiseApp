@@ -62,18 +62,18 @@
 
         />
 
-    <android.support.design.widget.FloatingActionButton
 
-        android:id="@+id/addToCart"
-        android:layout_width="107dp"
-        android:layout_height="78dp"
-        android:layout_alignParentEnd="true"
+    <Button
+        android:id="@+id/pd_add_to_cart_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="#ffffff"
-        android:elevation="6dp"
-        android:src="@drawable/cart"
-
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:text="Add to Cart"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
 
 
 </RelativeLayout>

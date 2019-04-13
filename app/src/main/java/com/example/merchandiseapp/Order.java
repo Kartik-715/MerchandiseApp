@@ -2,14 +2,16 @@ package com.example.merchandiseapp;
 
 import java.util.HashMap;
 
-public class Order {
+public class Order
+{
     private String buyer;
     private Merchandise item ;
     private Integer size ;
     private Integer quantity ;
     private boolean placed= false;
 
-    public Order(String buyer, Merchandise item, Integer size, Integer quantity, boolean placed) {
+    public Order(String buyer, Merchandise item, Integer size, Integer quantity, boolean placed)
+    {
         this.buyer = buyer;
         this.item = item;
         this.size = size;
@@ -17,7 +19,8 @@ public class Order {
         this.placed = placed;
     }
 
-    public Order(){
+    public Order()
+        {
 
     }
     public HashMap<String, Object> toMap()
