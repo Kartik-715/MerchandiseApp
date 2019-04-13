@@ -23,18 +23,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class CartActivity extends AppCompatActivity
 {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
     private TextView txtTotalAmount;
+    private ArrayList<String> orderid_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        orderid_list = new ArrayList<String>();
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -42,6 +46,22 @@ public class CartActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
 
         NextProcessBtn = (Button) findViewById(R.id.next_process_btn);
+
+        NextProcessBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                NextActivity();
+            }
+        });
+    }
+
+    private void NextActivity()
+    {
+        Intent intent = new Intent(CartActivity.this, DetailsActivity.class);
+        intent.putExtra("orderid_list", orderid_list);
+        startActivity(intent);
     }
 
     @Override
@@ -64,14 +84,14 @@ public class CartActivity extends AppCompatActivity
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
                 holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
                 holder.txtProductName.setText(model.getPname());
-
+                orderid_list.add(model.getOrderid());
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getDate() + model.getTime()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
                             public void onComplete(@NonNull Task<Void> task)
@@ -94,7 +114,7 @@ public class CartActivity extends AppCompatActivity
                         Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
                         intent.putExtra("pid", model.getPid());
 
-                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getDate() + model.getTime()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
                             public void onComplete(@NonNull Task<Void> task)

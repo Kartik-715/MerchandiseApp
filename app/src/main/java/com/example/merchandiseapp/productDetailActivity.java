@@ -69,15 +69,14 @@ public class productDetailActivity extends AppCompatActivity
     private void addingToCartList()
     {
         String saveCurrentTime, saveCurrentDate;
-
         Calendar calForDate = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
         saveCurrentDate = currentDate.format(calForDate.getTime());
 
-        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-        orderID = saveCurrentDate + saveCurrentTime;
+        orderID = saveCurrentDate + " " + saveCurrentTime;
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 
@@ -95,6 +94,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("quantity",numberButton.getNumber());
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
+        cartMap.put("orderid", orderID);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()

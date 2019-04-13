@@ -17,13 +17,14 @@ public class Order
     private String quantity;
     private String status;
     private String time;
+    private String orderid;
 
     public Order()
     {
 
     }
 
-    public Order(String contact, String Delivery_Address, String date, String email, String isplaced, String pid, String pname, String price, String quantity, String status, String time)
+    public Order(String contact, String Delivery_Address, String date, String email, String isplaced, String pid, String pname, String price, String quantity, String status, String time, String orderid)
     {
         Contact = contact;
         this.Delivery_Address = Delivery_Address;
@@ -36,6 +37,7 @@ public class Order
         this.quantity = quantity;
         this.status = status;
         this.time = time;
+        this.orderid = orderid;
     }
 
     public String getContact()
@@ -146,5 +148,15 @@ public class Order
     public void setTime(String time)
     {
         this.time = time;
+    }
+
+    public String getOrderid()
+    {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid)
+    {
+        this.orderid = orderid;
     }
 }
