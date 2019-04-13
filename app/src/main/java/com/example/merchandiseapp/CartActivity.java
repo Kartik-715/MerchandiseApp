@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.merchandiseapp.Model.Cart;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -46,15 +45,15 @@ public class CartActivity extends AppCompatActivity
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
-        FirebaseRecyclerOptions<Cart> options = new FirebaseRecyclerOptions.Builder<Cart>()
-                .setQuery(cartListRef.child(Prevalent.currentOnlineUser), Cart.class)
+        FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
+                .setQuery(cartListRef.child(Prevalent.currentOnlineUser), Order.class)
                 .build();
 
-        FirebaseRecyclerAdapter<Cart, OrderViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Cart, OrderViewHolder>(options)
+        FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter
+                = new FirebaseRecyclerAdapter<Order, OrderViewHolder>(options)
         {
             @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Cart model)
+            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Order model)
             {
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
                 holder.txtProductPrice.setText("Price" + model.getPrice() + "$");

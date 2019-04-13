@@ -1,58 +1,121 @@
 package com.example.merchandiseapp;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Order
 {
-    private String buyer;
-    private Merchandise item ;
-    private String size ;
-    private String quantity ;
-    private String placed= "no";
+    private String Contact;
+    private String Delivery_Address;
+    private String date;
+    private String email;
+    private String isplaced;
+    private String pid;
+    private String pname;
+    private String price;
+    private String quantity;
+    private String status;
+    private String time;
 
     public Order()
     {
 
     }
 
-    public Order(String buyer, Merchandise item, String size, String quantity, String placed)
+    public Order(String contact, String Delivery_Address, String date, String email, String isplaced, String pid, String pname, String price, String quantity, String status, String time)
     {
-        this.buyer = buyer;
-        this.item = item;
-        this.size = size;
+        Contact = contact;
+        this.Delivery_Address = Delivery_Address;
+        this.date = date;
+        this.email = email;
+        this.isplaced = isplaced;
+        this.pid = pid;
+        this.pname = pname;
+        this.price = price;
         this.quantity = quantity;
-        this.placed = placed;
+        this.status = status;
+        this.time = time;
     }
 
-
-    public String getBuyer()
+    public String getContact()
     {
-        return buyer;
+        return Contact;
     }
 
-    public void setBuyer(String buyer)
+    public void setContact(String contact)
     {
-        this.buyer = buyer;
+        Contact = contact;
     }
 
-    public Merchandise getItem()
+    public String getDelivery_Address()
     {
-        return item;
+        return Delivery_Address;
     }
 
-    public void setItem(Merchandise item)
+    public void setDelivery_Address(String Delivery_Address)
     {
-        this.item = item;
+        Delivery_Address = Delivery_Address;
     }
 
-    public String getSize()
+    public String getDate()
     {
-        return size;
+        return date;
     }
 
-    public void setSize(String size)
+    public void setDate(String date)
     {
-        this.size = size;
+        this.date = date;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
+    public String getIsplaced()
+    {
+        return isplaced;
+    }
+
+    public void setIsplaced(String isplaced)
+    {
+        this.isplaced = isplaced;
+    }
+
+    public String getPid()
+    {
+        return pid;
+    }
+
+    public void setPid(String pid)
+    {
+        this.pid = pid;
+    }
+
+    public String getPname()
+    {
+        return pname;
+    }
+
+    public void setPname(String pname)
+    {
+        this.pname = pname;
+    }
+
+    public String getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice(String price)
+    {
+        this.price = price;
     }
 
     public String getQuantity()
@@ -65,13 +128,23 @@ public class Order
         this.quantity = quantity;
     }
 
-    public String getPlaced()
+    public String getStatus()
     {
-        return placed;
+        return status;
     }
 
-    public void setPlaced(String placed)
+    public void setStatus(String status)
     {
-        this.placed = placed;
+        this.status = status;
+    }
+
+    public String getTime()
+    {
+        return time;
+    }
+
+    public void setTime(String time)
+    {
+        this.time = time;
     }
 }
