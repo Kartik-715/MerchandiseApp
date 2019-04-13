@@ -32,7 +32,7 @@ public class productDetailActivity extends AppCompatActivity
 {
 
     private FloatingActionButton addToCart;
-
+    private Button btnReviews;
     private Button addToCartButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
@@ -55,9 +55,18 @@ public class productDetailActivity extends AppCompatActivity
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
         productPrice = findViewById(R.id.productPrice);
+        //btnReviews = findViewById(R.id.reviewbtn);
 
+        Toast.makeText(productDetailActivity.this,"dgjkadkj",Toast.LENGTH_LONG).show();
         getProductDetails(productID);
-
+//        btnReviews.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(productDetailActivity.this,"hey",Toast.LENGTH_LONG).show();
+//                //Intent intent = new Intent(productDetailActivity.this,Reviews.class);
+//                //startActivity(intent);
+//            }
+//        });
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

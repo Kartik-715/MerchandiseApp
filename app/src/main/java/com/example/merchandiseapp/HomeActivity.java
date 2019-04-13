@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity
 
         for (int i = 0; i < User_Email.length(); i++){
             char c = User_Email.charAt(i);
-            if(c == '@')
+            if(c == '.')
                 break;
             else
             {
@@ -207,7 +207,8 @@ public class HomeActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent(HomeActivity.this,Reviews.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
