@@ -1,9 +1,13 @@
 package com.example.merchandiseapp;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Merchandise {
+public class Merchandise implements Parcelable {
     private String BrandName ;
     private String Image ;
     private String ManuAddress ;
@@ -35,12 +39,116 @@ public class Merchandise {
 
     }
 
-    public Merchandise()
-    {
+    protected Merchandise(Parcel in) {
+
+
+        BrandName = in.readString();
+        Image  = in.readString();
+        ManuAddress = in.readString();
+        Material = in.readString();
+        ProdID = in.readString();
+        ReturnApplicable = in.readByte() != 0 ;
+        Category = in.readString();
+        VendorID = in.readString();
+
+        Object[] price1 = in.readArray(getClass().getClassLoader());
+
+        price = new Long[5];
+
+        for(int i=0; i<price1.length; i++){
+            price[i] = Long.parseLong(price1[i].toString());
+
+            System.out.println(price1[i].toString());
+        }
+
+        Object[] qty1= in.readArray(getClass().getClassLoader());
+        quantity = new Long[5];
+
+        for(int i=0; i<qty1.length; i++){
+
+            quantity[i]  = Long.parseLong(qty1[i].toString());
+            System.out.println("hi1" + qty1[i].toString());
+        }
+
+        isMale = in.readByte() != 0;
+
+    }
+
+    public static final Creator<Merchandise> CREATOR = new Creator<Merchandise>() {
+        @Override
+        public Merchandise createFromParcel(Parcel in) {
+            return new Merchandise(in);
+        }
+
+        @Override
+        public Merchandise[] newArray(int size) {
+            return new Merchandise[size];
+        }
+    };
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static Creator<Merchandise> getCREATOR() {
+        return CREATOR;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeString(BrandName);
+        parcel.writeString(Image);
+        parcel.writeString(ManuAddress);
+        parcel.writeString(Material);
+        parcel.writeString(ProdID);
+
+        parcel.writeByte((byte) ( ReturnApplicable ? 1 : 0));
+        parcel.writeString(Category);
+        parcel.writeString(VendorID);
+        parcel.writeArray((Long[]) price);
+        parcel.writeArray((Long[]) quantity);
+        
+        parcel.writeByte((byte) ( isMale ? 1 : 0));
 
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public Merchandise()
+    {
+
+    }
 
     public HashMap<String, Object> toMap()
     {
@@ -148,4 +256,5 @@ public class Merchandise {
     public void setMale(boolean male) {
         isMale = male;
     }
+
 }

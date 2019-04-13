@@ -119,7 +119,8 @@ public class HomeActivity extends AppCompatActivity
                     qty[3] = arrqty.get(3);
                     qty[4] = arrqty.get(4);
 
-
+                    mr.setPrice(price);
+                    mr.setQuantity(qty);
                     mr.setMale(true);
                     System.out.println(b);
                     list.add(mr);

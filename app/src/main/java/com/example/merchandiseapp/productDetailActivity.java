@@ -24,21 +24,18 @@ private FloatingActionButton addToCart;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
+        Merchandise obj = (Merchandise) getIntent().getParcelableExtra("merchandiseObj");
 
-        addToCart = (FloatingActionButton) findViewById(R.id.addToCart);
-        numberButton = (ElegantNumberButton) findViewById(R.id.numberBtn);
-        productImage = (ImageView) findViewById(R.id.productImage);
-        productName = (TextView) findViewById(R.id.productName);
-        productPrice = (TextView) findViewById(R.id.productPrice);
+        addToCart = findViewById(R.id.addToCart);
+        numberButton = findViewById(R.id.numberBtn);
+        productImage = findViewById(R.id.productImage);
+        productName = findViewById(R.id.productName);
+        productPrice = findViewById(R.id.productPrice);
 
-        bName = getIntent().getStringExtra("brandName");
-        imgURL = getIntent().getStringExtra("ImageUrl");
+        productName.setText(obj.getBrandName());
+        productPrice.setText(obj.getPrice()[0].toString());
+        Picasso.get().load(obj.getImage()).into(productImage);
 
-        price = getIntent().getLongExtra("price",0);
-        System.out.println("HELLO1"+price);
 
-        productName.setText(bName);
-        productPrice.setText(price.toString());
-        Picasso.get().load(imgURL).into(productImage);
     }
 }

@@ -23,9 +23,6 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private Context mContext ;
-    private String imageUrl;
-    private String brandName;
-    private String category;
     private List<Merchandise> mData;
     private ArrayList<Long> price;
 
@@ -33,13 +30,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public MyAdapter(Context mContext, List<Merchandise>lst) {
 
-       // System.out.println("HELLO"+brandname);
         this.mContext = mContext;
-        //this.imageUrl = url;
-        //this.brandName = brandname;
-        //this.category =category;
         this.mData=lst;
-        System.out.println("HELLO1"+brandName);
+        System.out.println("HELLO1"+mData.get(0).getBrandName() );
     }
 
     @Override
@@ -79,19 +72,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.productName.setText(mData.get(position).getBrandName());
         holder.productDescription.setText(mData.get(position).getCategory());
         Picasso.get().load(mData.get(position).getImage()).into(holder.ImageProduct);
-        holder.productName.setText(brandName);
-        holder.productDescription.setText(category);
-        Picasso.get().load(imageUrl).into(holder.ImageProduct);
+
         holder.itemView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick (View view)
             {
 
+
                 Intent intent = new Intent( mContext , productDetailActivity.class);
-                intent.putExtra( "brandName", brandName );
-                intent.putExtra( "ImageUrl", imageUrl  );
-                intent.putExtra( "price",  price.get(0));
+                Merchandise objPassed = (Merchandise) mData.get(position);
+                intent.putExtra( "merchandiseObj", objPassed);
                 mContext.startActivity(intent);
 
             }
