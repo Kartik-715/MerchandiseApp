@@ -5,18 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.merchandiseapp.Model.Cart;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CartActivity extends AppCompatActivity
@@ -47,24 +46,23 @@ public class CartActivity extends AppCompatActivity
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
-        FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
-                .setQuery(cartListRef.child(Prevalent.currentOnlineUser), Merchandise.class)
+        FirebaseRecyclerOptions<Cart> options = new FirebaseRecyclerOptions.Builder<Cart>()
+                .setQuery(cartListRef.child(Prevalent.currentOnlineUser), Cart.class)
                 .build();
 
-        FirebaseRecyclerAdapter<Merchandise, OrderViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Merchandise, OrderViewHolder>(options)
+        FirebaseRecyclerAdapter<Cart, OrderViewHolder> adapter
+                = new FirebaseRecyclerAdapter<Cart, OrderViewHolder>(options)
         {
             @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Merchandise model)
+            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Cart model)
             {
-                holder.txtProductQuantity.setText("Quantity = " + model.getQuantity().get(0));
-                holder.txtProductPrice.setText("Price" + model.getPrice().get(0) + "$");
-                holder.txtProductName.setText(model.getBrandName());
+                holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
+                holder.txtProductPrice.setText("Price" + model.getPrice() + "$");
+                holder.txtProductName.setText(model.getPname());
             }
 
             @NonNull
             @Override
-            @Exclude
             public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
             {
                 View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cart_items_layout, viewGroup, false);

@@ -88,7 +88,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("time",saveCurrentTime);
         cartMap.put("quantity",numberButton.getNumber());
         cartMap.put("discount ","");
-        cartMap.put("isplaced", "no");
+        cartMap.put("uid", User_ID);
 
         cartListRef.child(User_ID).child(productID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
