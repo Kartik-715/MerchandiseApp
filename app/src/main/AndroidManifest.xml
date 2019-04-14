@@ -13,10 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".productsCourrier"></activity>
         <activity
             android:name=".CourierActivity"
             android:label="@string/title_activity_courier"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CartActivity" />
         <activity android:name=".productDetailActivity" />
         <activity

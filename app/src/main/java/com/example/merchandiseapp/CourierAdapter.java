@@ -76,17 +76,18 @@ public class CourierAdapter extends RecyclerView.Adapter<CourierAdapter.MyViewHo
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
 
-                                               @Override
-                                               public void onClick (View view)
-                                               {
+        @Override
+        public void onClick (View view)
+        {
+            Intent intent = new Intent( mContext , productsCourrier.class );
+            
 
+            //Intent intent = new Intent( mContext , productDetailActivity.class);
+            //Order objPassed = (Order) mData.get(position);
+            //intent.putExtra( "merchandiseObj", objPassed);
+            //mContext.startActivity(intent);
 
-                                                   //Intent intent = new Intent( mContext , productDetailActivity.class);
-                                                   //Order objPassed = (Order) mData.get(position);
-                                                   //intent.putExtra( "merchandiseObj", objPassed);
-                                                   //mContext.startActivity(intent);
-
-                                               }
+        }
 
                                            }
 
