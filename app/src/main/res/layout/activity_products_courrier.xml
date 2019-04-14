@@ -63,8 +63,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
         android:background="#ffffff"
-        android:text="Update Status"
         android:onClick="doOnClick"
-        />
+
+        android:text="Update Status" />
 
 </RelativeLayout>
