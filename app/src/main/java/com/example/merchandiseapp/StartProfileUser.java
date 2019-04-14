@@ -63,7 +63,6 @@ public class StartProfileUser extends AppCompatActivity {
         setContentView(R.layout.activity_start_profile_user);
 
         user = mauth.getCurrentUser();
-        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -132,6 +131,10 @@ public class StartProfileUser extends AppCompatActivity {
     }
 
     public void updateInfo(){
+        UserNode userNode = new UserNode("0",name.getText().toString(),user.getEmail(),"0");
+        UserData = FirebaseDatabase.getInstance().getReference().child("Users");
+        UserData.child(user.getUid()).setValue(userNode);
+        UserData = UserData.child(global.getUid());
         try{
             UserData.child("Name").setValue(name.getText().toString());
             UserData.child("Contact").setValue(contact.getText().toString());

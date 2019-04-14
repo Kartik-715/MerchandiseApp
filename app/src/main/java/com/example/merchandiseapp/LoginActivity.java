@@ -144,8 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 else{
-                    UserNode userNode = new UserNode("0",user.getDisplayName(),user.getEmail(),"0");
-                    updateDatabase.child(user.getUid()).setValue(userNode);
                     firstlogin(user);
                 }
             }
@@ -163,9 +161,9 @@ public class LoginActivity extends AppCompatActivity {
         if(Access.equals("0")) {
             intent = new Intent(getApplicationContext(), HomeActivity.class);
         }
-//        else if (Access.equals("2")){
-//
-//        }
+        else if (Access.equals("3")){
+            intent = new Intent(getApplicationContext(), Staff.class);
+        }
 
         intent.putExtra("user", user);
         startActivity(intent);
@@ -177,7 +175,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateglobals(DataSnapshot dataSnapshot,FirebaseUser user){
+
+    private void updateglobals(DataSnapshot dataSnapshot,FirebaseUser user)
+    {
         global.setUsername(dataSnapshot.child("Name").getValue().toString());
         global.setAddress(dataSnapshot.child("Address").getValue().toString());
         global.setGender(dataSnapshot.child("Gender").getValue().toString());
