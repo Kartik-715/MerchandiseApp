@@ -135,9 +135,10 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.manage_profile) {
             Intent intent = new Intent(this,ManageProfile.class);
             startActivity(intent);
-        }/* else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.wallet) {
+            Intent intent = new Intent(this, myWallet.class);
+            startActivity(intent);
+        }/* else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
