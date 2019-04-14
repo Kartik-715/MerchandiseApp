@@ -6,10 +6,12 @@ import java.util.HashMap;
 
 public class Order
 {
-    private String Contact;
-    private String Dilevery_Address;
+    private String contact;
+    private String address;
     private String date;
     private String email;
+    private String orderid;
+    private String uid;
     private String isplaced;
     private String pid;
     private String pname;
@@ -18,19 +20,17 @@ public class Order
     private String status;
     private String time;
 
-
-
     public Order()
     {
-
     }
 
-    public Order(String contact, String dilevery_Address, String date, String email,
-                 String isplaced, String pid, String pname, String price, String quantity, String status, String time) {
-        Contact = contact;
-        Dilevery_Address = dilevery_Address;
+    public Order(String contact, String address, String date, String email, String orderid, String uid, String isplaced, String pid, String pname, String price, String quantity, String status, String time) {
+        this.contact = contact;
+        this.address = address;
         this.date = date;
         this.email = email;
+        this.orderid = orderid;
+        this.uid = uid;
         this.isplaced = isplaced;
         this.pid = pid;
         this.pname = pname;
@@ -41,19 +41,19 @@ public class Order
     }
 
     public String getContact() {
-        return Contact;
+        return contact;
     }
 
     public void setContact(String contact) {
-        Contact = contact;
+        this.contact = contact;
     }
 
-    public String getDilevery_Address() {
-        return Dilevery_Address;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDilevery_Address(String dilevery_Address) {
-        Dilevery_Address = dilevery_Address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDate() {
@@ -70,6 +70,22 @@ public class Order
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getIsplaced() {
@@ -127,8 +143,7 @@ public class Order
     public void setTime(String time) {
         this.time = time;
     }
-
-    /* public HashMap<String, Object> toMap()
+/* public HashMap<String, Object> toMap()
     {
         HashMap<String, Object> result = new HashMap<>() ;
         result.put("buyer", buyer) ;

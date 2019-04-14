@@ -70,8 +70,10 @@ public class CourierActivity extends AppCompatActivity
                             continue;
                         }
 
-                        else{   Order od = new Order((String) Order_Placed.get("Contact"),(String) Order_Placed.get("Dilevery"),
-                                (String) Order_Placed.get("date"),(String) Order_Placed.get("email"), (String) Order_Placed.get("isplaced"),
+                        else{   Order od = new Order((String) Order_Placed.get("contact"),(String) Order_Placed.get("address"),
+                                (String) Order_Placed.get("date"),(String) Order_Placed.get("email"),
+                                (String) Order_Placed.get("orderid"),(String) Order_Placed.get("uid"),
+                                (String) Order_Placed.get("isplaced"),
                                 (String) Order_Placed.get("pid"),(String) Order_Placed.get("pname"),(String) Order_Placed.get("price"),
                                 (String) Order_Placed.get("quantity"), (String) Order_Placed.get("status"),(String) Order_Placed.get("time"));
                         System.out.println("hello"+od.getPname()+od.getPrice());

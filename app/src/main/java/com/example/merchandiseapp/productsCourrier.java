@@ -3,7 +3,11 @@ package com.example.merchandiseapp;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
@@ -30,6 +34,8 @@ public class productsCourrier extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_courrier);
 
+        Button  btn = (Button) findViewById(R.id.button1);
+
         productID = getIntent().getStringExtra("pid");
         date = getIntent().getStringExtra("pdate");
         time = getIntent().getStringExtra("ptime");
@@ -41,30 +47,37 @@ public class productsCourrier extends AppCompatActivity {
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
         productPrice = findViewById(R.id.productPrice);
+
         getProductDetails(productID);
+
+        Spinner dropdown = findViewById(R.id.spinner1);
+        String[] items = new String[]{"Packed and ready to be shipped"
+                , "Shipped", "On Delivery" , "Delivered"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
 
     }
 
     private void getProductDetails(String productID)
     {
-        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("mayank343");
-
-
-        productsRef.child(date+" "+time).addValueEventListener(new ValueEventListener() {
+        final DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Orders").child("mayank343"
+        );
+         productsRef.child(date+" "+time).addValueEventListener(new ValueEventListener()
+         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                if(dataSnapshot.exists())
-                {
-                    Order order = dataSnapshot.getValue(Order.class);
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@2"+date+" "+time+"@@@@@@@@@@@@@@@@@@@@");
+                Order order = dataSnapshot.getValue(Order.class);
+                //System.out.println("hello" + order);
 
-                    productName.setText(order.getPname());
-                    productPrice.setText(order.getPrice());
-                  System.out.println(order);
-//
+               productName.setText(order.getPname());
+               productPrice.setText(order.getPrice());
+
+
+
 // Picasso.get().load(order.getStatus();
 
-                }
             }
 
             @Override
@@ -73,6 +86,16 @@ public class productsCourrier extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    public void doOnClick(View view)
+    {
+
+
+
+
+
     }
 
 }

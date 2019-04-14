@@ -45,6 +45,26 @@
         android:textSize="15sp"
         android:textStyle="bold" />
 
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productPrice"
 
+        android:layout_marginTop="6dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="355dp"
+        android:layout_height="72dp"
+        android:layout_below="@+id/spinner1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:background="#ffffff"
+        android:text="Update Status"
+        android:onClick="doOnClick"
+        />
 
 </RelativeLayout>
