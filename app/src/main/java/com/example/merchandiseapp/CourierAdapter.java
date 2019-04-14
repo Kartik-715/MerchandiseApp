@@ -80,8 +80,11 @@ public class CourierAdapter extends RecyclerView.Adapter<CourierAdapter.MyViewHo
         public void onClick (View view)
         {
             Intent intent = new Intent( mContext , productsCourrier.class );
-            
+            intent.putExtra("pid",mData.get(position).getPid());
+            intent.putExtra("pdate",mData.get(position).getDate());
+            intent.putExtra("ptime",mData.get(position).getTime());
 
+            mContext.startActivity(intent);
             //Intent intent = new Intent( mContext , productDetailActivity.class);
             //Order objPassed = (Order) mData.get(position);
             //intent.putExtra( "merchandiseObj", objPassed);
