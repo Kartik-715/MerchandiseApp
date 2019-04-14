@@ -144,8 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 else{
-                    UserNode userNode = new UserNode("0",user.getDisplayName(),user.getEmail(),"0");
-                    updateDatabase.child(user.getUid()).setValue(userNode);
                     firstlogin(user);
                 }
             }
@@ -177,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateglobals(DataSnapshot dataSnapshot,FirebaseUser user){
+    private void updateglobals(DataSnapshot dataSnapshot, FirebaseUser user){
 
         global.setUsername(dataSnapshot.child("Name").getValue().toString());
         global.setAddress(dataSnapshot.child("Address").getValue().toString());
