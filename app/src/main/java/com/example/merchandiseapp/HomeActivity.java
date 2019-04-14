@@ -150,6 +150,7 @@ public class HomeActivity extends AppCompatActivity
                             {
                                 Intent intent = new Intent(HomeActivity.this, productDetailActivity.class);
                                 intent.putExtra("pid", model.getProdID());
+                                intent.putExtra("order_id", "empty");
                                 startActivity(intent);
                             }
                         });

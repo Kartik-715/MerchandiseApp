@@ -50,6 +50,7 @@ public class productDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_product_detail);
 
         productID = getIntent().getStringExtra("pid");
+        orderID = getIntent().getStringExtra("order_id");
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
 
@@ -89,7 +90,11 @@ public class productDetailActivity extends AppCompatActivity
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-        orderID = saveCurrentDate + " " + saveCurrentTime;
+        if(orderID.equals("empty"))
+        {
+            orderID = saveCurrentDate + " " + saveCurrentTime;
+        }
+
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 
@@ -137,7 +142,10 @@ public class productDetailActivity extends AppCompatActivity
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-        orderID = saveCurrentDate + " " + saveCurrentTime;
+        if(orderID.equals("empty"))
+        {
+            orderID = saveCurrentDate + " " + saveCurrentTime;
+        }
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 

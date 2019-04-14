@@ -113,8 +113,9 @@ public class CartActivity extends AppCompatActivity
 
                         Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
                         intent.putExtra("pid", model.getPid());
+                        intent.putExtra("order_id", model.getOrderid());
 
-                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        /*cartListRef.child(Prevalent.currentOnlineUser).child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
                             public void onComplete(@NonNull Task<Void> task)
@@ -124,7 +125,7 @@ public class CartActivity extends AppCompatActivity
                                     //Toast.makeText(CartActivity.this, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        });
+                        });*/
 
                         startActivity(intent);
                     }
