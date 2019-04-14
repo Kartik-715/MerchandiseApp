@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,8 @@ public class productDetailActivity extends AppCompatActivity
     private String image = "";
     private String category = "";
     private ArrayList<String> orderid_list;
+    private String image_src;
+    private boolean isImageFitToScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,7 +57,7 @@ public class productDetailActivity extends AppCompatActivity
 
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
-        image = getIntent().getStringExtra("image");
+        image_src = getIntent().getStringExtra("image");
         category = getIntent().getStringExtra("category");
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
@@ -67,6 +71,16 @@ public class productDetailActivity extends AppCompatActivity
 
         getProductDetails(productID);
 
+        productImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(productDetailActivity.this, FullPageImageActivity.class);
+                intent.putExtra("image", image_src);
+                startActivity(intent);
+            }
+        });
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +221,7 @@ public class productDetailActivity extends AppCompatActivity
                     numberButton.setRange(1,final_quantity);
                     productName.setText(merchandises.getBrandName());
                     productPrice.setText(merchandises.getPrice().get(0));
+                    image = merchandises.getImage();
                     Picasso.get().load(merchandises.getImage()).into(productImage);
 
                 }
@@ -219,4 +234,5 @@ public class productDetailActivity extends AppCompatActivity
             }
         });
     }
+
 }

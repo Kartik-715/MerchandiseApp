@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DeliveredActivity"></activity>
+        <activity android:name=".FullPageImageActivity"></activity>
+        <activity android:name=".DeliveredActivity" />
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"

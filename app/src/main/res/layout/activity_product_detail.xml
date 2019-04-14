@@ -17,6 +17,8 @@
         android:layout_height="260dp"
         android:scaleType="centerCrop"
         android:src="@color/colorAccent"
+        android:adjustViewBounds="true"
+
 
         />
 
