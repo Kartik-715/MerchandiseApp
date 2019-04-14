@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +21,12 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,8 +36,14 @@ public class CartActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
-    private TextView txtTotalAmount;
     private ArrayList<String> orderid_list;
+    private DatabaseReference cartListRef;
+    private ImageView ImageEmptyCart;
+    private Button BtnShopNow;
+    private TextView TxtEmptyCart;
+    private int countCards;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,7 +57,10 @@ public class CartActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        NextProcessBtn = (Button) findViewById(R.id.next_process_btn);
+        NextProcessBtn = findViewById(R.id.next_process_btn);
+        ImageEmptyCart = findViewById(R.id.ivEmptyStates);
+        BtnShopNow = findViewById(R.id.shop_now_button);
+        TxtEmptyCart = findViewById(R.id.tvInfo);
 
         NextProcessBtn.setOnClickListener(new View.OnClickListener()
         {
@@ -56,6 +70,7 @@ public class CartActivity extends AppCompatActivity
                 NextActivity();
             }
         });
+
     }
 
     private void NextActivity()
@@ -70,10 +85,60 @@ public class CartActivity extends AppCompatActivity
     {
         super.onStart();
 
-        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+        cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser);
+        final Query queries = cartListRef.orderByChild("isplaced").equalTo("false");
 
+        queries.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                countCards = (int) dataSnapshot.getChildrenCount();
+
+                if(dataSnapshot.exists())
+                {
+                    //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
+                    DataExists(queries);
+                }
+                else
+                {
+                    //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
+                    NoDataExists();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+    }
+
+    private void NoDataExists()
+    {
+        ImageEmptyCart.setVisibility(View.VISIBLE);
+        BtnShopNow.setVisibility(View.VISIBLE);
+        TxtEmptyCart.setVisibility(View.VISIBLE);
+        NextProcessBtn.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+
+        BtnShopNow.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void DataExists(Query queries)
+    {
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(cartListRef.child(Prevalent.currentOnlineUser).orderByChild("isplaced").equalTo("false"), Order.class)
+                .setQuery(queries, Order.class)
                 .build();
 
         FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter
@@ -93,18 +158,30 @@ public class CartActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v)
                     {
-                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+
+                        cartListRef.child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
                             public void onComplete(@NonNull Task<Void> task)
                             {
                                 if(task.isSuccessful())
                                 {
+                                    System.out.println(Integer.toString(countCards));
+                                    countCards--;
                                     Toast.makeText(CartActivity.this, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
+                                    if(countCards == 0)
+                                    {
+                                        Intent intent = new Intent(CartActivity.this, CartActivity.class);
+                                        startActivity(intent);
+                                    }
                                 }
                             }
                         });
+
+
                     }
+
+
                 });
 
                 holder.EditButton.setOnClickListener(new View.OnClickListener()
@@ -117,7 +194,6 @@ public class CartActivity extends AppCompatActivity
                         intent.putExtra("pid", model.getPid());
                         intent.putExtra("order_id", model.getOrderid());
                         intent.putExtra("image", model.getImage());
-
                         startActivity(intent);
                     }
                 });

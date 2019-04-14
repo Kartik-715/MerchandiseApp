@@ -129,7 +129,6 @@ public class productDetailActivity extends AppCompatActivity
                     Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
                     intent.putExtra("orderid_list", orderid_list);
                     startActivity(intent);
-
                 }
             }
         });
@@ -193,7 +192,6 @@ public class productDetailActivity extends AppCompatActivity
     private void getProductDetails(String productID)
     {
         DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
-
         productsRef.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -201,7 +199,9 @@ public class productDetailActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-
+                    int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
+                    System.out.println(Integer.toString(final_quantity));
+                    numberButton.setRange(1,final_quantity);
                     productName.setText(merchandises.getBrandName());
                     productPrice.setText(merchandises.getPrice().get(0));
                     Picasso.get().load(merchandises.getImage()).into(productImage);

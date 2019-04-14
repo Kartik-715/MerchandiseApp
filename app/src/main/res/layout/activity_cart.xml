@@ -39,6 +39,47 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="Your Cart is empty !"
+        android:textColor="#848484"
+        android:visibility="invisible"
+        android:textSize="15sp"
+        android:layout_centerInParent="true"
+    />
+
+    <ImageView
+        android:id="@+id/ivEmptyStates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvInfo"
+        android:layout_marginBottom="10sp"
+        android:src="@drawable/cart"
+        android:maxHeight="50dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:id="@+id/shop_now_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="30sp"
+        android:layout_below="@+id/ivEmptyStates"
+        android:background="@color/colorPrimary"
+        android:text="SHOP NOW"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        />
+
     <Button
         android:id="@+id/next_process_btn"
         android:layout_width="match_parent"
@@ -48,6 +89,7 @@
         android:text="Next"
         android:textColor="@android:color/white"
         android:textSize="17dp"
+
         />
 
 </RelativeLayout>
