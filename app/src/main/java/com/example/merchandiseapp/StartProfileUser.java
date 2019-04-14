@@ -132,14 +132,21 @@ public class StartProfileUser extends AppCompatActivity {
     }
 
     public void updateInfo(){
-        UserData.child("Name").setValue(name.getText().toString());
-        UserData.child("Contact").setValue(contact.getText().toString());
-        UserData.child("Address").setValue(address.getText().toString());
-        UserData.child("Gender").setValue(gender.getText().toString());
-        Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
-        uploadimage();
+        try{
+            UserData.child("Name").setValue(name.getText().toString());
+            UserData.child("Contact").setValue(contact.getText().toString());
+            UserData.child("Address").setValue(address.getText().toString());
+            UserData.child("Gender").setValue(gender.getText().toString());
+            Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
+            uploadimage();
 
-        updateGlobals();
+            updateGlobals();
+        }
+        catch(Exception ex)
+        {
+                 Log.e("error","error in reading fields");
+        }
+
 
     }
 

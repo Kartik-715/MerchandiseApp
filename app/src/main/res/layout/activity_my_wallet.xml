@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".wallet"
+    >
+
+    <TextView
+        android:id="@+id/cur_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Current Balance"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/cur_balance"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true">
+        <EditText
+            android:id="@+id/add_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter amount"
+            android:padding="2dp"
+            android:textAlignment="center"
+            />
+        <Button
+            android:id="@+id/add_moneybtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="100dp"
+            android:text="Add money"
+            android:padding="5dp"
+            android:onClick="onClick"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
