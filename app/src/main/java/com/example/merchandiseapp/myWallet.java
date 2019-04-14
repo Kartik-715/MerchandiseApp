@@ -46,9 +46,7 @@ public class myWallet extends AppCompatActivity {
                 transact();
             }
         });
-
     }
-
 
 
     //function to handle transactions by making a paytm api call

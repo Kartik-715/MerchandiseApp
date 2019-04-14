@@ -178,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateglobals(DataSnapshot dataSnapshot,FirebaseUser user){
-
         global.setUsername(dataSnapshot.child("Name").getValue().toString());
         global.setAddress(dataSnapshot.child("Address").getValue().toString());
         global.setGender(dataSnapshot.child("Gender").getValue().toString());
