@@ -35,6 +35,9 @@ public class productsCourrier extends AppCompatActivity {
     private String date = "";
     private String time = "";
     private String status = "";
+    private TextView productQuantity;
+    private TextView productBuyer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,8 @@ public class productsCourrier extends AppCompatActivity {
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
         productPrice = findViewById(R.id.productPrice);
+        productBuyer = findViewById(R.id.productBuyer);
+        productQuantity = findViewById(R.id.productQuantity);
 
         getProductDetails(productID);
 
@@ -81,8 +86,31 @@ public class productsCourrier extends AppCompatActivity {
                 OrderID = order.getOrderid();
                productName.setText(order.getPname());
                productPrice.setText(order.getPrice());
+                productQuantity.setText(order.getQuantity());
+                productBuyer.setText(order.getUid());
+                Spinner dropdown = findViewById(R.id.spinner1);
+                System.out.println(status);
 
+                if(status.toLowerCase().equals("packed and ready to be shipped"))
+                {
+                    dropdown.setSelection(0);
+                }
 
+                else if(status.toLowerCase().equals("shipped"))
+                {
+                    dropdown.setSelection(1);
+                }
+
+                else if (status.toLowerCase().equals("on delivery"))
+                {
+                    System.out.println("dsaaaaaaaaaaaaaaaaaaaa12#@#@!321132321dsa");
+                    dropdown.setSelection(2);
+                }
+
+                if(status.toLowerCase().equals("delivered"))
+                {
+                    dropdown.setSelection(3);
+                }
 
 // Picasso.get().load(order.getStatus();
 
@@ -117,6 +145,8 @@ public class productsCourrier extends AppCompatActivity {
 
                 if(task.isSuccessful())
                 {
+                    Intent intent = new Intent(productsCourrier.this, CourierActivity.class);
+                    startActivity(intent);
                 }
             }
         });

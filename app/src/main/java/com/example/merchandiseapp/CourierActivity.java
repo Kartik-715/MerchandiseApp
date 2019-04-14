@@ -65,12 +65,10 @@ public class CourierActivity extends AppCompatActivity
                         Order_Placed = (HashMap<String, Object>) pair.getValue();
 
                         System.out.print(Order_Placed.get("isplaced"));
-                        if( Order_Placed.get("isplaced").equals("false"))
+                        if( Order_Placed.get("isplaced").equals("true") && Order_Placed.get("status") != "Delivered"  )
                         {
-                            continue;
-                        }
 
-                        else{   Order od = new Order((String) Order_Placed.get("contact"),(String) Order_Placed.get("address"),
+                                Order od = new Order((String) Order_Placed.get("contact"),(String) Order_Placed.get("address"),
                                 (String) Order_Placed.get("date"),(String) Order_Placed.get("email"),
                                 (String) Order_Placed.get("orderid"),(String) Order_Placed.get("uid"),
                                 (String) Order_Placed.get("isplaced"),
