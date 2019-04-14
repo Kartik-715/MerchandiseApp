@@ -41,6 +41,7 @@ public class productDetailActivity extends AppCompatActivity
     private String productID = "";
     private String User_ID = "";
     private String orderID = "";
+    private String image = "";
     private ArrayList<String> orderid_list;
 
     @Override
@@ -51,6 +52,7 @@ public class productDetailActivity extends AppCompatActivity
 
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
+        image = getIntent().getStringExtra("image");
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
 
@@ -113,6 +115,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
         cartMap.put("orderid", orderID);
+        cartMap.put("image", image);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -164,6 +167,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
         cartMap.put("orderid", orderID);
+        cartMap.put("image", image);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()

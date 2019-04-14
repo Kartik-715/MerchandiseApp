@@ -20,8 +20,9 @@ public class Order
     private String quantity;
     private String status;
     private String time;
+    private String image;
 
-    public Order(String contact, String address, String date, String email, String orderid, String uid, String isplaced, String pid, String pname, String price, String quantity, String status, String time)
+    public Order(String contact, String address, String date, String email, String orderid, String uid, String isplaced, String pid, String pname, String price, String quantity, String status, String time, String image)
     {
         this.contact = contact;
         this.address = address;
@@ -36,6 +37,7 @@ public class Order
         this.quantity = quantity;
         this.status = status;
         this.time = time;
+        this.image = image;
     }
 
     public Order()
@@ -170,5 +172,15 @@ public class Order
     public void setTime(String time)
     {
         this.time = time;
+    }
+
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
     }
 }

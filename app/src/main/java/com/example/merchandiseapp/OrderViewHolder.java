@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.merchandiseapp.Interface.ItemClickListner;
@@ -14,6 +15,7 @@ import com.example.merchandiseapp.R;
 public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     public TextView txtProductName, txtProductPrice, txtProductQuantity;
+    public ImageView CartImage;
     public Button DeleteButton, EditButton;
     private ItemClickListner itemClickListner;
 
@@ -26,6 +28,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
         txtProductPrice = itemView.findViewById(R.id.cart_product_price);
         DeleteButton = itemView.findViewById(R.id.cart_remove_item);
         EditButton = itemView.findViewById(R.id.cart_edit_item);
+        CartImage = itemView.findViewById(R.id.product_image);
 
     }
 
