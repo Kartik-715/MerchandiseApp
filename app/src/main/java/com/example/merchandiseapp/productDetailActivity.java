@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -33,13 +34,15 @@ public class productDetailActivity extends AppCompatActivity
 
     private FloatingActionButton addToCart;
 
-    private Button addToCartButton;
+    private Button addToCartButton, buyNowButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName;
     private String productID = "";
     private String User_ID = "";
     private String orderID = "";
+    private String image = "";
+    private ArrayList<String> orderid_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,9 +51,13 @@ public class productDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_product_detail);
 
         productID = getIntent().getStringExtra("pid");
+        orderID = getIntent().getStringExtra("order_id");
+        image = getIntent().getStringExtra("image");
         User_ID = Prevalent.currentOnlineUser;
+        orderid_list = new ArrayList<>();
 
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
+        buyNowButton = findViewById(R.id.buy_now_Button);
         numberButton = findViewById(R.id.numberBtn);
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
@@ -64,9 +71,18 @@ public class productDetailActivity extends AppCompatActivity
                 addingToCartList();
             }
         });
+
+        buyNowButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                BuyNow();
+            }
+        });
     }
 
-    private void addingToCartList()
+    private void BuyNow()
     {
         String saveCurrentTime, saveCurrentDate;
         Calendar calForDate = Calendar.getInstance();
@@ -76,7 +92,11 @@ public class productDetailActivity extends AppCompatActivity
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-        orderID = saveCurrentDate + " " + saveCurrentTime;
+        if(orderID.equals("empty"))
+        {
+            orderID = saveCurrentDate + " " + saveCurrentTime;
+        }
+
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 
@@ -89,12 +109,65 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("contact", "");
         cartMap.put("address", "");
         cartMap.put("email","");
-        cartMap.put("isplaced","no");
+        cartMap.put("isplaced","false");
         cartMap.put("status","incart");
         cartMap.put("quantity",numberButton.getNumber());
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
         cartMap.put("orderid", orderID);
+        cartMap.put("image", image);
+
+        cartListRef.child(User_ID).child(orderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+
+                if(task.isSuccessful())
+                {
+                    orderid_list.add(orderID);
+                    Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
+                    intent.putExtra("orderid_list", orderid_list);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
+    }
+    private void addingToCartList()
+    {
+        String saveCurrentTime, saveCurrentDate;
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
+        saveCurrentDate = currentDate.format(calForDate.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
+        saveCurrentTime = currentTime.format(calForDate.getTime());
+
+        if(orderID.equals("empty"))
+        {
+            orderID = saveCurrentDate + " " + saveCurrentTime;
+        }
+        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+
+
+        final HashMap<String, Object> cartMap = new HashMap<>();
+        cartMap.put("pid",productID);
+        cartMap.put("pname",productName.getText().toString());
+        cartMap.put("price",productPrice.getText().toString());
+        cartMap.put("date",saveCurrentDate);
+        cartMap.put("time",saveCurrentTime);
+        cartMap.put("contact", "");
+        cartMap.put("address", "");
+        cartMap.put("email","");
+        cartMap.put("isplaced","false");
+        cartMap.put("status","incart");
+        cartMap.put("quantity",numberButton.getNumber());
+        cartMap.put("discount ","");
+        cartMap.put("uid", User_ID);
+        cartMap.put("orderid", orderID);
+        cartMap.put("image", image);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()

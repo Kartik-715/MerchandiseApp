@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class CartActivity extends AppCompatActivity
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(cartListRef.child(Prevalent.currentOnlineUser).orderByChild("isplaced").equalTo("no"), Order.class)
+                .setQuery(cartListRef.child(Prevalent.currentOnlineUser).orderByChild("isplaced").equalTo("false"), Order.class)
                 .build();
 
         FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter
@@ -84,6 +85,7 @@ public class CartActivity extends AppCompatActivity
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
                 holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
                 holder.txtProductName.setText(model.getPname());
+                Picasso.get().load(model.getImage()).into(holder.CartImage);
                 orderid_list.add(model.getOrderid());
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
@@ -113,18 +115,8 @@ public class CartActivity extends AppCompatActivity
 
                         Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
                         intent.putExtra("pid", model.getPid());
-
-                        cartListRef.child(Prevalent.currentOnlineUser).child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
-                        {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task)
-                            {
-                                if(task.isSuccessful())
-                                {
-                                    //Toast.makeText(CartActivity.this, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                        intent.putExtra("order_id", model.getOrderid());
+                        intent.putExtra("image", model.getImage());
 
                         startActivity(intent);
                     }
