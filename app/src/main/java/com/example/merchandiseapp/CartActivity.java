@@ -72,7 +72,7 @@ public class CartActivity extends AppCompatActivity
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(cartListRef.child(Prevalent.currentOnlineUser).orderByChild("isplaced").equalTo("no"), Order.class)
+                .setQuery(cartListRef.child(Prevalent.currentOnlineUser).orderByChild("isplaced").equalTo("false"), Order.class)
                 .build();
 
         FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter

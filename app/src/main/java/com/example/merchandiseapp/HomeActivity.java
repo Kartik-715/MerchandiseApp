@@ -115,6 +115,7 @@ public class HomeActivity extends AppCompatActivity
         }
 
         Prevalent.currentOnlineUser = User_ID;
+        Prevalent.currentEmail = User_Email;
         ImageView imageView =(ImageView) headerView.findViewById(R.id.imageView);
         new DownloadImageTask(imageView)
                 .execute(user.getPhotoUrl().toString());
