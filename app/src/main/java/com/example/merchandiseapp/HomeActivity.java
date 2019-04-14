@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,11 +37,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +57,9 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = HomeActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    private TabLayout tabLayout ;
+    private ViewPager viewPager ;
+
 
 
     @Override
@@ -56,8 +67,46 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        /* Tab Layout Setting */
+        tabLayout = findViewById(R.id.tabLayout) ;
+        viewPager = findViewById(R.id.viewPager_id) ;
+        final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager()) ;
 
-        ProductsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
+
+        DatabaseReference allMerchandise ;
+        allMerchandise = FirebaseDatabase.getInstance().getReference().child("Merchandise") ;
+
+        allMerchandise.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String,Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue() ;
+                System.out.println(All_merchandise) ;
+
+
+                for (Object o : All_merchandise.entrySet()) {
+                    HashMap.Entry p1 = (HashMap.Entry) o;
+                    FragmentItem fragment = new FragmentItem() ;
+                    Bundle bundle = new Bundle() ;
+                    bundle.putString("category", (String) p1.getKey() );
+                    fragment.setArguments(bundle);
+                    adaptor.AddFragment(fragment, (String) p1.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("ErrMerchandise", "Couldn't Read All Merchandise") ;
+            }
+        }) ;
+
+        viewPager.setAdapter(adaptor);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+        /* Tab Layout Setting */
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
@@ -86,11 +135,6 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        recyclerView = findViewById(R.id.recycler_menu);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
 
 
         View headerView = navigationView.getHeaderView(0);
@@ -124,55 +168,6 @@ public class HomeActivity extends AppCompatActivity
                 .execute(user.getPhotoUrl().toString());
     }
 
-
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
-        FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
-                        .setQuery(ProductsRef, Merchandise.class)
-                        .build();
-
-        FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder>(options)
-                {
-                    @Override
-                    protected void onBindViewHolder(@NonNull MerchandiseViewHolder holder, int position, final Merchandise model)
-                    {
-                        holder.txtProductName.setText(model.getBrandName());
-                        holder.txtProductDescription.setText(model.getCategory());
-                        holder.txtProductPrice.setText("Price = " + model.getPrice().get(0) + "$");
-                        Picasso.get().load(model.getImage()).into(holder.imageView);
-
-                        holder.itemView.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                Intent intent = new Intent(HomeActivity.this, productDetailActivity.class);
-                                intent.putExtra("pid", model.getProdID());
-                                intent.putExtra("order_id", "empty");
-                                intent.putExtra("image", model.getImage());
-                                startActivity(intent);
-                            }
-                        });
-                    }
-
-                    @NonNull
-                    @Override
-                    public MerchandiseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-                    {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-                        MerchandiseViewHolder holder = new MerchandiseViewHolder(view);
-                        return holder;
-                    }
-                };
-
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
-    }
 
     @Override
     public void onBackPressed() {
