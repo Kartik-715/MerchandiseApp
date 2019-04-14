@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.util.DisplayMetrics;
@@ -30,39 +29,32 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
-import java.util.UUID;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ManageProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
     View headerView;
     DatabaseReference UserData;
-    String[] username;
     EditText name;
     EditText address;
     EditText contact;
     ImageView imageView;
-    private Uri filePath,selectedImage;
-    private Uri profile_uri = null;
-    private FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+    private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
-    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-    String uid=firebaseAuth.getUid();
-    Bitmap bitmap;
+
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -118,7 +110,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -226,32 +218,6 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         }
     }
 
-//    public void getInfo(){
-//        UserData = firebaseDatabase.getReference().child("Users").child(username[0]);
-//        //G_var obj= new G_var("Aayush");
-//        UserData.addValueEventListener(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String Name = dataSnapshot.child("Name").getValue().toString();
-//                String Address = dataSnapshot.child("Address").getValue().toString();
-//                String Contact = dataSnapshot.child("Contact").getValue().toString();
-////                String UriString = dataSnapshot.child("ImageAddress").getValue().toString();
-////                Toast.makeText(getApplicationContext(),UriString,Toast.LENGTH_SHORT).show();
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        return;
-//    }
-
     public void setTexts(){
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
@@ -269,13 +235,15 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         Email.setText(global.getEmail());
 
         imageView = headerView.findViewById(R.id.imageView);
+        addImage();
 
         //Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
     }
 
     public void updateUser(){
 
-        //UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(username[0]);
+        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(global.getUid());
+
         UserData.child("Name").setValue(name.getText().toString());
         global.setUsername(name.getText().toString());
 
@@ -354,6 +322,8 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
                         }
                     });
             global.setImageRef(FirebaseStorage.getInstance().getReference("images/"+global.getUid()));
+
+            change_images();
         }
     }
 
@@ -378,6 +348,15 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
                 // Handle any errors
             }
         });
+    }
+
+    public void change_images(){
+
+        imageView = findViewById(R.id.manage_profile_image);
+        addImage();
+
+        imageView = findViewById(R.id.imageView);
+        addImage();
     }
 
 }

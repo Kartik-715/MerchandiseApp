@@ -1,12 +1,14 @@
 package com.example.merchandiseapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,12 +40,17 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     public G_var global;
 
+    RadioButton keepLogged;
+    //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         global = (G_var) getApplicationContext();
+
+        keepLogged = findViewById(R.id.loggedIn);
 
 // ...
 // Initialize Firebase Auth
@@ -114,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI(null,"-1");
                         }
 
                         // ...
@@ -130,9 +137,10 @@ public class LoginActivity extends AppCompatActivity {
         UserData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               // if(keepLogged.isChecked())sp.edit().putBoolean("logged",true);
                 if(dataSnapshot.exists()){
                     updateglobals(dataSnapshot,user);
-                    updateUI(user);
+                    updateUI(user,dataSnapshot.child("AccessLevel").getValue().toString());
                 }
 
                 else{
@@ -149,9 +157,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUI(FirebaseUser user)
+    private void updateUI(FirebaseUser user,String Access)
     {
-        Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+        Intent intent = null;
+        if(Access.equals("0")) {
+            intent = new Intent(getApplicationContext(), HomeActivity.class);
+        }
+//        else if (Access.equals("2")){
+//
+//        }
+
         intent.putExtra("user", user);
         startActivity(intent);
     }
