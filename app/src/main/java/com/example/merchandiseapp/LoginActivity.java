@@ -163,9 +163,9 @@ public class LoginActivity extends AppCompatActivity {
         if(Access.equals("0")) {
             intent = new Intent(getApplicationContext(), HomeActivity.class);
         }
-//        else if (Access.equals("2")){
-//
-//        }
+        else if (Access.equals("3")){
+            intent = new Intent(getApplicationContext(), Staff.class);
+        }
 
         intent.putExtra("user", user);
         startActivity(intent);
