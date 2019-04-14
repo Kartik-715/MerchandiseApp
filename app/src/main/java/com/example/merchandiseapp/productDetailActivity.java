@@ -42,6 +42,7 @@ public class productDetailActivity extends AppCompatActivity
     private String User_ID = "";
     private String orderID = "";
     private String image = "";
+    private String category = "";
     private ArrayList<String> orderid_list;
 
     @Override
@@ -53,6 +54,7 @@ public class productDetailActivity extends AppCompatActivity
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
         image = getIntent().getStringExtra("image");
+        category = getIntent().getStringExtra("category");
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
 
@@ -116,6 +118,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("uid", User_ID);
         cartMap.put("orderid", orderID);
         cartMap.put("image", image);
+        cartMap.put("category", category);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -167,7 +170,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("uid", User_ID);
         cartMap.put("orderid", orderID);
         cartMap.put("image", image);
-
+        cartMap.put("category", category);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
@@ -191,7 +194,7 @@ public class productDetailActivity extends AppCompatActivity
 
     private void getProductDetails(String productID)
     {
-        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child("Footwear");
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
         productsRef.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)

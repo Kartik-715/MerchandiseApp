@@ -194,6 +194,7 @@ public class CartActivity extends AppCompatActivity
                         intent.putExtra("pid", model.getPid());
                         intent.putExtra("order_id", model.getOrderid());
                         intent.putExtra("image", model.getImage());
+                        intent.putExtra("category", model.getCategory());
                         startActivity(intent);
                     }
                 });

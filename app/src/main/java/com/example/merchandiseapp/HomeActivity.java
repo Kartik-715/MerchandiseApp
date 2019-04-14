@@ -78,7 +78,8 @@ public class HomeActivity extends AppCompatActivity
 
         allMerchandise.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
                 HashMap<String,Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue() ;
                 System.out.println(All_merchandise) ;
 

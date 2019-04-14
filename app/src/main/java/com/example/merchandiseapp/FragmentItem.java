@@ -17,7 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-public class FragmentItem extends Fragment {
+public class FragmentItem extends Fragment
+{
 
     private HomeActivity mHomeActivity ;
     Bundle bundle ;
@@ -43,7 +44,8 @@ public class FragmentItem extends Fragment {
     }
 
 
-    private void setupRecyclerView(RecyclerView recyclerView) {
+    private void setupRecyclerView(RecyclerView recyclerView)
+    {
         DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(bundle.getString("category","none")) ;
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
@@ -74,6 +76,7 @@ public class FragmentItem extends Fragment {
                                 intent.putExtra("pid", model.getProdID());
                                 intent.putExtra("order_id", "empty");
                                 intent.putExtra("image", model.getImage());
+                                intent.putExtra("category", model.getCategory());
                                 mHomeActivity.startActivity(intent);
                             }
                         });

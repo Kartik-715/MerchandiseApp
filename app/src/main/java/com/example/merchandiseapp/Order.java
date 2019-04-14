@@ -21,8 +21,9 @@ public class Order
     private String status;
     private String time;
     private String image;
+    private String category;
 
-    public Order(String contact, String address, String date, String email, String orderid, String uid, String isplaced, String pid, String pname, String price, String quantity, String status, String time, String image)
+    public Order(String contact, String address, String date, String email, String orderid, String uid, String isplaced, String pid, String pname, String price, String quantity, String status, String time, String image, String category)
     {
         this.contact = contact;
         this.address = address;
@@ -38,10 +39,21 @@ public class Order
         this.status = status;
         this.time = time;
         this.image = image;
+        this.category = category;
     }
 
     public Order()
     {
+    }
+
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
     }
 
     public String getContact()
