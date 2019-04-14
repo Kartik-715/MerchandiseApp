@@ -99,10 +99,11 @@ public class HomeActivity extends AppCompatActivity
         TextView navemail = (TextView) headerView.findViewById(R.id.emailtextView);
         navUsername.setText(user.getDisplayName());
         navemail.setText(user.getEmail());
+        System.out.println("-------------" + user.getUid());
 
         String User_ID, User_Email;
         User_Email = user.getEmail();
-        User_ID = "";
+        /*User_ID = "";
 
         for (int i = 0; i < User_Email.length(); i++){
             char c = User_Email.charAt(i);
@@ -112,7 +113,9 @@ public class HomeActivity extends AppCompatActivity
             {
                 User_ID += c;
             }
-        }
+        }*/
+
+        User_ID = user.getUid();
 
         Prevalent.currentOnlineUser = User_ID;
         Prevalent.currentEmail = User_Email;
