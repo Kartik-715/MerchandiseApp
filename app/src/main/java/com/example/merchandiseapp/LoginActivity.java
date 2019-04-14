@@ -164,7 +164,9 @@ public class LoginActivity extends AppCompatActivity {
         else if (Access.equals("3")){
             intent = new Intent(getApplicationContext(), Staff.class);
         }
-
+        else if(Access.equals("4")){
+            intent = new Intent(getApplicationContext(),grpUser.class);
+        }
         intent.putExtra("user", user);
         startActivity(intent);
     }
@@ -175,8 +177,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateglobals(DataSnapshot dataSnapshot, FirebaseUser user){
 
+    private void updateglobals(DataSnapshot dataSnapshot,FirebaseUser user)
+    {
         global.setUsername(dataSnapshot.child("Name").getValue().toString());
         global.setAddress(dataSnapshot.child("Address").getValue().toString());
         global.setGender(dataSnapshot.child("Gender").getValue().toString());
