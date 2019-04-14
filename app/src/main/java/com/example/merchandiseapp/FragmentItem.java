@@ -72,6 +72,8 @@ public class FragmentItem extends Fragment {
                                 Intent intent;
                                 intent = new Intent(mHomeActivity, productDetailActivity.class);
                                 intent.putExtra("pid", model.getProdID());
+                                intent.putExtra("order_id", "empty");
+                                intent.putExtra("image", model.getImage());
                                 mHomeActivity.startActivity(intent);
                             }
                         });
