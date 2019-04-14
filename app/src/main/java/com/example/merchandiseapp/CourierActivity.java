@@ -71,9 +71,18 @@ public class CourierActivity extends AppCompatActivity
                         Order_Placed = (HashMap<String, Object>) pair.getValue();
 
                         System.out.print(Order_Placed.get("isplaced"));
-                        if( Order_Placed.get("isplaced").equals("true") && Order_Placed.get("status") != "Delivered"  )
+
+
+                        if( Order_Placed.get("isplaced").equals("true") )
                         {
 
+
+                            if(Order_Placed.get("status").equals("Delivered"))
+                            {
+                                continue;
+                            }
+                            else
+                            {
                                 Order od = new Order((String) Order_Placed.get("contact"),(String) Order_Placed.get("address"),
                                 (String) Order_Placed.get("date"),(String) Order_Placed.get("email"),
                                 (String) Order_Placed.get("orderid"),(String) Order_Placed.get("uid"),
@@ -82,7 +91,8 @@ public class CourierActivity extends AppCompatActivity
                                 (String) Order_Placed.get("quantity"), (String) Order_Placed.get("status"),(String) Order_Placed.get("time"));
                         System.out.println("hello"+od.getPname()+od.getPrice());
                         list.add(od);
-                    }
+                            }
+                        }
                         it.remove(); // avoids a ConcurrentModificationException
                     }
                     it1.remove();
