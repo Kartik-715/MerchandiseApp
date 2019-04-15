@@ -17,6 +17,7 @@
         android:layout_height="260dp"
         android:scaleType="centerCrop"
         android:src="@color/colorAccent"
+        android:adjustViewBounds="true"
 
         />
 
@@ -62,6 +63,19 @@
 
         />
 
+    <Spinner
+        android:id="@+id/size_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+
+        >
+
+    </Spinner>
+
 
     <Button
         android:id="@+id/pd_add_to_cart_button"
@@ -71,6 +85,18 @@
         android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
         android:text="Add to Cart"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/buy_now_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
+        android:layout_above="@+id/pd_add_to_cart_button"
+        android:text="Buy Now"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         />

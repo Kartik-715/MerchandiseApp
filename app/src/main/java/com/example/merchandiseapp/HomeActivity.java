@@ -1,16 +1,15 @@
 package com.example.merchandiseapp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +25,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,125 +48,99 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseReference ProductRef;
-
+    private DatabaseReference ProductsRef;
+    private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = HomeActivity.class.getSimpleName();
     private Button btnLogout;
-    private RecyclerView rv;
-    private List<Merchandise> list= new ArrayList<>();
-    private HashMap<String, Object> All_merchandise = new HashMap<String, Object>();
-    private HashMap<String, Object> Type = new HashMap<String, Object>();
-    private HashMap<String, Object> Product = new HashMap<String, Object>();
+    public FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    public ImageView imageView;
+    public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    G_var global;
+    private RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        global = (G_var) getApplicationContext();
 
-        final FirebaseAuth mauth = FirebaseAuth.getInstance();
-        FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name",user.getDisplayName());
+        /* Tab Layout Setting */
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager_id);
+        final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
 
 
+        DatabaseReference allMerchandise;
+        allMerchandise = FirebaseDatabase.getInstance().getReference().child("Merchandise");
 
-        //rv.setHasFixedSize(true);
-
-        ProductRef = FirebaseDatabase.getInstance().getReference().child("Merchandise");
-        ProductRef.addValueEventListener(new ValueEventListener() {
+        allMerchandise.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Log.d(TAG,"*******sample3**********");
-                All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println(All_merchandise);
-                Iterator it1 = All_merchandise.entrySet().iterator();
-                while (it1.hasNext()) {
-                    HashMap.Entry pair1 = (HashMap.Entry) it1.next();
-                    Type = (HashMap<String, Object>) pair1.getValue();
-                    Iterator it = Type.entrySet().iterator();
-                    while (it.hasNext()) {
-                        HashMap.Entry pair = (HashMap.Entry) it.next();
-
-                        System.out.println(pair.getKey() + " = " + pair.getValue());
-                        Product = (HashMap<String, Object>) pair.getValue();
-                        Merchandise mr = new Merchandise();
-                        mr.setBrandName((String) Product.get("BrandName"));
-                        mr.setImage((String) Product.get("Image"));
-                        mr.setManuAddress((String) Product.get("ManuAddress"));
-                        mr.setMaterial((String) Product.get("Material"));
-                        mr.setProdID((String) Product.get("ProdID"));
-                        mr.setReturnApplicable(true);
-                        mr.setCategory((String) Product.get("Category"));
-                        mr.setVendorID((String) Product.get("VendorID"));
-                        Long price[] = new Long[5];
-                        Long qty[] = new Long[5];
-                        ArrayList<Long> arrprice = (ArrayList<Long>) Product.get("price");
-                        ArrayList<Long> arrqty = (ArrayList<Long>) Product.get("quantity");
 
 
-                        price[0] = arrprice.get(0);
-                        price[1] = arrprice.get(1);
-                        price[2] = arrprice.get(2);
-                        price[3] = arrprice.get(3);
-                        price[4] = arrprice.get(4);
-
-                        qty[0] = arrqty.get(0);
-                        qty[1] = arrqty.get(1);
-                        qty[2] = arrqty.get(2);
-                        qty[3] = arrqty.get(3);
-                        qty[4] = arrqty.get(4);
-
-                        mr.setPrice(price);
-                        mr.setQuantity(qty);
-                        mr.setMale(true);
-                        System.out.println(Product);
-                        list.add(mr);
-                        it.remove(); // avoids a ConcurrentModificationException
-                    }
-                    it1.remove();
+                for (Object o : All_merchandise.entrySet()) {
+                    HashMap.Entry p1 = (HashMap.Entry) o;
+                    FragmentItem fragment = new FragmentItem();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category", (String) p1.getKey());
+                    fragment.setArguments(bundle);
+                    adaptor.AddFragment(fragment, (String) p1.getKey());
                 }
-                rv = (RecyclerView) findViewById(R.id.recycler_menu);
-                rv.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                rv.setAdapter(new MyAdapter(HomeActivity.this, list));
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("ErrMerchandise", "Couldn't Read All Merchandise");
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        viewPager.setAdapter(adaptor);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+        /* Tab Layout Setting */
+
+
+        Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();
+
+        Log.d("name", global.getUsername());
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Home");
+
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
+
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final FirebaseAuth mauth = FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
+        Log.d("name", user.getDisplayName());
+
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -167,16 +149,14 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         View headerView = navigationView.getHeaderView(0);
 
-        TextView navUsername = (TextView) headerView.findViewById(R.id.NameTextView);
-        TextView navemail = (TextView) headerView.findViewById(R.id.emailtextView);
-        navUsername.setText(user.getDisplayName());
-        navemail.setText(user.getEmail());
+
 
         String User_ID, User_Email;
         User_Email = user.getEmail();
-        User_ID = "";
+        /*User_ID = "";
 
         for (int i = 0; i < User_Email.length(); i++){
             char c = User_Email.charAt(i);
@@ -186,17 +166,23 @@ public class HomeActivity extends AppCompatActivity
             {
                 User_ID += c;
             }
-        }
+        }*/
+
+        User_ID = user.getUid();
 
         Prevalent.currentOnlineUser = User_ID;
-        ImageView imageView =(ImageView) headerView.findViewById(R.id.imageView);
-        new DownloadImageTask(imageView)
-                .execute(user.getPhotoUrl().toString());
+        Prevalent.currentEmail = User_Email;
 
+        TextView navUsername = headerView.findViewById(R.id.NameTextView);
+        TextView navemail = headerView.findViewById(R.id.emailtextView);
+        navUsername.setText(global.getUsername());
+        navemail.setText(global.getEmail());
 
-
+        imageView = headerView.findViewById(R.id.imageView);
+        addImage();
+//        new DownloadImageTask(imageView)
+//                .execute(user.getPhotoUrl().toString());
     }
-
 
     @Override
     public void onBackPressed() {
@@ -210,19 +196,14 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -236,47 +217,46 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.manage_profile) {
+            Intent intent = new Intent(this, ManageProfile.class);
+            startActivity(intent);
+        } else if (id == R.id.wallet) {
+            Intent intent = new Intent(this, myWallet.class);
+            startActivity(intent);
+        }/* else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        }*/ else if (id == R.id.nav_send) {
+            Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
+            startActivity(intent);
 
+        } else if (id == R.id.nav_logout) {
+            mGoogleSignInClient.revokeAccess()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // ...
+                        }
+                    });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
 
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
+    public void addImage(){
 
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        imageView.setMinimumHeight(dm.heightPixels);
+        imageView.setMinimumWidth(dm.widthPixels);
+        //Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
+        imageView.setImageBitmap(global.getBitmap());
     }
 }
+
