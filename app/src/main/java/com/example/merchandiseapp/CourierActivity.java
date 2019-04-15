@@ -88,7 +88,8 @@ public class CourierActivity extends AppCompatActivity
                                 (String) Order_Placed.get("orderid"),(String) Order_Placed.get("uid"),
                                 (String) Order_Placed.get("isplaced"),
                                 (String) Order_Placed.get("pid"),(String) Order_Placed.get("pname"),(String) Order_Placed.get("price"),
-                                (String) Order_Placed.get("quantity"), (String) Order_Placed.get("status"),(String) Order_Placed.get("time"));
+                                (String) Order_Placed.get("quantity"), (String) Order_Placed.get("status"),(String) Order_Placed.get("time"),
+                                        (String) Order_Placed.get("image"),(String) Order_Placed.get("category"),(String) Order_Placed.get("size"));
                         System.out.println("hello"+od.getPname()+od.getPrice());
                         list.add(od);
                             }
