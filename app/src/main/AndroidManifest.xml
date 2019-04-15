@@ -5,11 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".G_var"
@@ -20,7 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".myWallet"></activity>
+        <activity android:name=".grp_manage_profile"></activity>
+        <activity
+            android:name=".grpUser"
+            android:label="@string/title_activity_grp_user"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".View_courier" />
+        <activity android:name=".View_Vendor" />
+        <activity android:name=".Add_Courier" />
+        <activity android:name=".Add_vendor" />
+        <activity android:name=".View_Vendor" />
+        <activity
+            android:name=".Staff"
+            android:label="@string/title_activity_staff"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".myWallet" />
         <activity android:name=".StartProfileUser" />
         <activity
             android:name=".ManageProfile"

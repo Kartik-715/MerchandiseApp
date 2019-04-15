@@ -184,6 +184,7 @@ public class LoginActivity extends AppCompatActivity {
         global.setGender(dataSnapshot.child("Gender").getValue().toString());
         global.setContact(dataSnapshot.child("Contact").getValue().toString());
         global.setUid(mAuth.getUid());
+        global.setImageRef(FirebaseStorage.getInstance().getReference("images/"+mAuth.getUid()));
         global.setEmail(user.getEmail());
 
         FirebaseStorage.getInstance().getReference().child("images/"+global.getUid()).getDownloadUrl()
@@ -198,15 +199,17 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onSuccess(byte[] bytes) {
                                     Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                     global.setBitmap(bm);
-                                    Intent intent = null;
-                                    if (final_Access.equals("0")) {
-                                        intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                        finish();
-                                    }
-//        else if (Access.equals("2")){
-//
-//        }
 
+                                    Intent intent = null;
+                                    if(final_Access.equals("0")) {
+                                        intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    }
+                                    else if (final_Access.equals("3")){
+                                        intent = new Intent(getApplicationContext(), Staff.class);
+                                    }
+                                    else if(final_Access.equals("4")){
+                                        intent = new Intent(getApplicationContext(),grpUser.class);
+                                    }
                                     intent.putExtra("user", user);
                                     startActivity(intent);
                                 }
@@ -254,17 +257,18 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(Bitmap result) {
 
             Intent intent = null;
-            if (final_Access.equals("0")) {
+            if(final_Access.equals("0")) {
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
-                finish();
             }
-//          else if (Access.equals("2")){
-//
-//          }
-
+            else if (final_Access.equals("3")){
+                intent = new Intent(getApplicationContext(), Staff.class);
+            }
+            else if(final_Access.equals("4")){
+                intent = new Intent(getApplicationContext(),grpUser.class);
+            }
             intent.putExtra("user", user);
             startActivity(intent);
         }
     }
-}
+    }
 
