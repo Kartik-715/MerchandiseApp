@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -82,6 +83,11 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         name.setText(global.getUsername());
         address.setText(global.getAddress());
         contact.setText(global.getContact());
+
+        Prevalent.currentPhone = "";
+        Prevalent.currentPhone = contact.getText().toString();
+        Prevalent.currentAddress = "";
+        Prevalent.currentAddress = address.getText().toString();
 
 //        getInfo();
 

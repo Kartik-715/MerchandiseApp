@@ -317,7 +317,7 @@ public class LoginActivity extends AppCompatActivity {
             else if(final_Access.equals("4")){
                 intent = new Intent(getApplicationContext(),grpUser.class);
             }
-            intent = new Intent(getApplicationContext(),CourierActivity.class);
+            //intent = new Intent(getApplicationContext(),CourierActivity.class);
 
             intent.putExtra("user", user);
             startActivity(intent);

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -88,6 +89,7 @@ public class StartProfileUser extends AppCompatActivity {
             public void onClick(View v) {
                updateInfo();
 
+
                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
                intent.putExtra("user", user);
                startActivity(intent);
@@ -141,6 +143,11 @@ public class StartProfileUser extends AppCompatActivity {
         UserData = UserData.child(user.getUid());
 
         try{
+            Prevalent.currentPhone = "";
+            Prevalent.currentPhone = contact.getText().toString();
+            Prevalent.currentAddress = "";
+            Prevalent.currentAddress = address.getText().toString();
+
             UserData.child("Name").setValue(name.getText().toString());
             UserData.child("Contact").setValue(contact.getText().toString());
             UserData.child("Address").setValue(address.getText().toString());

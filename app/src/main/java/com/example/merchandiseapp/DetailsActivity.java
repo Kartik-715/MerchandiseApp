@@ -41,6 +41,8 @@ public class DetailsActivity extends AppCompatActivity
         Payment = (Button) findViewById(R.id.Btn_Payment);
 
         Email_ID.setText(Prevalent.currentEmail);
+        Address.setText(Prevalent.currentAddress);
+        PhoneNumber.setText(Prevalent.currentPhone);
 
         Payment.setOnClickListener(new View.OnClickListener()
         {
