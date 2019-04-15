@@ -1,5 +1,30 @@
 package com.example.merchandiseapp;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Session;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.widget.Toast;
+
+import static javax.mail.internet.InternetAddress.*;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +51,17 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class productsCourrier extends AppCompatActivity {
+
+    private Session session =null;
+    private ProgressDialog pdialog =null;
+    private Context context =null;
+    private String rec,Subject,msg_content;
+    private Button login;
+    private String mailhost ="smtp.gmail.com";
+    private String username = "merchandiseiitg@gmail.com";
+    private String password = "merchandise";
+
+
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName;
@@ -151,11 +187,101 @@ public class productsCourrier extends AppCompatActivity {
             }
         });
 
+            rec = "mayank343@gmail.com";
+            Subject = "Delivery Status";
+            msg_content = "Respected Sir, \nThis is with reference to your order places with our merchandise app.\n";
+            msg_content+="We are happy to inform you that your order has been";
+
+            if(text.toLowerCase().equals("shipped"))
+            {
+                msg_content+="shipped.";
+            }
+        else if(text.toLowerCase().equals("on delivery"))
+        {
+            msg_content+="on delivery and is expected to reach soon.";
+        }
+            else if(text.toLowerCase().equals("delivered"))
+            {
+                msg_content += "delivered";
+
+            }
+        msg_content += "\nThank You for shopping with us. Kindly contact us in case of querries.\nRegards,\nTeam Merchandise";
 
 
+        Properties props = new Properties();
+            //props.setProperty("mail.transport.protocol", "smtp");
+            props.setProperty("mail.smtp.host", mailhost);
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "465");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory");
 
+            session = javax.mail.Session.getDefaultInstance(props, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username,password);
+                }
+            });
+
+            RetrieveFeedTask task = new RetrieveFeedTask();
+            task.execute();
 
     }
 
+    class RetrieveFeedTask extends AsyncTask<String,Void,String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                javax.mail.Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(mailhost));
+                message.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse(rec));
+                message.setSubject(Subject);
+                message.setContent(msg_content,"text/html;charset=utf-8");
+
+                Transport.send(message);
+
+            }catch (MessagingException e){
+                e.printStackTrace();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            Toast.makeText(getApplicationContext(),"Message Sent",Toast.LENGTH_LONG).show();
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
