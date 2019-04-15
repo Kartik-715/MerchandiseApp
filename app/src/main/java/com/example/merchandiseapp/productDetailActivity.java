@@ -8,6 +8,7 @@ import android.support.annotation.Size;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,6 +54,15 @@ public class productDetailActivity extends AppCompatActivity
     private String image_src;
     private Spinner SizeSpinner;
     private String selecteditem;
+    private ArrayList<String> arraySpinner;
+    private int flag;
+
+    public interface MyCallback
+    {
+        void onCallback(ArrayList<String> value);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,30 +85,55 @@ public class productDetailActivity extends AppCompatActivity
         SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
 
+
         /*Spinner Display*/
+        arraySpinner = new ArrayList<>();
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(productDetailActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        SizeSpinner.setAdapter(myAdapter);
-
-        SizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        initializeSpinner(new MyCallback()
         {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            public void onCallback(ArrayList<String> value)
             {
-                selecteditem = SizeSpinner.getSelectedItem().toString();
-                getProductDetails(productID);
-            }
+                System.out.println("qqqqqqqqqq" + arraySpinner);
+                System.out.println("wwwwwwwwww" + value);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+                if(arraySpinner.isEmpty())
+                {
+                    flag = 0;
+                    getProductDetails(productID);
+                    addToCartButton.setVisibility(View.INVISIBLE);
+                    buyNowButton.setVisibility(View.INVISIBLE);
+                    numberButton.setVisibility(View.INVISIBLE);
+                    SizeSpinner.setVisibility(View.INVISIBLE);
+                    productPrice.setVisibility(View.INVISIBLE);
+                }
+
+                else
+                {
+                    flag = 1;
+                    ArrayAdapter<String> myAdapter = new ArrayAdapter<>(productDetailActivity.this, android.R.layout.simple_list_item_1, arraySpinner);
+                    myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    SizeSpinner.setAdapter(myAdapter);
+
+                    SizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+                    {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            selecteditem = SizeSpinner.getSelectedItem().toString();
+                            getProductDetails(productID);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent)
+                        {
+
+                        }
+                    });
+                }
 
             }
         });
-
-
-        //getProductDetails(productID);
 
         productImage.setOnClickListener(new View.OnClickListener()
         {
@@ -139,9 +174,19 @@ public class productDetailActivity extends AppCompatActivity
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
+        String neworderID;
+
         if(orderID.equals("empty"))
         {
-            orderID = saveCurrentDate + " " + saveCurrentTime;
+            neworderID = saveCurrentDate + " " + saveCurrentTime;
+            orderID = neworderID;
+        }
+
+        else
+        {
+            neworderID = saveCurrentDate + " " + saveCurrentTime;
+            orderID = orderID;
+
         }
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
@@ -161,12 +206,25 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("quantity",numberButton.getNumber());
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
-        cartMap.put("orderid", orderID);
+        cartMap.put("orderid", neworderID);
         cartMap.put("image", image);
         cartMap.put("category", category);
         cartMap.put("size", selecteditem);
 
-        cartListRef.child(User_ID).child(orderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        //Removing the previous one and making new one
+        cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
+
+                }
+            }
+        });
+
+        cartListRef.child(User_ID).child(neworderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -223,12 +281,25 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("quantity",numberButton.getNumber());
         cartMap.put("discount ","");
         cartMap.put("uid", User_ID);
-        cartMap.put("orderid", orderID);
+        cartMap.put("orderid", neworderID);
         cartMap.put("image", image);
         cartMap.put("category", category);
         cartMap.put("size", selecteditem);
 
-        cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
+        //Removing the previous one and making new one
+        cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
+
+                }
+            }
+        });
+
+        cartListRef.child(User_ID).child(neworderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
                 {
                     @Override
@@ -247,9 +318,36 @@ public class productDetailActivity extends AppCompatActivity
                 });
     }
 
-
     private void getProductDetails(String productID)
     {
+
+        if(flag == 0)
+        {
+            DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
+            productsRef.child(productID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    if(dataSnapshot.exists())
+                    {
+                        Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
+                        productName.setText(merchandises.getBrandName());
+                        Picasso.get().load(merchandises.getImage()).into(productImage);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });
+
+            return;
+        }
+
+
+
         DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
         productsRef.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -308,6 +406,68 @@ public class productDetailActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    private void initializeSpinner(final MyCallback myCallback)
+    {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
+        productsRef.child(productID).addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.exists())
+                {
+                    int idx = 0;
+                    Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
+                    ArrayList<String> quantity = merchandises.getQuantity();
+                    for(int i=0;i<quantity.size();i++)
+                    {
+
+                        if(quantity.get(i).equals("0") == false)
+                        {
+                            if(i == 0)
+                            {
+                                arraySpinner.add("S");
+                            }
+
+                            if(i == 1)
+                            {
+                                arraySpinner.add("M");
+                            }
+
+                            if(i == 2)
+                            {
+                                arraySpinner.add("L");
+                            }
+
+                            if(i == 3)
+                            {
+                                arraySpinner.add("XL");
+                            }
+
+                            if(i == 4)
+                            {
+                                arraySpinner.add("XXL");
+                            }
+
+
+                        }
+                    }
+
+                    myCallback.onCallback(arraySpinner);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+
     }
 
 }
