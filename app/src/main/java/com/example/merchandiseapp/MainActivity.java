@@ -79,8 +79,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                myRef = FirebaseDatabase.getInstance().getReference("/def") ;
-
+                myRef = FirebaseDatabase.getInstance().getReference("/abc") ;
+                String key = myRef.push().getKey();
+                myRef.child(key).setValue("this is it");
 
             }
         });

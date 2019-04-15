@@ -1,24 +1,30 @@
 package com.example.merchandiseapp;
+import android.os.Parcel;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Merchandise {
-      private String BrandName ;
-      private String Image ;
-      private String ManuAddress ;
-      private String Material;
-      private String ProdID;
-      private boolean ReturnApplicable;
-      private String Category;
-      private String VendorID;
-      private Integer price[];
-      private Integer quantity[];
-      private boolean isMale ;
+public class Merchandise
+{
+    private String BrandName ;
+    private String Image ;
+    private String ManuAddress ;
+    private String Material;
+    private String ProdID;
+    private String ReturnApplicable;
+    private String Category;
+    private String VendorID;
+    private ArrayList<String> price;
+    private ArrayList<String> quantity;
+    private String isMale ;
 
+    public Merchandise()
+    {
 
-    public Merchandise(String brandName, String image, String manuAddress, String material,
-                       String prodID, boolean returnApplicable, String category, String vendorID, Integer[] Price, Integer[] Quantity, boolean _isMale) {
+    }
+
+    public Merchandise(String brandName, String image, String manuAddress, String material, String prodID, String returnApplicable, String category, String vendorID, ArrayList<String> price, ArrayList<String> quantity, String isMale)
+    {
         BrandName = brandName;
         Image = image;
         ManuAddress = manuAddress;
@@ -27,42 +33,118 @@ public class Merchandise {
         ReturnApplicable = returnApplicable;
         Category = category;
         VendorID = vendorID;
-        price = new Integer[5] ;
-        quantity = new Integer[5] ;
-        price = Price.clone() ;
-        quantity = Quantity.clone();
-        isMale = _isMale ;
-
+        this.price = price;
+        this.quantity = quantity;
+        this.isMale = isMale;
     }
 
-    public Merchandise()
+    public String getBrandName()
     {
-
+        return BrandName;
     }
 
-
-
-    public HashMap<String, Object> toMap()
+    public void setBrandName(String brandName)
     {
-        HashMap<String, Object> result = new HashMap<>() ;
-        result.put("BrandName", BrandName) ;
-        result.put("Image", Image) ;
-        result.put("ManuAddress", ManuAddress) ;
-        result.put("Material", Material) ;
-        result.put("ProdID", ProdID) ;
-        result.put("ReturnApplicable", ReturnApplicable) ;
-        result.put("Category", Category) ;
-        result.put("VendorId", VendorID) ;
-        result.put("Price", price) ;
-        result.put("Quantity", quantity) ;
-        result.put("isMale", isMale) ;
-
-        return result ;
-
+        BrandName = brandName;
     }
 
+    public String getImage()
+    {
+        return Image;
+    }
 
+    public void setImage(String image)
+    {
+        Image = image;
+    }
 
+    public String getManuAddress()
+    {
+        return ManuAddress;
+    }
 
+    public void setManuAddress(String manuAddress)
+    {
+        ManuAddress = manuAddress;
+    }
 
+    public String getMaterial()
+    {
+        return Material;
+    }
+
+    public void setMaterial(String material)
+    {
+        Material = material;
+    }
+
+    public String getProdID()
+    {
+        return ProdID;
+    }
+
+    public void setProdID(String prodID)
+    {
+        ProdID = prodID;
+    }
+
+    public String getReturnApplicable()
+    {
+        return ReturnApplicable;
+    }
+
+    public void setReturnApplicable(String returnApplicable)
+    {
+        ReturnApplicable = returnApplicable;
+    }
+
+    public String getCategory()
+    {
+        return Category;
+    }
+
+    public void setCategory(String category)
+    {
+        Category = category;
+    }
+
+    public String getVendorID()
+    {
+        return VendorID;
+    }
+
+    public void setVendorID(String vendorID)
+    {
+        VendorID = vendorID;
+    }
+
+    public ArrayList<String> getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice(ArrayList<String> price)
+    {
+        this.price = price;
+    }
+
+    public ArrayList<String> getQuantity()
+    {
+        return quantity;
+    }
+
+    public void setQuantity(ArrayList<String> quantity)
+    {
+        this.quantity = quantity;
+    }
+
+    public String getIsMale()
+    {
+        return isMale;
+    }
+
+    public void setIsMale(String isMale)
+    {
+        this.isMale = isMale;
+    }
 }
