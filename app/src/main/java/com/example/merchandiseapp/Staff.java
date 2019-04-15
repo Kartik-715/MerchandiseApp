@@ -101,7 +101,11 @@ public class Staff extends AppCompatActivity
         } else if(id == R.id.view_user){
             Intent intent = new Intent(Staff.this,view_User.class);
             startActivity(intent);
+        } else if(id == R.id.view_orders){
+            Intent intent = new Intent(Staff.this,View_Orders.class);
+            startActivity(intent);
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

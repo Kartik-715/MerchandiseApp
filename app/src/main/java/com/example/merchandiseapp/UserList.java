@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -31,7 +32,6 @@ public class UserList extends ArrayAdapter<User> {
 
         User user = userList.get(position);
         userID.setText(user.EmailID);
-
         userName.setText(user.Name);//
 
         return listViewItem;

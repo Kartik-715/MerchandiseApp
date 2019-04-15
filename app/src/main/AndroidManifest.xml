@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view_User"></activity>
+        <activity android:name=".View_Orders"></activity>
+        <activity android:name=".view_User" />
         <activity android:name=".grp_manage_profile" />
         <activity
             android:name=".grpUser"

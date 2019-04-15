@@ -28,6 +28,10 @@
             android:id="@+id/view_user"
             android:icon="@drawable/ic_menu_manage"
             android:title="View User" />
+        <item
+            android:id="@+id/view_orders"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="View Orders" />
     </group>
 
 

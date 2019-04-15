@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/orderID"
         android:layout_width="400dp"
         android:layout_height="30dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:text="userName"
+        android:text="orderID"
         android:textSize="20sp"
         android:textAlignment="center"
         android:textColor="@color/Black"
@@ -29,4 +26,5 @@
         android:textAlignment="center"
         android:textColor="@color/Black"
         />
-</android.support.v7.widget.LinearLayoutCompat>
+
+</LinearLayout>
