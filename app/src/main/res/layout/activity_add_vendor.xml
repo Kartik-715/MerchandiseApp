@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="15dp"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    tools:context=".Add_vendor">
+
+    <EditText
+        android:id="@+id/UserName"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F2F2F2"
+        android:hint="UserName"
+        android:inputType="text"
+        android:textColor="@color/Black"
+        android:textColorHint="@color/Gray"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email ID"
+        android:textColor="@color/Black"
+        android:textColorHint="@color/Gray"
+        android:inputType="text"
+        android:background="#F2F2F2"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/Pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:textColor="@color/Black"
+        android:textColorHint="@color/Gray"
+        android:inputType="text"
+        android:background="#F2F2F2"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contact"
+        android:textColor="@color/Black"
+        android:textColorHint="@color/Gray"
+        android:inputType="text"
+        android:background="#F2F2F2"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/upi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="UPI"
+        android:textColor="@color/Black"
+        android:inputType="text"
+        android:textColorHint="@color/Gray"
+        android:background="#F2F2F2"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Address"
+        android:textColor="@color/Black"
+        android:inputType="text"
+        android:textColorHint="@color/Gray"
+        android:background="#F2F2F2"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/button_staff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="225dp"
+        android:onClick="onClick"
+        android:text="Add" />
+</LinearLayout>
