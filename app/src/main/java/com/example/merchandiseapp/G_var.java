@@ -21,6 +21,7 @@ public class G_var extends Application {
     private String Contact;
     private String gender;
     private StorageReference imageRef;
+    private Bitmap bitmap;
 
 
 
@@ -81,5 +82,13 @@ public class G_var extends Application {
 
     public void setEmail(String email) {
         Email = email;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

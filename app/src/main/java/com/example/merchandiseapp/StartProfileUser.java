@@ -42,6 +42,7 @@ public class StartProfileUser extends AppCompatActivity {
     FirebaseUser user;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
+    private static final String TAG = StartProfileUser.class.getSimpleName();
 
     G_var global;
 
@@ -122,7 +123,9 @@ public class StartProfileUser extends AppCompatActivity {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
+            global.setBitmap(mIcon11);
             return mIcon11;
+
         }
 
         protected void onPostExecute(Bitmap result) {
@@ -131,15 +134,18 @@ public class StartProfileUser extends AppCompatActivity {
     }
 
     public void updateInfo(){
+
         UserNode userNode = new UserNode("0",name.getText().toString(),user.getEmail(),"0");
         UserData = FirebaseDatabase.getInstance().getReference().child("Users");
         UserData.child(user.getUid()).setValue(userNode);
-        UserData = UserData.child(global.getUid());
+        UserData = UserData.child(user.getUid());
+
         try{
             UserData.child("Name").setValue(name.getText().toString());
             UserData.child("Contact").setValue(contact.getText().toString());
             UserData.child("Address").setValue(address.getText().toString());
             UserData.child("Gender").setValue(gender.getText().toString());
+            UserData.child("Id").setValue(global.getUid());
             Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
             uploadimage();
 
@@ -149,8 +155,6 @@ public class StartProfileUser extends AppCompatActivity {
         {
                  Log.e("error","error in reading fields");
         }
-
-
     }
 
     private void chooseimage(){
@@ -169,6 +173,7 @@ public class StartProfileUser extends AppCompatActivity {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                global.setBitmap(bitmap);
                 imageView.setImageBitmap(bitmap);
             }
             catch (IOException e)
@@ -196,10 +201,10 @@ public class StartProfileUser extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(StartProfileUser.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(StartProfileUser.this, "Uploaded", Toast.LENGTH_SHORT).show();
                             UserData.child("ImageAddress").setValue(ref.getDownloadUrl().toString());
 
-                            addImage();
+                           // addImage();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -220,33 +225,34 @@ public class StartProfileUser extends AppCompatActivity {
         }
     }
 
-    public void addImage(){
-        StorageReference mImageRef =
-                FirebaseStorage.getInstance().getReference("images/"+mauth.getUid());
-        final long ONE_MEGABYTE = 1024 * 1024;
-        mImageRef.getBytes(ONE_MEGABYTE)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        DisplayMetrics dm = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-                        ImageView imageView = findViewById(R.id.start_image);
-
-                        imageView.setMinimumHeight(dm.heightPixels);
-                        imageView.setMinimumWidth(dm.widthPixels);
-                        imageView.setImageBitmap(bm);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
+//    public void addImage(){
+//        StorageReference mImageRef =
+//                FirebaseStorage.getInstance().getReference("images/"+mauth.getUid());
+//        final long ONE_MEGABYTE = 1024 * 1024 * 20 ;
+//        mImageRef.getBytes(ONE_MEGABYTE)
+//                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                    @Override
+//                    public void onSuccess(byte[] bytes) {
+//                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                        DisplayMetrics dm = new DisplayMetrics();
+//                        getWindowManager().getDefaultDisplay().getMetrics(dm);
+//
+//                        ImageView imageView = findViewById(R.id.start_image);
+//
+//                        imageView.setMinimumHeight(dm.heightPixels);
+//                        imageView.setMinimumWidth(dm.widthPixels);
+//                        imageView.setImageBitmap(bm);
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//            }
+//        });
+//    }
 
     public void updateGlobals(){
+
         global.setImageRef(FirebaseStorage.getInstance().getReference("images/"+mauth.getUid()));
         global.setUsername(name.getText().toString());
         global.setUid(user.getUid());

@@ -1,10 +1,6 @@
 package com.example.merchandiseapp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -25,29 +21,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private Button btnLogout;
-
+    public FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
     public ImageView imageView;
-
+    public FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     G_var global;
 
     @Override
@@ -153,52 +140,14 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-
-//    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-//        ImageView bmImage;
-//
-//        public DownloadImageTask(ImageView bmImage) {
-//            this.bmImage = bmImage;
-//        }
-//
-//        protected Bitmap doInBackground(String... urls) {
-//            String urldisplay = urls[0];
-//            Bitmap mIcon11 = null;
-//            try {
-//                InputStream in = new java.net.URL(urldisplay).openStream();
-//                mIcon11 = BitmapFactory.decodeStream(in);
-//            } catch (Exception e) {
-//                Log.e("Error", e.getMessage());
-//                e.printStackTrace();
-//            }
-//            return mIcon11;
-//        }
-//
-//        protected void onPostExecute(Bitmap result) {
-//            bmImage.setImageBitmap(result);
-//        }
-//    }
-
     public void addImage(){
-        StorageReference mImageRef = global.getImageRef();
-        final long ONE_MEGABYTE = 1024 * 1024;
-        mImageRef.getBytes(ONE_MEGABYTE)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        DisplayMetrics dm = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-                        imageView.setMinimumHeight(dm.heightPixels);
-                        imageView.setMinimumWidth(dm.widthPixels);
-                        imageView.setImageBitmap(bm);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        imageView.setMinimumHeight(dm.heightPixels);
+        imageView.setMinimumWidth(dm.widthPixels);
+        Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
+        imageView.setImageBitmap(global.getBitmap());
     }
 }
+

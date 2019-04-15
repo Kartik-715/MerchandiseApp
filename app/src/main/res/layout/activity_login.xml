@@ -26,6 +26,15 @@
         android:text="Keep me Logged in"
         tools:layout_editor_absoluteX="108dp"
         tools:layout_editor_absoluteY="218dp" />
+    <ProgressBar
+        android:id="@+id/indeterminateBar"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
 
 
 </LinearLayout>

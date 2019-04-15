@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.util.DisplayMetrics;
@@ -38,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class ManageProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -190,31 +192,6 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-
     public void setTexts(){
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
@@ -264,20 +241,20 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageView imageView = findViewById(R.id.profilePic);
+        imageView = findViewById(R.id.profilePic);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-//                imageView.setImageBitmap(bitmap);
-//            }
-//            catch (IOException e)
-//            {
-//                e.printStackTrace();
-//            }
-            Picasso.with(this).load(filePath).into(imageView);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                global.setBitmap(bitmap);
+                addImage();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -300,7 +277,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
                             progressDialog.dismiss();
                             Toast.makeText(ManageProfile.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
-                            addImage();
+                            change_images();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -319,32 +296,30 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
                         }
                     });
             global.setImageRef(FirebaseStorage.getInstance().getReference("images/"+global.getUid()));
-
-            change_images();
         }
     }
 
     public void addImage(){
-        StorageReference mImageRef = global.getImageRef();
-        final long ONE_MEGABYTE = 1024 * 1024;
-        mImageRef.getBytes(ONE_MEGABYTE)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//        StorageReference mImageRef = global.getImageRef();
+//        final long ONE_MEGABYTE = 1024 * 1024 * 20;
+//        mImageRef.getBytes(ONE_MEGABYTE)
+//                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                    @Override
+//                    public void onSuccess(byte[] bytes) {
+//                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         DisplayMetrics dm = new DisplayMetrics();
                         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
                         imageView.setMinimumHeight(dm.heightPixels);
                         imageView.setMinimumWidth(dm.widthPixels);
-                        imageView.setImageBitmap(bm);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+                        imageView.setImageBitmap(global.getBitmap());
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//            }
+//        });
     }
 
     public void change_images(){
