@@ -19,7 +19,6 @@
         android:src="@color/colorAccent"
         android:adjustViewBounds="true"
 
-
         />
 
     <TextView
@@ -63,6 +62,19 @@
         app:textSize="16sp"
 
         />
+
+    <Spinner
+        android:id="@+id/size_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+
+        >
+
+    </Spinner>
 
 
     <Button

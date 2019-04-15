@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.annotation.Size;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +51,8 @@ public class productDetailActivity extends AppCompatActivity
     private String category = "";
     private ArrayList<String> orderid_list;
     private String image_src;
-    private boolean isImageFitToScreen;
+    private Spinner SizeSpinner;
+    private String selecteditem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,9 +72,33 @@ public class productDetailActivity extends AppCompatActivity
         numberButton = findViewById(R.id.numberBtn);
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
+        SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
 
-        getProductDetails(productID);
+        /*Spinner Display*/
+
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(productDetailActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SizeSpinner.setAdapter(myAdapter);
+
+        SizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                selecteditem = SizeSpinner.getSelectedItem().toString();
+                getProductDetails(productID);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
+
+        //getProductDetails(productID);
 
         productImage.setOnClickListener(new View.OnClickListener()
         {
@@ -81,6 +110,8 @@ public class productDetailActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +164,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("orderid", orderID);
         cartMap.put("image", image);
         cartMap.put("category", category);
+        cartMap.put("size", selecteditem);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -160,10 +192,19 @@ public class productDetailActivity extends AppCompatActivity
 
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
+        String neworderID;
 
         if(orderID.equals("empty"))
         {
-            orderID = saveCurrentDate + " " + saveCurrentTime;
+            neworderID = saveCurrentDate + " " + saveCurrentTime;
+            orderID = neworderID;
+        }
+
+        else
+        {
+            neworderID = saveCurrentDate + " " + saveCurrentTime;
+            orderID = orderID;
+
         }
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
@@ -185,6 +226,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("orderid", orderID);
         cartMap.put("image", image);
         cartMap.put("category", category);
+        cartMap.put("size", selecteditem);
 
         cartListRef.child(User_ID).child(orderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
@@ -216,13 +258,46 @@ public class productDetailActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-                    int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
-                    System.out.println(Integer.toString(final_quantity));
-                    numberButton.setRange(1,final_quantity);
+                    numberButton.setNumber("1");
                     productName.setText(merchandises.getBrandName());
-                    productPrice.setText(merchandises.getPrice().get(0));
                     image = merchandises.getImage();
                     Picasso.get().load(merchandises.getImage()).into(productImage);
+
+                    if(selecteditem.equals("S"))
+                    {
+                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
+                        numberButton.setRange(1,final_quantity);
+                        productPrice.setText(merchandises.getPrice().get(0));
+                    }
+
+                    if(selecteditem.equals("M"))
+                    {
+                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(1));
+                        numberButton.setRange(1,final_quantity);
+                        productPrice.setText(merchandises.getPrice().get(1));
+                    }
+
+                    if(selecteditem.equals("L"))
+                    {
+                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(2));
+                        numberButton.setRange(1,final_quantity);
+                        productPrice.setText(merchandises.getPrice().get(2));
+                    }
+
+                    if(selecteditem.equals("XL"))
+                    {
+                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(3));
+                        numberButton.setRange(1,final_quantity);
+                        productPrice.setText(merchandises.getPrice().get(3));
+                    }
+
+                    if(selecteditem.equals("XXL"))
+                    {
+                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(4));
+                        numberButton.setRange(1,final_quantity);
+                        productPrice.setText(merchandises.getPrice().get(4));
+                    }
+
 
                 }
             }
