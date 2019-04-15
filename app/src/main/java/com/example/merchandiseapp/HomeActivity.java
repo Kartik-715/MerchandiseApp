@@ -152,11 +152,7 @@ public class HomeActivity extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
 
-        TextView navUsername = (TextView) headerView.findViewById(R.id.NameTextView);
-        TextView navemail = (TextView) headerView.findViewById(R.id.emailtextView);
-        navUsername.setText(user.getDisplayName());
-        navemail.setText(user.getEmail());
-        System.out.println("-------------" + user.getUid());
+
 
         String User_ID, User_Email;
         User_Email = user.getEmail();
@@ -176,9 +172,7 @@ public class HomeActivity extends AppCompatActivity
 
         Prevalent.currentOnlineUser = User_ID;
         Prevalent.currentEmail = User_Email;
-        ImageView imageView = (ImageView) headerView.findViewById(R.id.imageView);
-        new DownloadImageTask(imageView)
-                .execute(user.getPhotoUrl().toString());
+
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
         navUsername.setText(global.getUsername());
@@ -261,7 +255,7 @@ public class HomeActivity extends AppCompatActivity
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         imageView.setMinimumHeight(dm.heightPixels);
         imageView.setMinimumWidth(dm.widthPixels);
-        Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
         imageView.setImageBitmap(global.getBitmap());
     }
 }

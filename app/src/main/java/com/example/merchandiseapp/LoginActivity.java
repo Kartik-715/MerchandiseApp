@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     RadioButton keepLogged;
     ProgressBar progressBar;
     String final_Access;
+    User_data vendor = null;
     //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
     @Override
@@ -147,20 +148,43 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkDatabase(final FirebaseUser user){
 
-        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        String username[] = user.getEmail().split("@");
+
+        final DatabaseReference VendorData = FirebaseDatabase.getInstance().getReference().child("Users").child(username[0]);
         //final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        UserData.addListenerForSingleValueEvent(new ValueEventListener() {
+        VendorData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               // if(keepLogged.isChecked())sp.edit().putBoolean("logged",true);
-                if(dataSnapshot.exists()){
-                    final_Access = dataSnapshot.child("AccessLevel").getValue().toString();
-                    updateglobals(dataSnapshot,user);
+            public void onDataChange(@NonNull DataSnapshot vendorSnapshot) {
+                // if(keepLogged.isChecked())sp.edit().putBoolean("logged",true);
+                if(vendorSnapshot.exists()){
+                    final_Access = vendorSnapshot.child("AccessLevel").getValue().toString();
+                    updateVendor(vendorSnapshot);
                 }
 
                 else{
-                    firstlogin(user);
+                    final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+                    //final DatabaseReference updateDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+                    UserData.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // if(keepLogged.isChecked())sp.edit().putBoolean("logged",true);
+                            if(dataSnapshot.exists()){
+                                final_Access = dataSnapshot.child("AccessLevel").getValue().toString();
+                                updateglobals(dataSnapshot,user,final_Access);
+                            }
+
+                            else{
+                                firstlogin(user);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -169,6 +193,13 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        if(vendor != null){
+            VendorData.removeValue();
+            FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).setValue(vendor);
+            firstlogin(user);
+        }
+
     }
 
     private void firstlogin(FirebaseUser user){
@@ -177,11 +208,11 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateglobals(final DataSnapshot dataSnapshot, final FirebaseUser user){
+    private void updateglobals(final DataSnapshot dataSnapshot, final FirebaseUser user, String Access){
 
         global.setUsername(dataSnapshot.child("Name").getValue().toString());
         global.setAddress(dataSnapshot.child("Address").getValue().toString());
-        global.setGender(dataSnapshot.child("Gender").getValue().toString());
+        if(Access.equals("0")) global.setGender(dataSnapshot.child("Gender").getValue().toString());
         global.setContact(dataSnapshot.child("Contact").getValue().toString());
         global.setUid(mAuth.getUid());
         global.setImageRef(FirebaseStorage.getInstance().getReference("images/"+mAuth.getUid()));
@@ -203,6 +234,14 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent intent = null;
                                     if(final_Access.equals("0")) {
                                         intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    }
+                                    else if(final_Access.equals("1")) {
+                                        //intent = new Intent(getApplicationContext(),Courier.class);
+                                        Toast.makeText(getApplicationContext(),"Open Courier",Toast.LENGTH_LONG).show();
+                                    }
+                                    else if(final_Access.equals("2")) {
+                                        //intent = new Intent(getApplicationContext(),Vendor.class);
+                                        Toast.makeText(getApplicationContext(),"Open Vendor",Toast.LENGTH_LONG).show();
                                     }
                                     else if (final_Access.equals("3")){
                                         intent = new Intent(getApplicationContext(), Staff.class);
@@ -260,6 +299,16 @@ public class LoginActivity extends AppCompatActivity {
             if(final_Access.equals("0")) {
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
             }
+            else if(final_Access.equals("1")) {
+                //intent = new Intent(getApplicationContext(),Courier.class);
+                Toast.makeText(getApplicationContext(),"Open Courier",Toast.LENGTH_LONG).show();
+                return;
+            }
+            else if(final_Access.equals("2")) {
+                //intent = new Intent(getApplicationContext(),Vendor.class);
+                Toast.makeText(getApplicationContext(),"Open Vendor",Toast.LENGTH_LONG).show();
+                return;
+            }
             else if (final_Access.equals("3")){
                 intent = new Intent(getApplicationContext(), Staff.class);
             }
@@ -269,6 +318,20 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("user", user);
             startActivity(intent);
         }
+
     }
+
+    public void updateVendor(DataSnapshot vendorSnapshot){
+
+        vendor = new User_data(
+                vendorSnapshot.child("Name").getValue().toString(),
+                vendorSnapshot.child("Contact").getValue().toString(),
+                vendorSnapshot.child("Password").getValue().toString(),
+                vendorSnapshot.child("EmailID").getValue().toString(),
+                vendorSnapshot.child("UPI").getValue().toString(),
+                vendorSnapshot.child("AccessLevel").getValue().toString(),
+                vendorSnapshot.child("Address").getValue().toString()
+        );
     }
+}
 

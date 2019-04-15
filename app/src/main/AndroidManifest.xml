@@ -24,16 +24,15 @@
         <activity android:name=".grp_manage_profile"></activity>
         <activity
             android:name=".grpUser"
-            android:label="@string/title_activity_grp_user"
+            android:label="grpUser"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".View_courier" />
         <activity android:name=".View_Vendor" />
         <activity android:name=".Add_Courier" />
         <activity android:name=".Add_vendor" />
-        <activity android:name=".View_Vendor" />
         <activity
             android:name=".Staff"
-            android:label="@string/title_activity_staff"
+            android:label="Staff"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".myWallet" />
         <activity android:name=".StartProfileUser" />
