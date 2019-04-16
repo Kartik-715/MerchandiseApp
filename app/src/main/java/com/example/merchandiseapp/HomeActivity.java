@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -147,8 +148,10 @@ public class HomeActivity extends AppCompatActivity
                             @Override
                             public void onClick(View v)
                             {
+                                Toast.makeText(HomeActivity.this,"dgjkadkj "+model.getCategory()+" "+model.getProdID(),Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(HomeActivity.this, productDetailActivity.class);
                                 intent.putExtra("pid", model.getProdID());
+                                intent.putExtra("category",model.getCategory());
                                 startActivity(intent);
                             }
                         });
@@ -210,7 +213,8 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this,Reviews.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
-
+//            Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
+//            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

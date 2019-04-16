@@ -40,7 +40,7 @@ public class productDetailActivity extends AppCompatActivity
     private String productID = "";
     private String User_ID = "";
     private String orderID = "";
-
+    private String category = "";
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,24 +49,27 @@ public class productDetailActivity extends AppCompatActivity
 
         productID = getIntent().getStringExtra("pid");
         User_ID = Prevalent.currentOnlineUser;
-
+        category=getIntent().getStringExtra("category");
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         numberButton = findViewById(R.id.numberBtn);
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
         productPrice = findViewById(R.id.productPrice);
-        //btnReviews = findViewById(R.id.reviewbtn);
+        btnReviews = findViewById(R.id.reviewbtn);
 
-        Toast.makeText(productDetailActivity.this,"dgjkadkj",Toast.LENGTH_LONG).show();
+        Toast.makeText(productDetailActivity.this,"dgjkadkj "+category+" "+productID,Toast.LENGTH_LONG).show();
         getProductDetails(productID);
-//        btnReviews.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(productDetailActivity.this,"hey",Toast.LENGTH_LONG).show();
-//                //Intent intent = new Intent(productDetailActivity.this,Reviews.class);
-//                //startActivity(intent);
-//            }
-//        });
+        btnReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
+                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
+                intent.putExtra("category",category);
+                intent.putExtra("pid",productID);
+                startActivity(intent);
+
+            }
+        });
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

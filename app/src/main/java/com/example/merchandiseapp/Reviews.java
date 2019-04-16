@@ -49,6 +49,8 @@ public class Reviews extends AppCompatActivity {
                 ratingRef.child(user.getUid()).child("comment").setValue(reviewValue);
                 ratingRef.child(user.getUid()).child("email").setValue(user.getEmail());
                 ratingRef.child(user.getUid()).child("stars").setValue(ratingValue);
+                ratingRef.child(user.getUid()).child("uid").setValue(user.getUid());
+                //ratingRef.child(user.getUid()).child("pid").setValue(.getProdID);
                 //Toast.makeText(Reviews.this,""+reviewsText.getText(),Toast.LENGTH_LONG).show();
 
             }

@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity"></activity>
+        <activity android:name=".ReviewDisplayActivity"></activity>
+        <activity android:name=".activity" />
         <activity android:name=".Reviews" />
         <activity
             android:name=".DetailsActivity"
