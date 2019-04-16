@@ -63,7 +63,7 @@ public class FragmentItem extends Fragment
                     {
                         holder.txtProductName.setText(model.getBrandName());
                         holder.txtProductDescription.setText(model.getCategory());
-                        holder.txtProductPrice.setText("Price = " + model.getPrice().get(0) + "$");
+                        holder.txtProductPrice.setText("Price = " + model.getPrice().get(0));
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener()
