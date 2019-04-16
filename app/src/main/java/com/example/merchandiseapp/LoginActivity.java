@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -58,17 +59,27 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     String final_Access;
     User_data vendor = null;
+    private Button temp_Button;
     //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        temp_Button = findViewById(R.id.btn_add);
         global = (G_var) getApplicationContext();
         keepLogged = findViewById(R.id.loggedIn);
         progressBar=findViewById(R.id.indeterminateBar);
 // ...
+        temp_Button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(LoginActivity.this, AddMembersActivity.class);
+                startActivity(intent);
+            }
+        });
 // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         mgoogleButton = (SignInButton)findViewById(R.id.GoogleBtn);

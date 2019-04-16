@@ -235,14 +235,17 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_logout) {
-            mGoogleSignInClient.revokeAccess()
+        } else if (id == R.id.nav_logout)
+        {
+            Intent intent = new Intent(HomeActivity.this, AddMembersActivity.class);
+            startActivity(intent);
+            /*mGoogleSignInClient.revokeAccess()
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             // ...
                         }
-                    });
+                    });*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
