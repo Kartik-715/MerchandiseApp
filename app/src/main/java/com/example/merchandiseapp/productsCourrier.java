@@ -40,6 +40,7 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -80,6 +81,7 @@ public class productsCourrier extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_courrier);
 
+
         Button  btn = (Button) findViewById(R.id.button1);
 
         productID = getIntent().getStringExtra("pid");
@@ -108,8 +110,9 @@ public class productsCourrier extends AppCompatActivity {
 
     private void getProductDetails(String productID)
     {
-        final DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Orders").child("mayank343"
-        );
+        final DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser);
+        System.out.println(Prevalent.currentOnlineUser + Prevalent.currentEmail + " 123");
+
          productsRef.child(date+" "+time).addValueEventListener(new ValueEventListener()
          {
             @Override
@@ -123,7 +126,7 @@ public class productsCourrier extends AppCompatActivity {
                productName.setText(order.getPname());
                productPrice.setText(order.getPrice());
                 productQuantity.setText(order.getQuantity());
-                productBuyer.setText(order.getUid());
+                productBuyer.setText(Prevalent.currentEmail);
                 Spinner dropdown = findViewById(R.id.spinner1);
                 System.out.println(status);
 
@@ -172,7 +175,7 @@ public class productsCourrier extends AppCompatActivity {
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("status", text);
         System.out.println("dsaaaaaaaa"+User_ID + OrderID);
-        User_ID="mayank343";
+        User_ID=Prevalent.currentOnlineUser;
         cartListRef.child(User_ID).child(OrderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
