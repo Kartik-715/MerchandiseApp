@@ -26,6 +26,12 @@
         <item>XL</item>
         <item>XXL</item>
     </string-array>-->
+    <string-array name="Category">
+        <item>"Footwear"</item>
+        <item>"T-Shirt"</item>
+        <item>"Lowers"</item>
+        <item>"Others"</item>
+    </string-array>
 
 
 </resources>
