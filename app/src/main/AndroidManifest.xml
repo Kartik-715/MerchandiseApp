@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AddMerchandise"></activity>
+        <activity android:name=".GroupRegisterActivity"></activity>
+        <activity android:name=".AddMerchandise" />
         <activity
             android:name=".VendorActivity"
             android:label="@string/title_activity_vendor"
