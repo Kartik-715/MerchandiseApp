@@ -190,12 +190,12 @@ public class CartActivity extends AppCompatActivity
                     public void onClick(View v)
                     {
 
-                        Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
-                        intent.putExtra("pid", model.getPid());
-                        intent.putExtra("order_id", model.getOrderid());
-                        intent.putExtra("image", model.getImage());
-                        intent.putExtra("category", model.getCategory());
-                        startActivity(intent);
+//                        Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
+//                        intent.putExtra("pid", model.getPid());
+//                        intent.putExtra("order_id", model.getOrderid());
+//                        intent.putExtra("image", model.getImage());
+//                        intent.putExtra("category", model.getCategory());
+//                        startActivity(intent);
                     }
                 });
 
