@@ -293,7 +293,8 @@
                 android:background="@drawable/grp_grad"
                 android:fontFamily="sans-serif-light"
                 android:text="Update Profile"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:id="@+id/Grp_update"/>
 
         </LinearLayout>
 
