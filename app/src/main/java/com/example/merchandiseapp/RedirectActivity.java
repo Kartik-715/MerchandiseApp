@@ -108,7 +108,8 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getApplicationContext(),"Group Register",Toast.LENGTH_SHORT).show();
-                            //Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
+                            Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
+                            startActivity(intent);
                         }
                     });
                     builder.setNegativeButton("Cancel",null).setCancelable(false);
