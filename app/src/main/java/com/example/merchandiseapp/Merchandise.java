@@ -6,96 +6,45 @@ import java.util.HashMap;
 
 public class Merchandise
 {
-    private String BrandName ;
-    private String Image ;
-    private String ManuAddress ;
-    private String Material;
-    private String ProdID;
-    private String ReturnApplicable;
+    private ArrayList<String> AccessGroup;
     private String Category;
-    private String VendorID;
-    private ArrayList<String> price;
-    private ArrayList<String> quantity;
-    private String isMale ;
+    private String GroupName;
+    private ArrayList<String> Image;
+    private String Material;
+    private String OrderType;
+    private String PID;
+    private String Price;
+    private ArrayList<String> Quantity;
+    private ArrayList<String> Size;
+
 
     public Merchandise()
     {
 
     }
 
-    public Merchandise(String brandName, String image, String manuAddress, String material, String prodID, String returnApplicable, String category, String vendorID, ArrayList<String> price, ArrayList<String> quantity, String isMale)
+    public Merchandise(ArrayList<String> accessGroup, String category, String groupName, ArrayList<String> image, String material, String orderType, String PID, String price, ArrayList<String> quantity, ArrayList<String> size)
     {
-        BrandName = brandName;
-        Image = image;
-        ManuAddress = manuAddress;
-        Material = material;
-        ProdID = prodID;
-        ReturnApplicable = returnApplicable;
+        AccessGroup = accessGroup;
         Category = category;
-        VendorID = vendorID;
-        this.price = price;
-        this.quantity = quantity;
-        this.isMale = isMale;
-    }
-
-    public String getBrandName()
-    {
-        return BrandName;
-    }
-
-    public void setBrandName(String brandName)
-    {
-        BrandName = brandName;
-    }
-
-    public String getImage()
-    {
-        return Image;
-    }
-
-    public void setImage(String image)
-    {
+        GroupName = groupName;
         Image = image;
-    }
-
-    public String getManuAddress()
-    {
-        return ManuAddress;
-    }
-
-    public void setManuAddress(String manuAddress)
-    {
-        ManuAddress = manuAddress;
-    }
-
-    public String getMaterial()
-    {
-        return Material;
-    }
-
-    public void setMaterial(String material)
-    {
         Material = material;
+        OrderType = orderType;
+        this.PID = PID;
+        Price = price;
+        Quantity = quantity;
+        Size = size;
     }
 
-    public String getProdID()
+    public ArrayList<String> getAccessGroup()
     {
-        return ProdID;
+        return AccessGroup;
     }
 
-    public void setProdID(String prodID)
+    public void setAccessGroup(ArrayList<String> accessGroup)
     {
-        ProdID = prodID;
-    }
-
-    public String getReturnApplicable()
-    {
-        return ReturnApplicable;
-    }
-
-    public void setReturnApplicable(String returnApplicable)
-    {
-        ReturnApplicable = returnApplicable;
+        AccessGroup = accessGroup;
     }
 
     public String getCategory()
@@ -108,43 +57,83 @@ public class Merchandise
         Category = category;
     }
 
-    public String getVendorID()
+    public String getGroupName()
     {
-        return VendorID;
+        return GroupName;
     }
 
-    public void setVendorID(String vendorID)
+    public void setGroupName(String groupName)
     {
-        VendorID = vendorID;
+        GroupName = groupName;
     }
 
-    public ArrayList<String> getPrice()
+    public ArrayList<String> getImage()
     {
-        return price;
+        return Image;
     }
 
-    public void setPrice(ArrayList<String> price)
+    public void setImage(ArrayList<String> image)
     {
-        this.price = price;
+        Image = image;
+    }
+
+    public String getMaterial()
+    {
+        return Material;
+    }
+
+    public void setMaterial(String material)
+    {
+        Material = material;
+    }
+
+    public String getOrderType()
+    {
+        return OrderType;
+    }
+
+    public void setOrderType(String orderType)
+    {
+        OrderType = orderType;
+    }
+
+    public String getPID()
+    {
+        return PID;
+    }
+
+    public void setPID(String PID)
+    {
+        this.PID = PID;
+    }
+
+    public String getPrice()
+    {
+        return Price;
+    }
+
+    public void setPrice(String price)
+    {
+        Price = price;
     }
 
     public ArrayList<String> getQuantity()
     {
-        return quantity;
+        return Quantity;
     }
 
     public void setQuantity(ArrayList<String> quantity)
     {
-        this.quantity = quantity;
+        Quantity = quantity;
     }
 
-    public String getIsMale()
+    public ArrayList<String> getSize()
     {
-        return isMale;
+        return Size;
     }
 
-    public void setIsMale(String isMale)
+    public void setSize(ArrayList<String> size)
     {
-        this.isMale = isMale;
+        Size = size;
     }
 }

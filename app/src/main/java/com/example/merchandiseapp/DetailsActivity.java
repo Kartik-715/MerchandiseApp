@@ -24,6 +24,7 @@ import java.util.HashMap;
 public class DetailsActivity extends AppCompatActivity
 {
     private ArrayList<String> orderid_list;
+    private ArrayList<String> group_list;
     private EditText PhoneNumber, Address, Email_ID;
     private Button Payment;
 
@@ -35,6 +36,8 @@ public class DetailsActivity extends AppCompatActivity
 
 
         orderid_list = getIntent().getStringArrayListExtra("orderid_list");
+        group_list = getIntent().getStringArrayListExtra("group_list");
+
         PhoneNumber = (EditText) findViewById(R.id.Booking_Phone_Number);
         Address = (EditText) findViewById(R.id.Booking_Address);
         Email_ID = (EditText) findViewById(R.id.Booking_Email);
@@ -58,17 +61,32 @@ public class DetailsActivity extends AppCompatActivity
     {
 
         orderid_list = getIntent().getStringArrayListExtra("orderid_list");
+        group_list = getIntent().getStringArrayListExtra("group_list");
+
         for(int i=0;i<orderid_list.size();i++)
         {
             String orderid = orderid_list.get(i);
+            String group_name = group_list.get(i);
 
-            final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser).child(orderid);
+            final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+            final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(Prevalent.currentOnlineUser).child(orderid);
+
             final HashMap<String, Object> cartMap = new HashMap<>();
-            cartMap.put("contact", PhoneNumber.getText().toString());
-            cartMap.put("address", Address.getText().toString());
-            cartMap.put("email",Email_ID.getText().toString());
+            cartMap.put("Contact", PhoneNumber.getText().toString());
+            cartMap.put("Address", Address.getText().toString());
+            cartMap.put("Email",Email_ID.getText().toString());
 
             cartListRef.updateChildren(cartMap)
+                    .addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+
+            cartListRef2.updateChildren(cartMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>()
                     {
                         @Override

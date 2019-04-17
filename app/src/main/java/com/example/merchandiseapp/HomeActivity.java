@@ -71,30 +71,36 @@ public class HomeActivity extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        global = (G_var) getApplicationContext();
+        //global = (G_var) getApplicationContext();
 
         /* Tab Layout Setting */
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
 
-
         DatabaseReference allMerchandise;
-        allMerchandise = FirebaseDatabase.getInstance().getReference().child("Merchandise");
+        allMerchandise = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
+        System.out.println(allMerchandise);
 
-        allMerchandise.addValueEventListener(new ValueEventListener() {
+
+        allMerchandise.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                System.out.println("heyyyy");
                 HashMap<String, Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println(All_merchandise);
 
-
-                for (Object o : All_merchandise.entrySet()) {
+                for (Object o : All_merchandise.entrySet())
+                {
                     HashMap.Entry p1 = (HashMap.Entry) o;
+                    Toast.makeText(HomeActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
                     FragmentItem fragment = new FragmentItem();
                     Bundle bundle = new Bundle();
                     bundle.putString("category", (String) p1.getKey());
@@ -112,13 +118,12 @@ public class HomeActivity extends AppCompatActivity
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
 
-
         /* Tab Layout Setting */
 
 
-        Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();
 
-        Log.d("name", global.getUsername());
+        //Log.d("name", global.getUsername());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
@@ -126,9 +131,11 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
 
@@ -148,44 +155,37 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
         View headerView = navigationView.getHeaderView(0);
 
 
 
         String User_ID, User_Email;
-        User_Email = user.getEmail();
-        /*User_ID = "";
+        //User_Email = user.getEmail();
+        //User_ID = user.getUid();
+        User_Email = "mayank@iitg.ac.in";
 
-        for (int i = 0; i < User_Email.length(); i++){
-            char c = User_Email.charAt(i);
-            if(c == '@')
-                break;
-            else
-            {
-                User_ID += c;
-            }
-        }*/
+        String temp_email = User_Email;
+        int temp = User_Email.hashCode();
+        final String hashcode = Integer.toString(temp);
 
-        User_ID = user.getUid();
+        Prevalent.currentOnlineUser = hashcode;
+        Prevalent.currentEmail = temp_email;
 
-        Prevalent.currentOnlineUser = User_ID;
-        Prevalent.currentEmail = User_Email;
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
-        navUsername.setText(global.getUsername());
-        navemail.setText(global.getEmail());
+        //navUsername.setText(global.getUsername());
+        navemail.setText(User_Email);
 
         imageView = headerView.findViewById(R.id.imageView);
-        addImage();
+        //addImage();
 //        new DownloadImageTask(imageView)
 //                .execute(user.getPhotoUrl().toString());
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -201,10 +201,12 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
@@ -213,7 +215,8 @@ public class HomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

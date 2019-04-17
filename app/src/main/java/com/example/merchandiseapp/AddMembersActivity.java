@@ -91,7 +91,7 @@ public class AddMembersActivity extends AppCompatActivity
         Prevalent_Groups.currentGroupName ="CSEA";
         int temp = inputText.hashCode();
         final String hashcode = Integer.toString(temp);
-
+        Toast.makeText(AddMembersActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
         final DatabaseReference memberRef = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members");
         ArrayList<String> members = new ArrayList<>();
         members.add(hashcode);
@@ -120,7 +120,6 @@ public class AddMembersActivity extends AppCompatActivity
 
                 else
                 {
-                    //create a new user
                     ArrayList<String> groups = new ArrayList<>();
                     groups.add(hashcode);
 

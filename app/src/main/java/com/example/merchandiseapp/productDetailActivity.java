@@ -50,8 +50,10 @@ public class productDetailActivity extends AppCompatActivity
     private String orderID = "";
     private String image = "";
     private String category = "";
+    private String group_name = "";
     private ArrayList<String> orderid_list;
-    private String image_src;
+    private ArrayList<String> group_list;
+    private ArrayList<String> image_src;
     private Spinner SizeSpinner;
     private String selecteditem;
     private ArrayList<String> arraySpinner;
@@ -70,12 +72,17 @@ public class productDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        image_src = new ArrayList<>();
+
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
-        image_src = getIntent().getStringExtra("image");
+        image_src = getIntent().getStringArrayListExtra("image");
         category = getIntent().getStringExtra("category");
+        group_name = getIntent().getStringExtra("groupName");
+
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
+        group_list = new ArrayList<>();
 
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         buyNowButton = findViewById(R.id.buy_now_Button);
@@ -174,7 +181,8 @@ public class productDetailActivity extends AppCompatActivity
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-        String neworderID;
+
+        final String neworderID;
 
         if(orderID.equals("empty"))
         {
@@ -189,30 +197,43 @@ public class productDetailActivity extends AppCompatActivity
 
         }
 
-        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders");
+        final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Orders_Temp");
 
 
         final HashMap<String, Object> cartMap = new HashMap<>();
-        cartMap.put("pid",productID);
-        cartMap.put("pname",productName.getText().toString());
-        cartMap.put("price",productPrice.getText().toString());
-        cartMap.put("date",saveCurrentDate);
-        cartMap.put("time",saveCurrentTime);
-        cartMap.put("contact", "");
-        cartMap.put("address", "");
-        cartMap.put("email","");
-        cartMap.put("isplaced","false");
-        cartMap.put("status","incart");
-        cartMap.put("quantity",numberButton.getNumber());
-        cartMap.put("discount ","");
-        cartMap.put("uid", User_ID);
-        cartMap.put("orderid", neworderID);
-        cartMap.put("image", image);
-        cartMap.put("category", category);
-        cartMap.put("size", selecteditem);
+        cartMap.put("ProductID",productID);
+        //cartMap.put("pname",productName.getText().toString());
+        cartMap.put("GroupName",productName.getText().toString());
+        cartMap.put("Price",productPrice.getText().toString());
+        cartMap.put("Date",saveCurrentDate);
+        cartMap.put("Time",saveCurrentTime);
+        cartMap.put("Contact", "");
+        cartMap.put("Address", "");
+        cartMap.put("Email","");
+        cartMap.put("IsPlaced","false");
+        cartMap.put("Status","incart");
+        cartMap.put("Quantity",numberButton.getNumber());
+        cartMap.put("UserID", User_ID);
+        cartMap.put("OrderID", neworderID);
+        cartMap.put("Image", image_src);
+        cartMap.put("Category", category);
+        cartMap.put("Size", selecteditem);
 
         //Removing the previous one and making new one
         cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
+
+                }
+            }
+        });
+
+        cartListRef2.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -232,15 +253,34 @@ public class productDetailActivity extends AppCompatActivity
 
                 if(task.isSuccessful())
                 {
-                    orderid_list.add(orderID);
+                    /*orderid_list.add(orderID);
                     Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
                     intent.putExtra("orderid_list", orderid_list);
                     startActivity(intent);
+*/
+                    cartListRef2.child(User_ID).child(neworderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                            if(task.isSuccessful())
+                            {
+                                orderid_list.add(orderID);
+                                group_list.add(group_name);
+                                Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
+                                intent.putExtra("orderid_list", orderid_list);
+                                intent.putExtra("group_list", group_list);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 }
             }
         });
 
     }
+
     private void addingToCartList()
     {
         String saveCurrentTime, saveCurrentDate;
@@ -250,7 +290,7 @@ public class productDetailActivity extends AppCompatActivity
 
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calForDate.getTime());
-        String neworderID;
+        final String neworderID;
 
         if(orderID.equals("empty"))
         {
@@ -264,30 +304,42 @@ public class productDetailActivity extends AppCompatActivity
             orderID = orderID;
 
         }
-        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-
+        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders");
+        final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Orders_Temp");
 
         final HashMap<String, Object> cartMap = new HashMap<>();
-        cartMap.put("pid",productID);
-        cartMap.put("pname",productName.getText().toString());
-        cartMap.put("price",productPrice.getText().toString());
-        cartMap.put("date",saveCurrentDate);
-        cartMap.put("time",saveCurrentTime);
-        cartMap.put("contact", "");
-        cartMap.put("address", "");
-        cartMap.put("email","");
-        cartMap.put("isplaced","false");
-        cartMap.put("status","incart");
-        cartMap.put("quantity",numberButton.getNumber());
-        cartMap.put("discount ","");
-        cartMap.put("uid", User_ID);
-        cartMap.put("orderid", neworderID);
-        cartMap.put("image", image);
-        cartMap.put("category", category);
-        cartMap.put("size", selecteditem);
+        cartMap.put("ProductID",productID);
+        //cartMap.put("pname",productName.getText().toString());
+        cartMap.put("GroupName",productName.getText().toString());
+        cartMap.put("Price",productPrice.getText().toString());
+        cartMap.put("Date",saveCurrentDate);
+        cartMap.put("Time",saveCurrentTime);
+        cartMap.put("Contact", "");
+        cartMap.put("Address", "");
+        cartMap.put("Email","");
+        cartMap.put("IsPlaced","false");
+        cartMap.put("Status","incart");
+        cartMap.put("Quantity",numberButton.getNumber());
+        cartMap.put("UserID", User_ID);
+        cartMap.put("OrderID", neworderID);
+        cartMap.put("Image", image_src);
+        cartMap.put("Category", category);
+        cartMap.put("Size", selecteditem);
 
         //Removing the previous one and making new one
         cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
+
+                }
+            }
+        });
+
+        cartListRef2.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -308,10 +360,28 @@ public class productDetailActivity extends AppCompatActivity
 
                         if(task.isSuccessful())
                         {
-                            Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
+                           /* Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                            startActivity(intent);*/
+
+                            cartListRef2.child(User_ID).child(neworderID).updateChildren(cartMap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>()
+                                    {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task)
+                                        {
+
+                                            if(task.isSuccessful())
+                                            {
+                                                Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
+
+                                                Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
+                                                startActivity(intent);
+
+                                            }
+                                        }
+                                    });
 
                         }
                     }
@@ -323,7 +393,8 @@ public class productDetailActivity extends AppCompatActivity
 
         if(flag == 0)
         {
-            DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
+
+            DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Merchandise").child(category);
             productsRef.child(productID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -331,8 +402,9 @@ public class productDetailActivity extends AppCompatActivity
                     if(dataSnapshot.exists())
                     {
                         Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-                        productName.setText(merchandises.getBrandName());
-                        Picasso.get().load(merchandises.getImage()).into(productImage);
+                        productName.setText(merchandises.getGroupName());
+                        if(merchandises.getImage() != null)
+                            Picasso.get().load(merchandises.getImage().get(0)).into(productImage);
                     }
                 }
 
@@ -347,8 +419,7 @@ public class productDetailActivity extends AppCompatActivity
         }
 
 
-
-        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Merchandise").child(category);
         productsRef.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -357,46 +428,45 @@ public class productDetailActivity extends AppCompatActivity
                 {
                     Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
                     numberButton.setNumber("1");
-                    productName.setText(merchandises.getBrandName());
-                    image = merchandises.getImage();
-                    Picasso.get().load(merchandises.getImage()).into(productImage);
+                    productName.setText(merchandises.getGroupName());
+                    productPrice.setText(merchandises.getPrice());
+
+                    if(merchandises.getImage() != null)
+                    {
+                        image = merchandises.getImage().get(0);
+                        Picasso.get().load(merchandises.getImage().get(0)).into(productImage);
+                    }
+
 
                     if(selecteditem.equals("S"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(0));
                     }
 
                     if(selecteditem.equals("M"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(1));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(1));
                     }
 
                     if(selecteditem.equals("L"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(2));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(2));
                     }
 
                     if(selecteditem.equals("XL"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(3));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(3));
                     }
 
                     if(selecteditem.equals("XXL"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(4));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(4));
                     }
-
-
                 }
             }
 
@@ -419,8 +489,8 @@ public class productDetailActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     int idx = 0;
-                    Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-                    ArrayList<String> quantity = merchandises.getQuantity();
+                    //Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
+                    /*ArrayList<String> quantity = merchandises.getQuantity();
                     for(int i=0;i<quantity.size();i++)
                     {
 
@@ -453,7 +523,9 @@ public class productDetailActivity extends AppCompatActivity
 
 
                         }
-                    }
+                    }*/
+
+                    arraySpinner.add("S");
 
                     myCallback.onCallback(arraySpinner);
 

@@ -60,13 +60,17 @@ public class LoginActivity extends AppCompatActivity {
     String final_Access;
     User_data vendor = null;
     private Button temp_Button;
+    private Button temp_Button2;
     //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         temp_Button = findViewById(R.id.btn_add);
+        temp_Button2 = findViewById(R.id.btn_view);
+
         global = (G_var) getApplicationContext();
         keepLogged = findViewById(R.id.loggedIn);
         progressBar=findViewById(R.id.indeterminateBar);
@@ -77,6 +81,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent intent = new Intent(LoginActivity.this, AddMembersActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        temp_Button2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });

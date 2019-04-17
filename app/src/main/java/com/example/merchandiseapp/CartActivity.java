@@ -37,6 +37,7 @@ public class CartActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
     private ArrayList<String> orderid_list;
+    private ArrayList<String> group_list;
     private DatabaseReference cartListRef;
     private ImageView ImageEmptyCart;
     private Button BtnShopNow;
@@ -50,7 +51,8 @@ public class CartActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        orderid_list = new ArrayList<String>();
+        orderid_list = new ArrayList<>();
+        group_list = new ArrayList<>();
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -77,6 +79,7 @@ public class CartActivity extends AppCompatActivity
     {
         Intent intent = new Intent(CartActivity.this, DetailsActivity.class);
         intent.putExtra("orderid_list", orderid_list);
+        intent.putExtra("group_list", group_list);
         startActivity(intent);
     }
 
@@ -85,8 +88,8 @@ public class CartActivity extends AppCompatActivity
     {
         super.onStart();
 
-        cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser);
-        final Query queries = cartListRef.orderByChild("isplaced").equalTo("false");
+        cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser);
+        final Query queries = cartListRef.orderByChild("IsPlaced").equalTo("false");
 
         queries.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -135,6 +138,7 @@ public class CartActivity extends AppCompatActivity
         });
     }
 
+
     private void DataExists(Query queries)
     {
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
@@ -149,9 +153,11 @@ public class CartActivity extends AppCompatActivity
             {
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
                 holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
-                holder.txtProductName.setText(model.getPname());
-                Picasso.get().load(model.getImage()).into(holder.CartImage);
-                orderid_list.add(model.getOrderid());
+                holder.txtProductName.setText(model.getGroupName());
+                if(model.getImage() != null)
+                    Picasso.get().load(model.getImage().get(0)).into(holder.CartImage);
+                orderid_list.add(model.getOrderID());
+                group_list.add(model.getGroupName());
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
                 {
@@ -159,7 +165,27 @@ public class CartActivity extends AppCompatActivity
                     public void onClick(View v)
                     {
 
-                        cartListRef.child(model.getOrderid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        cartListRef.child(model.getOrderID()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+                                if(task.isSuccessful())
+                                {
+                                    /*System.out.println(Integer.toString(countCards));
+                                    countCards--;
+                                    Toast.makeText(CartActivity.this, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
+                                    if(countCards == 0)
+                                    {
+                                        Intent intent = new Intent(CartActivity.this, CartActivity.class);
+                                        startActivity(intent);
+                                    }*/
+                                }
+                            }
+                        });
+
+                        final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName()).child("Orders").child(Prevalent.currentOnlineUser);
+                        cartListRef2.child(model.getOrderID()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
                             @Override
                             public void onComplete(@NonNull Task<Void> task)
@@ -178,10 +204,7 @@ public class CartActivity extends AppCompatActivity
                             }
                         });
 
-
                     }
-
-
                 });
 
                 holder.EditButton.setOnClickListener(new View.OnClickListener()
@@ -191,10 +214,11 @@ public class CartActivity extends AppCompatActivity
                     {
 
                         Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
-                        intent.putExtra("pid", model.getPid());
-                        intent.putExtra("order_id", model.getOrderid());
+                        intent.putExtra("pid", model.getProductID());
+                        intent.putExtra("order_id", model.getOrderID());
                         intent.putExtra("image", model.getImage());
                         intent.putExtra("category", model.getCategory());
+                        intent.putExtra("groupName", model.getGroupName());
                         startActivity(intent);
                     }
                 });

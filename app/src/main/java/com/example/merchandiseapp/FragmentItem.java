@@ -10,12 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class FragmentItem extends Fragment
 {
@@ -43,28 +49,34 @@ public class FragmentItem extends Fragment
 
     }
 
-
     private void setupRecyclerView(RecyclerView recyclerView)
     {
-        DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(bundle.getString("category","none")) ;
+        ArrayList<String> array_test = new ArrayList<>();
+        array_test.add("CSEA");
+        //array_test.add("EEE");
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
         recyclerView.setLayoutManager(layoutManager);
 
-        FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
-                        .setQuery(ProductsRef, Merchandise.class)
-                        .build();
+        for(int i=0;i<array_test.size();i++)
+        {
+            DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(array_test.get(i)).child("Merchandise").child(bundle.getString("category","none")) ;
 
-        FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder>(options)
-                {
-                    @Override
-                    protected void onBindViewHolder(@NonNull MerchandiseViewHolder holder, int position, final Merchandise model)
-                    {
-                        holder.txtProductName.setText(model.getBrandName());
-                        holder.txtProductDescription.setText(model.getCategory());
-                        holder.txtProductPrice.setText("Price = " + model.getPrice().get(0) + "$");
-                        Picasso.get().load(model.getImage()).into(holder.imageView);
+            FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
+                    .setQuery(ProductsRef, Merchandise.class)
+                    .build();
+
+            FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder> adapter = new FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder>(options)
+             {
+                 @Override
+                 protected void onBindViewHolder(@NonNull MerchandiseViewHolder holder, int position, final Merchandise model)
+                 {
+                     holder.txtProductName.setText(model.getGroupName());
+                     holder.txtProductDescription.setText(model.getCategory());
+                     holder.txtProductPrice.setText("Price = " + model.getPrice() );
+
+                     if(model.getImage() != null)
+                         Picasso.get().load(model.getImage().get(0)).into(holder.imageView);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener()
                         {
@@ -73,26 +85,29 @@ public class FragmentItem extends Fragment
                             {
                                 Intent intent;
                                 intent = new Intent(mHomeActivity, productDetailActivity.class);
-                                intent.putExtra("pid", model.getProdID());
+                                intent.putExtra("pid", model.getPID());
                                 intent.putExtra("order_id", "empty");
                                 intent.putExtra("image", model.getImage());
                                 intent.putExtra("category", model.getCategory());
+                                intent.putExtra("groupName", model.getGroupName());
                                 mHomeActivity.startActivity(intent);
                             }
                         });
-                    }
+                 }
 
-                    @NonNull
-                    @Override
-                    public MerchandiseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-                    {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-                        return new MerchandiseViewHolder(view);
-                    }
-                };
+                 @NonNull
+                 @Override
+                 public MerchandiseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+                 {
+                     View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
+                     return new MerchandiseViewHolder(view);
+                 }
+             };
 
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
+            recyclerView.setAdapter(adapter);
+            adapter.startListening();
+        }
+
     }
 
 

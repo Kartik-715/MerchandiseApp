@@ -119,11 +119,11 @@ public class productsCourrier extends AppCompatActivity {
                 Order order = dataSnapshot.getValue(Order.class);
                 //System.out.println("hello" + order);
                 status = order.getStatus();
-                OrderID = order.getOrderid();
-               productName.setText(order.getPname());
+                OrderID = order.getOrderID();
+               productName.setText(order.getGroupName());
                productPrice.setText(order.getPrice());
                 productQuantity.setText(order.getQuantity());
-                productBuyer.setText(order.getUid());
+                productBuyer.setText(order.getUserID());
                 Spinner dropdown = findViewById(R.id.spinner1);
                 System.out.println(status);
 
