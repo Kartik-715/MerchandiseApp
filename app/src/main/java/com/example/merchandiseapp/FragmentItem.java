@@ -61,10 +61,10 @@ public class FragmentItem extends Fragment
                     @Override
                     protected void onBindViewHolder(@NonNull MerchandiseViewHolder holder, int position, final Merchandise model)
                     {
-                        holder.txtProductName.setText(model.getBrandName());
+                       // holder.txtProductName.setText(model.getBrandName());
                         holder.txtProductDescription.setText(model.getCategory());
-                        holder.txtProductPrice.setText("Price = " + model.getPrice().get(0));
-                        Picasso.get().load(model.getImage()).into(holder.imageView);
+                        //holder.txtProductPrice.setText("Price = " + model.getPrice().get(0));
+                        //Picasso.get().load(model.getImage()).into(holder.imageView);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener()
                         {
@@ -73,7 +73,7 @@ public class FragmentItem extends Fragment
                             {
                                 Intent intent;
                                 intent = new Intent(mHomeActivity, productDetailActivity.class);
-                                intent.putExtra("pid", model.getProdID());
+                                //intent.putExtra("pid", model.getProdID());
                                 intent.putExtra("order_id", "empty");
                                 intent.putExtra("image", model.getImage());
                                 intent.putExtra("category", model.getCategory());

@@ -331,8 +331,8 @@ public class productDetailActivity extends AppCompatActivity
                     if(dataSnapshot.exists())
                     {
                         Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-                        productName.setText(merchandises.getBrandName());
-                        Picasso.get().load(merchandises.getImage()).into(productImage);
+                        //productName.setText(merchandises.getBrandName());
+                        //Picasso.get().load(merchandises.getImage()).into(productImage);
                     }
                 }
 
@@ -357,43 +357,43 @@ public class productDetailActivity extends AppCompatActivity
                 {
                     Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
                     numberButton.setNumber("1");
-                    productName.setText(merchandises.getBrandName());
-                    image = merchandises.getImage();
-                    Picasso.get().load(merchandises.getImage()).into(productImage);
+                    //productName.setText(merchandises.getBrandName());
+                    //image = merchandises.getImage();
+                    //Picasso.get().load(merchandises.getImage()).into(productImage);
 
                     if(selecteditem.equals("S"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(0));
+                        //productPrice.setText(merchandises.getPrice().get(0));
                     }
 
                     if(selecteditem.equals("M"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(1));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(1));
+                        //productPrice.setText(merchandises.getPrice().get(1));
                     }
 
                     if(selecteditem.equals("L"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(2));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(2));
+                        //productPrice.setText(merchandises.getPrice().get(2));
                     }
 
                     if(selecteditem.equals("XL"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(3));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(3));
+                        //productPrice.setText(merchandises.getPrice().get(3));
                     }
 
                     if(selecteditem.equals("XXL"))
                     {
                         int final_quantity = Integer.parseInt(merchandises.getQuantity().get(4));
                         numberButton.setRange(1,final_quantity);
-                        productPrice.setText(merchandises.getPrice().get(4));
+                        //productPrice.setText(merchandises.getPrice().get(4));
                     }
 
 

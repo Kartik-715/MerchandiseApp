@@ -218,7 +218,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.manage_profile) {
-            Intent intent = new Intent(this, ManageProfile.class);
+            //Intent intent = new Intent(this, ManageProfile.class);
+            Intent intent = new Intent(this,AdminNotificationDisplayActivity.class);
             startActivity(intent);
         } else if (id == R.id.wallet) {
             Intent intent = new Intent(this, myWallet.class);
