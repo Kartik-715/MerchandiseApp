@@ -55,7 +55,7 @@ public class productDetailActivity extends AppCompatActivity
     private ArrayList<String> group_list;
     private ArrayList<String> image_src;
     private Spinner SizeSpinner;
-    private String selecteditem;
+    private int selecteditem;
     private ArrayList<String> arraySpinner;
     private int flag;
 
@@ -101,8 +101,6 @@ public class productDetailActivity extends AppCompatActivity
             @Override
             public void onCallback(ArrayList<String> value)
             {
-                System.out.println("qqqqqqqqqq" + arraySpinner);
-                System.out.println("wwwwwwwwww" + value);
 
                 if(arraySpinner.isEmpty())
                 {
@@ -127,7 +125,7 @@ public class productDetailActivity extends AppCompatActivity
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                         {
-                            selecteditem = SizeSpinner.getSelectedItem().toString();
+                            selecteditem = SizeSpinner.getSelectedItemPosition();
                             getProductDetails(productID);
                         }
 
@@ -437,36 +435,9 @@ public class productDetailActivity extends AppCompatActivity
                         Picasso.get().load(merchandises.getImage().get(0)).into(productImage);
                     }
 
+                    int final_quantity = Integer.parseInt(merchandises.getQuantity().get(selecteditem));
+                    numberButton.setRange(1,final_quantity);
 
-                    if(selecteditem.equals("S"))
-                    {
-                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
-                        numberButton.setRange(1,final_quantity);
-                    }
-
-                    if(selecteditem.equals("M"))
-                    {
-                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(1));
-                        numberButton.setRange(1,final_quantity);
-                    }
-
-                    if(selecteditem.equals("L"))
-                    {
-                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(2));
-                        numberButton.setRange(1,final_quantity);
-                    }
-
-                    if(selecteditem.equals("XL"))
-                    {
-                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(3));
-                        numberButton.setRange(1,final_quantity);
-                    }
-
-                    if(selecteditem.equals("XXL"))
-                    {
-                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(4));
-                        numberButton.setRange(1,final_quantity);
-                    }
                 }
             }
 
@@ -480,8 +451,9 @@ public class productDetailActivity extends AppCompatActivity
 
     private void initializeSpinner(final MyCallback myCallback)
     {
-        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(category);
-        productsRef.child(productID).addValueEventListener(new ValueEventListener()
+
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Merchandise").child(category).child(productID);
+        productsRef.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -489,46 +461,12 @@ public class productDetailActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     int idx = 0;
-                    //Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-                    /*ArrayList<String> quantity = merchandises.getQuantity();
-                    for(int i=0;i<quantity.size();i++)
-                    {
-
-                        if(quantity.get(i).equals("0") == false)
-                        {
-                            if(i == 0)
-                            {
-                                arraySpinner.add("S");
-                            }
-
-                            if(i == 1)
-                            {
-                                arraySpinner.add("M");
-                            }
-
-                            if(i == 2)
-                            {
-                                arraySpinner.add("L");
-                            }
-
-                            if(i == 3)
-                            {
-                                arraySpinner.add("XL");
-                            }
-
-                            if(i == 4)
-                            {
-                                arraySpinner.add("XXL");
-                            }
-
-
-                        }
-                    }*/
-
-                    arraySpinner.add("S");
+                    Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
+                    ArrayList<String> sizes = merchandises.getSize();
+                    for(int i=0;i<sizes.size();i++)
+                        arraySpinner.add(sizes.get(i));
 
                     myCallback.onCallback(arraySpinner);
-
 
                 }
             }

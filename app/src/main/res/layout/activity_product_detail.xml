@@ -52,27 +52,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/productPrice"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="33dp"
         android:elevation="6dp"
         android:gravity="center"
         app:backGroundColor="#FF3659"
         app:finalNumber="10"
-        app:initialNumber="1"
-        app:textSize="16sp"
 
-        />
+        app:initialNumber="1"
+        app:textSize="16sp" />
 
     <Spinner
         android:id="@+id/size_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/numberBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-36dp"
 
-        >
+        android:layout_marginEnd="13dp"
+        android:gravity="center">
 
     </Spinner>
 

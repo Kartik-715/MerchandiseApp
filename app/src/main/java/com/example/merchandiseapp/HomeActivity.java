@@ -100,7 +100,6 @@ public class HomeActivity extends AppCompatActivity
                 for (Object o : All_merchandise.entrySet())
                 {
                     HashMap.Entry p1 = (HashMap.Entry) o;
-                    Toast.makeText(HomeActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
                     FragmentItem fragment = new FragmentItem();
                     Bundle bundle = new Bundle();
                     bundle.putString("category", (String) p1.getKey());
