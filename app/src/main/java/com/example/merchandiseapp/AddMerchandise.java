@@ -1,9 +1,8 @@
 package com.example.merchandiseapp;
 
-<<<<<<< HEAD
+
 import android.content.Intent;
-=======
->>>>>>> a387b2f98f0be08fe2a87ffd3a5a5e7ed4dc53a9
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -135,7 +134,7 @@ public class AddMerchandise extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-/*                Spinner dropdown = findViewById(R.id.spinner1);
+       
                 Spinner dropdown = findViewById(R.id.spinner1);
 
                 GroupName = gpName.getText().toString();
@@ -154,9 +153,7 @@ public class AddMerchandise extends AppCompatActivity {
                 childUpdates.put( Category +"/"+PID, merchandiseValues);
 
 
-                myRef.updateChildren(childUpdates);*/
-Intent i = new Intent(AddMerchandise.this, OutlookLogin.class);
-startActivity(i);
+                myRef.updateChildren(childUpdates);
 
 
 
