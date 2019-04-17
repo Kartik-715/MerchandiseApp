@@ -25,6 +25,7 @@ public class G_var extends Application {
 
 
 
+
     public G_var() {
     }
 

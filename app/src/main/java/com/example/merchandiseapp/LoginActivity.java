@@ -236,7 +236,7 @@ public class LoginActivity extends AppCompatActivity {
                                         intent = new Intent(getApplicationContext(), HomeActivity.class);
                                     }
                                     else if(final_Access.equals("1")) {
-                                        //intent = new Intent(getApplicationContext(),Courier.class);
+                                        intent = new Intent(getApplicationContext(),CourierActivity.class);
                                         Toast.makeText(getApplicationContext(),"Open Courier",Toast.LENGTH_LONG).show();
                                     }
                                     else if(final_Access.equals("2")) {
@@ -249,6 +249,7 @@ public class LoginActivity extends AppCompatActivity {
                                     else if(final_Access.equals("4")){
                                         intent = new Intent(getApplicationContext(),grpUser.class);
                                     }
+
                                     intent.putExtra("user", user);
                                     startActivity(intent);
                                 }
@@ -300,7 +301,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
             }
             else if(final_Access.equals("1")) {
-                //intent = new Intent(getApplicationContext(),Courier.class);
+                intent = new Intent(getApplicationContext(),CourierActivity.class);
                 Toast.makeText(getApplicationContext(),"Open Courier",Toast.LENGTH_LONG).show();
                 return;
             }
@@ -315,6 +316,7 @@ public class LoginActivity extends AppCompatActivity {
             else if(final_Access.equals("4")){
                 intent = new Intent(getApplicationContext(),grpUser.class);
             }
+
             intent.putExtra("user", user);
             startActivity(intent);
         }

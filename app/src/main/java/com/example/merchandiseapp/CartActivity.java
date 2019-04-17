@@ -148,7 +148,7 @@ public class CartActivity extends AppCompatActivity
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull final Order model)
             {
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
+                holder.txtProductPrice.setText("Price: " + model.getPrice() );
                 holder.txtProductName.setText(model.getPname());
                 Picasso.get().load(model.getImage()).into(holder.CartImage);
                 orderid_list.add(model.getOrderid());
@@ -190,12 +190,12 @@ public class CartActivity extends AppCompatActivity
                     public void onClick(View v)
                     {
 
-                        Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
-                        intent.putExtra("pid", model.getPid());
-                        intent.putExtra("order_id", model.getOrderid());
-                        intent.putExtra("image", model.getImage());
-                        intent.putExtra("category", model.getCategory());
-                        startActivity(intent);
+//                        Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
+//                        intent.putExtra("pid", model.getPid());
+//                        intent.putExtra("order_id", model.getOrderid());
+//                        intent.putExtra("image", model.getImage());
+//                        intent.putExtra("category", model.getCategory());
+//                        startActivity(intent);
                     }
                 });
 
