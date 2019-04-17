@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AddMerchandise"></activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".AddMerchandise" />
         <activity
             android:name=".VendorActivity"
             android:label="@string/title_activity_vendor"
@@ -56,14 +57,14 @@
             android:name=".CourierActivity"
             android:label="@string/title_activity_courier"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".productDetailActivity" />
+        <!--<activity android:name=".productDetailActivity" />-->
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".multiple_images"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
