@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +26,9 @@ public class myNotifications extends AppCompatActivity {
     private DatabaseReference notificationRef;
     private int count;
     private DatabaseReference stringNot;
+    private String [] arr ={"your group request is accepted","your request for a group is not accepted"};
     private String notiId;
+    private Integer val;
     private String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,9 @@ public class myNotifications extends AppCompatActivity {
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notiId = notificationRef.child("notiList").getKey();
-                stringNot = FirebaseDatabase.getInstance().getReference().child("Notifications").child(notiId);
+                notiId =  dataSnapshot.getValue(userFetch.class).getNotiList();
+                val = Integer.parseInt(notiId);
+                Toast.makeText(myNotifications.this, "****" + arr[val]  , Toast.LENGTH_SHORT).show();
                 NotificationManager mNotificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -49,9 +53,9 @@ public class myNotifications extends AppCompatActivity {
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("title")
-                        .setContentText(stringNot.getKey())
+                        .setContentText(arr[val])
                         .setAutoCancel(true);
-                Intent intent = new Intent(getApplicationContext(), AdminNotificationDisplayActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 PendingIntent pi = PendingIntent.getActivity(myNotifications.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(pi);
                 mNotificationManager.notify(0, mBuilder.build());
