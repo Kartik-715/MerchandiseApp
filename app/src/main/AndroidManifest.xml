@@ -21,9 +21,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".AddMerchandise" />
         <activity
-            android:name=".VendorActivity"
+            android:name=".GroupActivity"
             android:label="@string/title_activity_vendor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".grp_manage_profile" />
@@ -64,7 +63,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".multiple_images"
+            android:name=".AddMerchandise"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

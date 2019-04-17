@@ -1,6 +1,8 @@
 package com.example.merchandiseapp;
 import android.os.Parcel;
 
+import com.google.android.gms.common.SignInButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +37,25 @@ public class Merchandise
         Size = size;
         AccessGroup = accessGroup;
         OrderType = orderType;
+    }
+
+
+    public HashMap<String, Object> toMap()
+    {
+        HashMap<String, Object> result = new HashMap<>() ;
+        result.put("GroupName", GroupName) ;
+        result.put("Category", Category) ;
+        result.put("Image", Image) ;
+        result.put("Material",Material);
+        result.put("PID",PID);
+        result.put("Price",Price);
+        result.put("Qunatity",Quantity);
+        result.put("Size", Size);
+        result.put("AccessGroup",AccessGroup);
+        result.put("OrderType",OrderType);
+
+        return result ;
+
     }
 
     public String getGroupName() {
@@ -116,4 +137,6 @@ public class Merchandise
     public void setOrderType(String orderType) {
         OrderType = orderType;
     }
+
+
 }

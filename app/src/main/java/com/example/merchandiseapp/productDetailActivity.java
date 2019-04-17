@@ -330,9 +330,9 @@
 //                {
 //                    if(dataSnapshot.exists())
 //                    {
-//                        Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-//                        productName.setText(merchandises.getBrandName());
-//                        Picasso.get().load(merchandises.getImage()).into(productImage);
+////                        Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
+////                        productName.setText(merchandises.getBrandName());
+////                        Picasso.get().load(merchandises.getImage()).into(productImage);
 //                    }
 //                }
 //
@@ -365,7 +365,7 @@
 //                    {
 //                        int final_quantity = Integer.parseInt(merchandises.getQuantity().get(0));
 //                        numberButton.setRange(1,final_quantity);
-////                        productPrice.setText(merchandises.getPrice().get(0));
+//                        productPrice.setText(merchandises.getPrice().get(0));
 //                    }
 //
 //                    if(selecteditem.equals("M"))
