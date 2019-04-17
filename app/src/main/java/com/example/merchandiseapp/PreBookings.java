@@ -45,7 +45,8 @@ public class PreBookings extends AppCompatActivity {
     private int countCards;
     private HashMap<String, Object> All_orders = new HashMap<String, Object>();
     private ArrayList<String> ProductID = new ArrayList<>();
-
+    private String PID;
+    private String Category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,7 @@ public class PreBookings extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public void exit(View view, final String PID, final String Category){
+    public void exit(View view){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // Setting Alert Dialog Title
         alertDialogBuilder.setTitle("Confirm Remove..!!!");
@@ -124,23 +125,24 @@ public class PreBookings extends AppCompatActivity {
                 countCards = (int) dataSnapshot.getChildrenCount();
                 All_orders= (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println("*******watch out for this***********"+All_orders);
-                Iterator it = All_orders.entrySet().iterator();
-                while (it.hasNext())
-                {
-                    HashMap.Entry pair = (HashMap.Entry) it.next();
-                    ProductID.add((String) pair.getKey());
-                    it.remove();
-                }
+                Iterator it = null;
+                if(All_orders != null) {
+                    it = All_orders.entrySet().iterator();
 
-                if(dataSnapshot.exists())
-                {
-                    //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
-                    DataExists(queries);
-                }
-                else
-                {
-                    //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
-                    NoDataExists();
+
+                    while (it.hasNext()) {
+                        HashMap.Entry pair = (HashMap.Entry) it.next();
+                        ProductID.add((String) pair.getKey());
+                        it.remove();
+                    }
+
+                    if (dataSnapshot.exists()) {
+                        //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
+                        DataExists(queries);
+                    } else {
+                        //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
+                        NoDataExists();
+                    }
                 }
 
             }
@@ -187,18 +189,25 @@ public class PreBookings extends AppCompatActivity {
                 protected void onBindViewHolder(@NonNull final PreBookingHolder holder, int position, @NonNull final RequestDetails model) {
                     System.out.println(model);
 
+
                         holder.txtProductQuantity.setText("Quantity = " + model.getTotalQuantity());
                         holder.txtProductPrice.setText("Price: " + model.getPrice());
                         holder.txtProductName.setText(model.getCategory());
                         Picasso.get().load(model.getImage()).into(holder.CartImage);
                         //orderid_list.add(model.getOrderid());
 
+                        PID = model.getPID();
+                        Category = model.getCategory();
+
+                        System.out.println(PID+model.getPID());
+
                         holder.DeleteButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 System.out.println("*********************it should have entered here");
 
-                                exit(v,model.getPID(),model.getCategory());
+                                System.out.println(PID+Category);
+                                exit(v);
                             }
 
 
