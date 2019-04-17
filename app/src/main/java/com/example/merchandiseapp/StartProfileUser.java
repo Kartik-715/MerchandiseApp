@@ -35,6 +35,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StartProfileUser extends AppCompatActivity {
 
@@ -79,6 +81,8 @@ public class StartProfileUser extends AppCompatActivity {
 
         name.setText(user.getDisplayName());
         email.setText(user.getEmail());
+        contact.setText(user.getPhoneNumber());
+        Toast.makeText(getApplicationContext(),user.getPhoneNumber() + "hi",Toast.LENGTH_SHORT);
 
         new StartProfileUser.DownloadImageTask(profile_pic).execute(user.getPhotoUrl().toString());
 
@@ -86,12 +90,33 @@ public class StartProfileUser extends AppCompatActivity {
         Creator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               updateInfo();
 
-               Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
-               intent.putExtra("user", user);
-               startActivity(intent);
+               if(name.getText().toString().equals(""))
+                   Toast.makeText(getApplicationContext(),"Please enter the name.",Toast.LENGTH_SHORT).show();
 
+               else if(contact.getText().toString().equals(""))
+                   Toast.makeText(getApplicationContext(),"Please enter the Contact No.",Toast.LENGTH_SHORT).show();
+
+               else if(address.getText().toString().equals(""))
+                   Toast.makeText(getApplicationContext(),"Please enter the Address",Toast.LENGTH_SHORT).show();
+
+               else if(gender.getText().toString().equals(""))
+                   Toast.makeText(getApplicationContext(),"Please enter your Gender",Toast.LENGTH_SHORT).show();
+
+//               else if(validate_mobile(contact.getText().toString()))
+//                   Toast.makeText(getApplicationContext(),"Please check the entered mobile number",Toast.LENGTH_SHORT).show();
+//
+//               else if(validate_gender(gender.getText().toString()))
+//                   Toast.makeText(getApplicationContext(),"Please check the entered gender",Toast.LENGTH_SHORT).show();
+
+               else {
+
+                   updateInfo();
+
+                   Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                   intent.putExtra("user", user);
+                   startActivity(intent);
+               }
             }
         });
 
@@ -141,7 +166,7 @@ public class StartProfileUser extends AppCompatActivity {
         UserData = UserData.child(user.getUid());
 
         try{
-            UserData.child("Name").setValue(name.getText().toString());
+            //UserData.child("Name").setValue(name.getText().toString());
             UserData.child("Contact").setValue(contact.getText().toString());
             UserData.child("Address").setValue(address.getText().toString());
             UserData.child("Gender").setValue(gender.getText().toString());
