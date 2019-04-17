@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".OutlookLogin"></activity>
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".GroupActivity"
             android:label="@string/title_activity_vendor"
@@ -55,8 +56,7 @@
         <activity
             android:name=".CourierActivity"
             android:label="@string/title_activity_courier"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <!--<activity android:name=".productDetailActivity" />-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity android:name=".productDetailActivity" /> -->
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
@@ -69,6 +69,20 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--Intent filter to capture System Browser calling back to our app after sign-in-->
+        <activity
+            android:name="com.microsoft.identity.client.BrowserTabActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!--Add in your scheme/host from registered redirect URI-->
+                <!--By default, the scheme should be similar to 'msal[appId]' -->
+                <data android:scheme="msal[49325855-8489-4362-86da-71ef3125a401]"
+                    android:host="auth" />
             </intent-filter>
         </activity>
     </application>
