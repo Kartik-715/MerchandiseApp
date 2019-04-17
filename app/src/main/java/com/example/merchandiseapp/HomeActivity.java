@@ -68,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    View headerView;
 
 
     @Override
@@ -150,7 +151,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
 
 
 
@@ -182,6 +183,15 @@ public class HomeActivity extends AppCompatActivity
         addImage();
 //        new DownloadImageTask(imageView)
 //                .execute(user.getPhotoUrl().toString());
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        imageView = headerView.findViewById(R.id.imageView);
+        addImage();
+
     }
 
     @Override

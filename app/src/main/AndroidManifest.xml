@@ -20,7 +20,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".OutlookLogin"></activity>
+        <activity android:name=".GroupRegister"></activity>
+        <activity android:name=".RedirectActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".GroupActivity"
@@ -84,7 +94,7 @@
                 <data android:scheme="msal[49325855-8489-4362-86da-71ef3125a401]"
                     android:host="auth" />
             </intent-filter>
-        </activity>
+
     </application>
 
 </manifest>
