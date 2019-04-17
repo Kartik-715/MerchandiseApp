@@ -90,6 +90,7 @@ public class CartActivity extends AppCompatActivity
 
         cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser);
         final Query queries = cartListRef.orderByChild("IsPlaced").equalTo("false");
+        System.out.println(Prevalent.currentOnlineUser);
 
         queries.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -141,9 +142,12 @@ public class CartActivity extends AppCompatActivity
 
     private void DataExists(Query queries)
     {
+
+
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
                 .setQuery(queries, Order.class)
                 .build();
+
 
         FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter
                 = new FirebaseRecyclerAdapter<Order, OrderViewHolder>(options)
@@ -151,11 +155,13 @@ public class CartActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull final Order model)
             {
+                System.out.println("okkkies");
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
                 holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
                 holder.txtProductName.setText(model.getGroupName());
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.CartImage);
+
                 orderid_list.add(model.getOrderID());
                 group_list.add(model.getGroupName());
 
@@ -172,14 +178,14 @@ public class CartActivity extends AppCompatActivity
                             {
                                 if(task.isSuccessful())
                                 {
-                                    /*System.out.println(Integer.toString(countCards));
+                                    System.out.println(Integer.toString(countCards));
                                     countCards--;
                                     Toast.makeText(CartActivity.this, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
                                     if(countCards == 0)
                                     {
                                         Intent intent = new Intent(CartActivity.this, CartActivity.class);
                                         startActivity(intent);
-                                    }*/
+                                    }
                                 }
                             }
                         });

@@ -58,6 +58,7 @@ public class productDetailActivity extends AppCompatActivity
     private int selecteditem;
     private ArrayList<String> arraySpinner;
     private int flag;
+    private String selectedSpinneritem;
 
     public interface MyCallback
     {
@@ -126,6 +127,7 @@ public class productDetailActivity extends AppCompatActivity
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                         {
                             selecteditem = SizeSpinner.getSelectedItemPosition();
+                            selectedSpinneritem = ((String) SizeSpinner.getSelectedItem());
                             getProductDetails(productID);
                         }
 
@@ -216,7 +218,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("OrderID", neworderID);
         cartMap.put("Image", image_src);
         cartMap.put("Category", category);
-        cartMap.put("Size", selecteditem);
+        cartMap.put("Size", selectedSpinneritem);
 
         //Removing the previous one and making new one
         cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
@@ -322,7 +324,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("OrderID", neworderID);
         cartMap.put("Image", image_src);
         cartMap.put("Category", category);
-        cartMap.put("Size", selecteditem);
+        cartMap.put("Size", selectedSpinneritem);
 
         //Removing the previous one and making new one
         cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
