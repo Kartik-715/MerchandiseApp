@@ -140,7 +140,7 @@ public class AddMerchandise extends AppCompatActivity {
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
 
                 myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
-                Merchandise merchandise = new Merchandise(GroupName,Category,Image,Material,PID,Price,qty,size,AccessGroups,OrderType);
+                Merchandise merchandise = new Merchandise(GroupName,Category,Image,Material,PID,Price,qty,size,AccessGroups,OrderType,"true");
                 HashMap<String, Object> merchandiseValues = merchandise.toMap();
 
                 HashMap<String, Object> childUpdates = new HashMap<>();
