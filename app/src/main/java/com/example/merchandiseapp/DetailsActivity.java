@@ -63,6 +63,25 @@ public class DetailsActivity extends AppCompatActivity
         orderid_list = getIntent().getStringArrayListExtra("orderid_list");
         group_list = getIntent().getStringArrayListExtra("group_list");
 
+        if(PhoneNumber.getText().toString().trim().length() == 0)
+        {
+            Toast.makeText(DetailsActivity.this, "Please Enter Valid Contact Number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        if(Address.getText().toString().trim().length() == 0)
+        {
+            Toast.makeText(DetailsActivity.this, "Address Field can't be Empty. Please Enter Delivery Address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(Email_ID.getText().toString().trim().length() == 0)
+        {
+            Toast.makeText(DetailsActivity.this, "Please Enter Valid Email Address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         for(int i=0;i<orderid_list.size();i++)
         {
             String orderid = orderid_list.get(i);
