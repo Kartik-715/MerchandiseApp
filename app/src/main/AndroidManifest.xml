@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
-
     <application
         android:name=".G_var"
         android:allowBackup="true"
@@ -27,9 +26,19 @@
         <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
         <activity android:name=".GroupRegisterActivity" />
-        <activity android:name=".AddMerchandise" />
+        <!--<activity android:name=".AddMerchandise" />-->
+        <activity android:name=".MultipleImages">
+
+
+
+
+        </activity>
+        <activity android:name=".CustomAdapter" />
+        <activity android:name=".ListView" />
+        <activity android:name=".GroupRequestDetails"></activity>
+        <!--<activity android:name=".LoginActivity" />-->
         <activity
-            android:name=".VendorActivity"
+            android:name=".GroupActivity"
             android:label="@string/title_activity_vendor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".grp_manage_profile" />
@@ -47,12 +56,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".myWallet" />
         <activity android:name=".StartProfileUser" />
+
         <activity
             android:name=".ManageProfile"
             android:label="Manage Profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FullPageImageActivity" />
         <activity android:name=".DeliveredActivity" />
+        <activity android:name=".multiple_images" />
+
+
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
@@ -69,6 +82,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity" />
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
@@ -78,6 +92,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".AddMerchandise"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
