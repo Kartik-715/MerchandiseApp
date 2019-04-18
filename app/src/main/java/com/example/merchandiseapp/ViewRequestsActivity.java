@@ -26,6 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ViewRequestsActivity extends AppCompatActivity
 {
 
@@ -123,7 +126,79 @@ public class ViewRequestsActivity extends AppCompatActivity
                         final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName())
                                                                 .child("Requests").child(model.getProductID()).child("Requests").child(model.getOrderID());
 
-                        String quantity_temp = model.getQuantity();
+                        final DatabaseReference cartListRef3 = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName())
+                                .child("Requests").child(model.getProductID());
+
+                        final String input_size = model.getSize();
+
+                        cartListRef3.child("Size").addListenerForSingleValueEvent(new ValueEventListener()
+                        {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                            {
+                                final ArrayList<String> size_list = ((ArrayList<String>) dataSnapshot.getValue());
+                                for(int j=0;j<size_list.size();j++)
+                                {
+                                    if(size_list.get(j).equals(input_size))
+                                    {
+                                        final int idx = j;
+
+                                        cartListRef3.child("Quantity").addListenerForSingleValueEvent(new ValueEventListener()
+                                        {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                                            {
+                                                ArrayList<String> quantity_list = ((ArrayList<String>) dataSnapshot.getValue());
+                                                for(int i=0;i<quantity_list.size();i++)
+                                                {
+                                                    if(i == idx)
+                                                    {
+                                                        String temp_quantity = quantity_list.get(i);
+
+                                                        int result = Integer.parseInt(temp_quantity);
+                                                        int sub_value = Integer.parseInt(model.getQuantity());
+
+                                                        result -= sub_value;
+                                                        temp_quantity = Integer.toString(result);
+                                                        quantity_list.set(i,temp_quantity);
+                                                    }
+                                                }
+
+                                                final HashMap<String, Object> requestMap3 = new HashMap<>();
+                                                requestMap3.put("Quantity", quantity_list);
+
+                                                cartListRef3.updateChildren(requestMap3).addOnCompleteListener(new OnCompleteListener<Void>()
+                                                {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task)
+                                                    {
+                                                        if(task.isSuccessful())
+                                                        {
+
+                                                        }
+                                                    }
+                                                });
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError)
+                                            {
+
+                                            }
+                                        });
+
+                                        break;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError)
+                            {
+
+                            }
+                        });
+
 
                         cartListRef2.removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
                         {
