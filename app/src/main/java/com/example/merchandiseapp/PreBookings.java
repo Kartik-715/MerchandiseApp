@@ -192,23 +192,6 @@ public class PreBookings extends AppCompatActivity {
 
     private void NoDataExists()
     {
-//        ImageEmptyCart.setVisibility(View.VISIBLE);
-//        BtnShopNow.setVisibility(View.VISIBLE);
-//        TxtEmptyCart.setVisibility(View.VISIBLE);
-//        NextProcessBtn.setVisibility(View.INVISIBLE);
-//        recyclerView.setVisibility(View.INVISIBLE);
-//
-//        BtnShopNow.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Intent intent = new Intent(CartActivity.this, HomeActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-
         Toast.makeText(getApplicationContext(),"No Pre-Order Requested as of now.",Toast.LENGTH_LONG);
 
     }

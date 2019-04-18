@@ -20,13 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ViewMerchandise">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ViewMerchandise"></activity>
         <!-- <service -->
         <!-- android:name=".java.MyFirebaseMessagingService" -->
         <!-- android:exported="false"> -->
@@ -35,7 +29,11 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".PreBookings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!--<activity android:name=".LoginActivity" />-->
         <activity android:name=".CustomAdapter"></activity>

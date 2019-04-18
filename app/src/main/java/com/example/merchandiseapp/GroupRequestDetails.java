@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -56,12 +57,21 @@ public class GroupRequestDetails extends AppCompatActivity {
 
     private TextView a;
 
+    static String Category;
+    static String PID;
+    static String GroupName;
+
 
     FragmentPagerAdapter adapterViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Category = getIntent().getStringExtra("Category");
+        PID = getIntent().getStringExtra("PID");
+        GroupName = getIntent().getStringExtra("GroupName");
+
         setContentView(R.layout.activity_group_request_details);
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -145,11 +155,11 @@ public class GroupRequestDetails extends AppCompatActivity {
             System.out.println("122222222222222222222222222222");
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return FirstFragment.newInstance(0, "Paid");
+                    return FirstFragment.newInstance(0, "Paid",Category, PID,GroupName);
 //                case 1: // Fragment # 0 - This will show FirstFragment different title
 //                    return SecondFragment.newInstance(1, "Not Paid");
                 default:
-                    return SecondFragment.newInstance(2, "Non Paid");
+                    return SecondFragment.newInstance(1, "Non Paid",Category, PID,GroupName);
 
 
             }

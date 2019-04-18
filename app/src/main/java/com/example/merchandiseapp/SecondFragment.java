@@ -42,6 +42,11 @@ public class SecondFragment extends Fragment {
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
 
+    String Category;
+    String PID;
+    String GroupName;
+
+
     private TextView a;
 
     private   ArrayList<String> Contact;
@@ -54,14 +59,17 @@ public class SecondFragment extends Fragment {
     // Store instance variables
     private String title;
     private int page;
+    static Bundle args = new Bundle();
 
     // newInstance constructor for creating fragment with arguments
-    public static SecondFragment newInstance(int page, String title) {
+    public static SecondFragment newInstance(int page, String title , String Category , String PID,String GroupName) {
+
         SecondFragment fragmentSecond = new SecondFragment();
-        Bundle args = new Bundle();
         args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragmentSecond.setArguments(args);
+        args.putString("someTitle", "Paid");
+        args.putString("productID" , PID);
+        args.putString("category" , Category);
+        args.putString("group_name" ,GroupName);
         return fragmentSecond;
     }
 
@@ -70,19 +78,20 @@ public class SecondFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
 
+//        System.out.println(getArguments().getString("category"));
 
         super.onCreate(savedInstanceState);
 
         System.out.println("in 2");
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        page = args.getInt("someInt", 0);
+        title = args.getString("someTitle");
+
+        Category = args.getString("category");
+        GroupName = args.getString("group_name");
+        PID = args.getString("productID");
 
 
 
-
-
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
 
 
 
@@ -120,7 +129,8 @@ public class SecondFragment extends Fragment {
 
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Group").child("CSEA").child("Requests").child("F01").child("Requests");
+        ref = database.getReference("Group").child(GroupName).child("Requests").child(PID).child("Requests");
+
         list = new ArrayList<>();
         ref.addValueEventListener(new ValueEventListener() {
             @Override

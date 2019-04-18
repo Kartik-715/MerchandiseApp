@@ -45,6 +45,12 @@ public class FirstFragment extends Fragment {
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
 
+    String Category;
+    String PID;
+    String GroupName;
+
+
+
     private TextView a;
 
     private   ArrayList<String> Contact;
@@ -58,13 +64,16 @@ public class FirstFragment extends Fragment {
     private String title;
     private int page;
    private ArrayList<String> paid;
+    static Bundle args = new Bundle();
 
     // newInstance constructor for creating fragment with arguments
-    public static FirstFragment newInstance(int page, String title) {
+    public static FirstFragment newInstance(int page, String title , String Category , String PID,String GroupName) {
         FirstFragment fragmentFirst = new FirstFragment();
-        Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", "Paid");
+        args.putString("productID" , PID);
+        args.putString("category" , Category);
+        args.putString("group_name" ,GroupName);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -76,10 +85,11 @@ public class FirstFragment extends Fragment {
         System.out.println("in 1");
 
 
-
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
-
+//        page = getArguments().getInt("someInt", 0);
+        title = args.getString("someTitle");
+        Category = args.getString("category");
+        GroupName = args.getString("group_name");
+        PID = args.getString("productID");
 
 
 //        if(get)
@@ -107,7 +117,7 @@ public class FirstFragment extends Fragment {
 
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Group").child("CSEA").child("Requests").child("F01").child("Requests");
+        ref = database.getReference("Group").child(GroupName).child("Requests").child(PID).child("Requests");
         list = new ArrayList<>();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
