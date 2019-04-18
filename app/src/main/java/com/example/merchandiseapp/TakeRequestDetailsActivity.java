@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +12,11 @@ import android.widget.Toast;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +44,27 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         orderID = getIntent().getStringExtra("orderID");
         groupName = getIntent().getStringExtra("group_name");
         productID = getIntent().getStringExtra("product_id");
+
+        final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderID);
+
+        requestRef.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                Requests requests =  dataSnapshot.getValue(Requests.class);
+                Email_ID.setText(requests.getEmail());
+                Address.setText(requests.getAddress());
+                PhoneNumber.setText(requests.getContact());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+
 
         Pay_Now.setOnClickListener(new View.OnClickListener()
         {
@@ -135,7 +160,8 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<Void> task)
             {
-                Toast.makeText(TakeRequestDetailsActivity.this, "Successfully Paid", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(TakeRequestDetailsActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
 

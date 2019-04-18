@@ -213,22 +213,18 @@ public class ViewRequestsActivity extends AppCompatActivity
                         });
                     }
                 });
-                /*holder.PayNowButton.setOnClickListener(new View.OnClickListener()
+                holder.PayNowButton.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-
-                        Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
-                        intent.putExtra("pid", model.getProductID());
-                        intent.putExtra("order_id", model.getOrderID());
-                        intent.putExtra("image", model.getImage());
-                        intent.putExtra("category", model.getCategory());
-                        intent.putExtra("groupName", model.getGroupName());
+                        Intent intent = new Intent(ViewRequestsActivity.this, TakeRequestDetailsActivity.class);
+                        intent.putExtra("orderID", model.getOrderID());
+                        intent.putExtra("group_name", model.getGroupName());
+                        intent.putExtra("product_id", model.getProductID());
                         startActivity(intent);
                     }
-                });*/
-
+                });
             }
 
             @NonNull

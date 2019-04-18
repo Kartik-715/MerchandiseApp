@@ -303,7 +303,7 @@ public class RequestDetailActivity extends AppCompatActivity
         requestMap2.put("Address", "");
         requestMap2.put("Contact", "");
         requestMap2.put("Date", saveCurrentDate);
-        requestMap2.put("Email", "");
+        requestMap2.put("Email", Prevalent.currentEmail);
         requestMap2.put("GroupName", group_name);
         requestMap2.put("IsPaid", "false");
         requestMap2.put("IsPlaced", "false");
@@ -352,7 +352,7 @@ public class RequestDetailActivity extends AppCompatActivity
         requestMap2.put("Address", "");
         requestMap2.put("Contact", "");
         requestMap2.put("Date", saveCurrentDate);
-        requestMap2.put("Email", "");
+        requestMap2.put("Email", Prevalent.currentEmail);
         requestMap2.put("GroupName", group_name);
         requestMap2.put("IsPaid", "false");
         requestMap2.put("IsPlaced", "false");
