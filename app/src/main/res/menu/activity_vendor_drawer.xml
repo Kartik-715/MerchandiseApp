@@ -11,15 +11,32 @@
         <item
             android:id="@+id/nav_add_item"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Add new item" />
+            android:title="Add new Merchandise" />
         <item
             android:id="@+id/nav_request"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Pre Bookings" />
         <item
+            android:id="@+id/nav_ViewMerchandise"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="View Merchandise" />
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="View Orders" />
+        <item
+            android:id="@+id/nav_members"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Add Members" />
+
+        <item
+            android:id="@+id/nav_authorizedMembers"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Add Authorized Members" />
+        <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Sign OUt" />
+            android:title="Sign Out" />
     </group>
 
 

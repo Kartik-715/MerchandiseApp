@@ -20,7 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ViewMerchandise"></activity>
+        <activity android:name=".ViewMerchandise">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- <service -->
         <!-- android:name=".java.MyFirebaseMessagingService" -->
         <!-- android:exported="false"> -->
@@ -29,23 +35,15 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".PreBookings">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <!--<activity android:name=".LoginActivity" />-->
         <activity android:name=".CustomAdapter"></activity>
         <activity android:name=".ListView" />
         <activity android:name=".GroupRequestDetails">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
@@ -64,7 +62,7 @@
             android:label="Staff"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".myWallet" />
-        <activity android:name=".StartProfileUser" />
+        <!--<activity android:name=".StartProfileUser" />-->
         <activity
             android:name=".ManageProfile"
             android:label="Manage Profile"

@@ -279,11 +279,11 @@ public class PreBookings extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
 
-//                        Intent intent = new Intent(PreBookings.this, GroupRequestDetails.class);
-//                        intent.putExtra("PID", model.getPID());
-//                        intent.putExtra("Category", model.getCategory());
-//                        intent.putExtra("GroupName",GroupName);
-//                        startActivity(intent);
+                        Intent intent = new Intent(PreBookings.this, GroupRequestDetails.class);
+                        intent.putExtra("PID", model.getPID());
+                        intent.putExtra("Category", model.getCategory());
+                        intent.putExtra("GroupName",GroupName);
+                        startActivity(intent);
                             }
                         });
 
