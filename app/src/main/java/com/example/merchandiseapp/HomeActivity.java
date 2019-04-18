@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity
 
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name", user.getDisplayName());
+        //Log.d("name", user.getDisplayName());
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -273,8 +273,8 @@ public class HomeActivity extends AppCompatActivity
         }
 
         else if (id == R.id.nav_share) {
-            Intent intent = new Intent(HomeActivity.this, com.example.merchandiseapp.GroupRegisterActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(HomeActivity.this, com.example.merchandiseapp.GroupRegisterActivity.class);
+            //startActivity(intent);
 
         }
 

@@ -17,8 +17,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +35,8 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -71,8 +77,18 @@ public class productDetailActivity extends AppCompatActivity
     private ArrayList<String> arraySpinner;
     private int flag;
     private String selectedSpinneritem;
+    private Button btnReviews;
+    private Button btnPrivateReviews;
+    private RecyclerView recycle;
 
-
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<String> uid_list;
+    private String categoryTxt;
+    private String pidTxt;
+    private String select;
+    private String some;
+    private String some2;
     public interface MyCallback
     {
         void onCallback(ArrayList<String> value);
@@ -87,17 +103,16 @@ public class productDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_product_detail);
 
         image_src = new ArrayList<>();
-
+        recycle = findViewById(R.id.recyclerReview);
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
         image_src = getIntent().getStringArrayListExtra("image");
         category = getIntent().getStringExtra("category");
         group_name = getIntent().getStringExtra("groupName");
-
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
         group_list = new ArrayList<>();
-
+        btnPrivateReviews=findViewById(R.id.privateReviews);
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         buyNowButton = findViewById(R.id.buy_now_Button);
         numberButton = findViewById(R.id.numberBtn);
@@ -106,11 +121,35 @@ public class productDetailActivity extends AppCompatActivity
         SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
         shareButton = findViewById(R.id.share_button);
-
+        btnReviews = findViewById(R.id.reviewbtn);
         ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image);
         ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
         viewPager.setAdapter(adapter);
+        btnReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
+                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
+                intent.putExtra("category",category);
+                intent.putExtra("pid",productID);
+                intent.putExtra("select","No");
+                startActivity(intent);
+                    //select="No";
 
+            }
+        });
+        btnPrivateReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
+                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
+                intent.putExtra("category",category);
+                intent.putExtra("pid",productID);
+                intent.putExtra("select","Yes");
+                startActivity(intent);
+                //select="Yes";
+            }
+        });
         viewPager.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -205,7 +244,111 @@ public class productDetailActivity extends AppCompatActivity
                 share();
             }
         });
+
+
+
+
+
+
+//        pidTxt = getIntent().getStringExtra("pid");
+//        categoryTxt = getIntent().getStringExtra("category");
+//        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+" "+pidTxt,Toast.LENGTH_LONG).show();
+//        uid_list = new ArrayList<String>();
+//        select = getIntent().getStringExtra("select");
+//        recyclerView = findViewById(R.id.recyclerReview);
+//        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//        final DatabaseReference fun = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(categoryTxt).child(pidTxt);
+//        fun.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                some = (String) dataSnapshot.child("GroupName").getValue();
+//                some2=(String) dataSnapshot.child("GroupName").getValue();
+//                if (select.equals("Yes")) {
+//                    select = (String) dataSnapshot.child("GroupName").getValue();
+//                    //Toast.makeText(ReviewDisplayActivity.this,select,Toast.LENGTH_LONG).show();
+//                }
+//                display();
+//                //Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
+
+
+
+//    protected void display() {
+//        //Toast.makeText(ReviewDisplayActivity.this," "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+//        super.onStart();
+//        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+"********************** "+pidTxt,Toast.LENGTH_LONG).show();
+//        final DatabaseReference reviewListRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(categoryTxt).child(pidTxt).child("Rating");
+//
+//        if (select.equals("No")) {
+//            FirebaseRecyclerOptions<Rating> options = new FirebaseRecyclerOptions.Builder<Rating>()
+//                    .setQuery(reviewListRef.orderByChild("IsPrivate").equalTo("No"), Rating.class)
+//                    .build();
+//            FirebaseRecyclerAdapter<Rating, reviewsViewHolder> adapter
+//                    = new FirebaseRecyclerAdapter<Rating, reviewsViewHolder>(options) {
+//                @Override
+//                protected void onBindViewHolder(@NonNull reviewsViewHolder holder, int position, @NonNull final Rating model) {
+//
+//                    holder.lreview.setText(model.getComment());
+//                    holder.lstars.setText(model.getStars());
+//                    holder.luser.setText(model.getUID());
+//                    uid_list.add(model.getUID());
+//                    //Toast.makeText(ReviewDisplayActivity.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
+//                }
+//
+//                @NonNull
+//                @Override
+//                public reviewsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+//                    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_layout, viewGroup, false);
+//                    reviewsViewHolder holder = new reviewsViewHolder(view);
+//                    return holder;
+//                }
+//            };
+//
+//            recyclerView.setAdapter(adapter);
+//            adapter.startListening();
+//
+//
+//        } else {
+//            //Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+//            FirebaseRecyclerOptions<Rating> options = new FirebaseRecyclerOptions.Builder<Rating>()
+//                    .setQuery(reviewListRef.orderByChild("Group").equalTo(select), Rating.class)
+//                    .build();
+//            FirebaseRecyclerAdapter<Rating, reviewsViewHolder> adapter
+//                    = new FirebaseRecyclerAdapter<Rating, reviewsViewHolder>(options) {
+//                @Override
+//                protected void onBindViewHolder(@NonNull reviewsViewHolder holder, int position, @NonNull final Rating model) {
+//
+//                    holder.lreview.setText(model.getComment());
+//                    holder.lstars.setText(model.getStars());
+//                    holder.luser.setText(model.getUID());
+//                    uid_list.add(model.getUID());
+//                    Toast.makeText(productDetailActivity.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
+//                }
+//
+//                @NonNull
+//                @Override
+//                public reviewsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+//                    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_layout, viewGroup, false);
+//                    reviewsViewHolder holder = new reviewsViewHolder(view);
+//                    return holder;
+//                }
+//            };
+//
+//            recyclerView.setAdapter(adapter);
+//            adapter.startListening();
+//
+//
+//        }
+//    }
 
     private void BuyNow()
     {

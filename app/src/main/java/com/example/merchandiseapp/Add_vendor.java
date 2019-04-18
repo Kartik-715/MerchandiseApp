@@ -80,9 +80,9 @@ public class Add_vendor extends AppCompatActivity {
             Toast.makeText(this,"Yay!!!!!!!!!!!!!!",Toast.LENGTH_LONG).show();
             String id[] = emailid_str.split("@");
 
-            User_data usr = new User_data(Username_str,Contact_str,password_str,emailid_str,upi_str,"2",address_str);
+            //User_data usr = new User_data(Username_str,Contact_str,password_str,emailid_str,upi_str,"2",address_str);
 
-            databaseUserData.child(id[0]).setValue(usr);
+            //databaseUserData.child(id[0]).setValue(usr);
 
         }else{
             Toast.makeText(this,"Please fill all the Feilds",Toast.LENGTH_LONG).show();

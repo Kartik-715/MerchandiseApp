@@ -10,21 +10,20 @@
         android:id="@+id/rl_first"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimaryDark"
         android:layout_alignParentTop="true"
-        >
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:id="@+id/total_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delivered Orders"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            android:textAlignment="center"
             android:layout_marginTop="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Delivered Orders"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
 
-            />
+            android:textSize="20dp" />
 
     </RelativeLayout>
 
