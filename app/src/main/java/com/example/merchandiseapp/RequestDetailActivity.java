@@ -148,6 +148,13 @@ public class RequestDetailActivity extends AppCompatActivity
 
     }
 
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(RequestDetailActivity.this, HomeActivity.class);
+        intent.putExtra("flag", Prevalent.currentFlag);
+        startActivity(intent);
+    }
+
     private void makeRequest()
     {
         String saveCurrentTime, saveCurrentDate;
@@ -413,7 +420,7 @@ public class RequestDetailActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     Merchandise merchandises = dataSnapshot.getValue(Merchandise.class);
-                    numberButton.setNumber("1");
+                    //numberButton.setNumber("1");
                     productName.setText(merchandises.getGroupName());
                     productPrice.setText(merchandises.getPrice());
 

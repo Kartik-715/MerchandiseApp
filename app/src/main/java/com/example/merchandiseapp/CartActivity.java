@@ -120,6 +120,13 @@ public class CartActivity extends AppCompatActivity
         });
     }
 
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+        intent.putExtra("flag", Prevalent.currentFlag);
+        startActivity(intent);
+    }
+
     private void NoDataExists()
     {
         ImageEmptyCart.setVisibility(View.VISIBLE);

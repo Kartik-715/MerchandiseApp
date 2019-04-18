@@ -526,4 +526,11 @@ public class productDetailActivity extends AppCompatActivity
 
     }
 
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
+        intent.putExtra("flag", Prevalent.currentFlag);
+        startActivity(intent);
+    }
+
 }
