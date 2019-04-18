@@ -68,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    View headerView;
 
 
     @Override
@@ -82,6 +83,7 @@ public class HomeActivity extends AppCompatActivity
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
+
 
         DatabaseReference allMerchandise;
         allMerchandise = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
@@ -117,6 +119,7 @@ public class HomeActivity extends AppCompatActivity
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
 
+
         /* Tab Layout Setting */
 
 
@@ -130,11 +133,9 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
 
@@ -154,7 +155,9 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
+
+
+        headerView = navigationView.getHeaderView(0);
 
 
 
@@ -182,6 +185,15 @@ public class HomeActivity extends AppCompatActivity
 //                .execute(user.getPhotoUrl().toString());
     }
 
+    /*@Override
+    public void onResume() {
+
+        super.onResume();
+        imageView = headerView.findViewById(R.id.imageView);
+        addImage();
+
+    }*/
+
     @Override
     public void onBackPressed()
     {
@@ -200,8 +212,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.action_settings)
@@ -214,8 +225,7 @@ public class HomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
-    {
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -225,15 +235,17 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.wallet) {
             Intent intent = new Intent(this, myWallet.class);
             startActivity(intent);
-        }else if (id == R.id.nav_slideshow) {
+        }else if (id == R.id.orders) {
+            Intent intent = new Intent(this,Order_History.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        }/* else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
             Intent intent = new Intent(HomeActivity.this, com.example.merchandiseapp.GroupRegisterActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_send) {
+        }*/ else if (id == R.id.nav_send) {
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
@@ -263,7 +275,7 @@ public class HomeActivity extends AppCompatActivity
         imageView.setMinimumHeight(dm.heightPixels);
         imageView.setMinimumWidth(dm.widthPixels);
         //Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
-        imageView.setImageBitmap(global.getBitmap());
+        //imageView.setImageBitmap(global.getBitmap());
     }
 }
 

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +42,12 @@ public class SecondFragment extends Fragment {
     DatabaseReference ref;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
+    DatabaseReference myRef ;
+
+    String Category;
+    String PID;
+    String GroupName;
+
 
     private TextView a;
 
@@ -50,18 +57,21 @@ public class SecondFragment extends Fragment {
     private   ArrayList<String> Size ;
     private   ArrayList<String> UserName ;
     private   ArrayList<String> UserID ;
-
+    private Button mbutton;
     // Store instance variables
     private String title;
     private int page;
+    static Bundle args = new Bundle();
 
     // newInstance constructor for creating fragment with arguments
-    public static SecondFragment newInstance(int page, String title) {
+    public static SecondFragment newInstance(int page, String title , String Category , String PID,String GroupName) {
+
         SecondFragment fragmentSecond = new SecondFragment();
-        Bundle args = new Bundle();
         args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragmentSecond.setArguments(args);
+        args.putString("someTitle", "Paid");
+        args.putString("productID" , PID);
+        args.putString("category" , Category);
+        args.putString("group_name" ,GroupName);
         return fragmentSecond;
     }
 
@@ -69,20 +79,18 @@ public class SecondFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-
+//        System.out.println(getArguments().getString("category"));
 
         super.onCreate(savedInstanceState);
 
         System.out.println("in 2");
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        page = args.getInt("someInt", 0);
+        title = args.getString("someTitle");
 
+        Category = args.getString("category");
+        GroupName = args.getString("group_name");
+        PID = args.getString("productID");
 
-
-
-
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
 
 
 
@@ -118,9 +126,12 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mbutton = view.findViewById(R.id.sendNotification);
+
 
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("Group").child("CSEA").child("Requests").child("F01").child("Requests");
+        ref = database.getReference("Group").child(GroupName).child("Requests").child(PID).child("Requests");
+
         list = new ArrayList<>();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -162,7 +173,24 @@ public class SecondFragment extends Fragment {
 
                     if(ctr  == count)
                     {
+                        mbutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
 
+                                for(int i=0;i<UserName.size();i++) {
+                                    myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(UserID.get(i));
+
+                                    String notiList;
+                                    notiList = "Your order has been declined.Fuck OFF!!mu me lele";
+
+                                    HashMap<String, Object> childUpdates = new HashMap<>();
+                                    childUpdates.put(  "notiList",notiList           );
+                                    myRef.updateChildren(childUpdates);
+                                    System.out.println("Hello + " + UserID.get(i));
+                                }
+                            }
+                        });
                         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
                         System.out.println(UserID);
                         System.out.println(Contact);
@@ -231,4 +259,6 @@ public class SecondFragment extends Fragment {
 
 
     }
+
+
 }

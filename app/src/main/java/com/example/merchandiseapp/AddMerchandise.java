@@ -1,5 +1,8 @@
 package com.example.merchandiseapp;
 
+
+import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -130,7 +133,10 @@ public class AddMerchandise extends AppCompatActivity {
         addMerchandise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+       
                 Spinner dropdown = findViewById(R.id.spinner1);
+
                 GroupName = gpName.getText().toString();
                 Category = (String) dropdown.getSelectedItem();
                 Image = new ArrayList<>();
@@ -140,7 +146,7 @@ public class AddMerchandise extends AppCompatActivity {
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
 
                 myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
-                Merchandise merchandise = new Merchandise(GroupName,Category,Image,Material,PID,Price,qty,size,AccessGroups,OrderType);
+                Merchandise merchandise = new Merchandise(GroupName,Category,Image,Material,PID,Price,qty,size,AccessGroups,OrderType,"true");
                 HashMap<String, Object> merchandiseValues = merchandise.toMap();
 
                 HashMap<String, Object> childUpdates = new HashMap<>();
@@ -148,6 +154,8 @@ public class AddMerchandise extends AppCompatActivity {
 
 
                 myRef.updateChildren(childUpdates);
+
+
 
             }
         });

@@ -32,7 +32,7 @@ public class GroupRegisterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_register);
 
-        GroupName = findViewById(R.id.Register_Group_Name);
+        /*GroupName = findViewById(R.id.Register_Group_Name);
         EmailID = findViewById(R.id.Register_Email_ID);
         Contact = findViewById(R.id.Register_Contact);
         Register = findViewById(R.id.Btn_Group_Request);
@@ -47,10 +47,10 @@ public class GroupRegisterActivity extends AppCompatActivity
             {
                 SendRequest();
             }
-        });
+        });*/
     }
 
-    private void SendRequest()
+   /* private void SendRequest()
     {
         final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Admin").child(GroupName.getText().toString());
         final DatabaseReference requestRef2 = FirebaseDatabase.getInstance().getReference().child("Admin");
@@ -104,7 +104,6 @@ public class GroupRegisterActivity extends AppCompatActivity
                                     }
                                 });
                     }
-
                 }
             }
 
@@ -115,5 +114,5 @@ public class GroupRegisterActivity extends AppCompatActivity
             }
         });
 
-    }
+    }*/
 }

@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupRegister">
+    tools:context=".ManageProfile">
 
     <RelativeLayout
-        android:id="@+id/Rellay1"
+        android:id="@+id/rellay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/grp_grad"
+        android:background="@drawable/grad"
         android:paddingBottom="10dp">
 
         <RelativeLayout
-            android:id="@+id/ImgUser"
+            android:id="@+id/imgUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -22,7 +22,7 @@
             android:background="@drawable/rectangle_border">
 
             <ImageView
-                android:id="@+id/groupPic"
+                android:id="@+id/profilePic_ui"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="9dp"
@@ -33,23 +33,34 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/admin_email"
+            android:id="@+id/edit_email_ui"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ImgUser"
+            android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15sp"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="aayushmakharia1999@gmail.com"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/settings_nav" />
 
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/Linlay1"
+        android:id="@+id/linlay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Rellay1"
+        android:layout_below="@id/rellay1"
         android:layout_marginTop="-5dp"
         android:orientation="horizontal">
 
@@ -58,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="#2980B9"
+            android:background="@color/followersBg"
             android:gravity="center"
             android:paddingBottom="5dp">
 
@@ -69,15 +80,15 @@
                 android:orientation="vertical">
 
                 <Button
+                    android:id="@+id/chooseBtn_ui"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:background="#2980B9"
+                    android:background="@color/followersBg"
                     android:fontFamily="sans-serif-light"
                     android:text="Choose Image"
-                    android:textColor="@color/Black"
-                    android:textSize="20sp"
-                    android:id="@+id/Grp_chooseBtn"/>
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -88,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="#6DD5FA"
+            android:background="@color/followingBg"
             android:gravity="center"
             android:paddingBottom="5dp">
 
@@ -99,15 +110,15 @@
                 android:orientation="vertical">
 
                 <Button
+                    android:id="@+id/uploadBtn_ui"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:background="#6DD5FA"
+                    android:background="@color/followingBg"
                     android:fontFamily="sans-serif-light"
                     android:text="Upload Image"
-                    android:textColor="@color/Black"
-                    android:textSize="20sp"
-                    android:id="@+id/Grp_uploadBtn"/>
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -115,11 +126,10 @@
 
     </LinearLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/Linlay1">
+        android:layout_below="@+id/linlay1">
 
 
         <LinearLayout
@@ -139,12 +149,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Group Name"
+                    android:text="Name"
                     android:textColor="#3797CF"
                     android:textSize="13sp" />
 
                 <EditText
-                    android:id="@+id/Grp_name"
+                    android:id="@+id/edit_name_ui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -175,7 +185,7 @@
                     android:textSize="13sp" />
 
                 <EditText
-                    android:id="@+id/admin_contact"
+                    android:id="@+id/edit_contact_ui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -201,12 +211,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location 1"
+                    android:text="Address"
                     android:textColor="#3797CF"
                     android:textSize="13sp" />
 
                 <EditText
-                    android:id="@+id/admin_address_1"
+                    android:id="@+id/edit_address_ui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -232,43 +242,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location 2"
+                    android:text="My Groups"
                     android:textColor="#3797CF"
                     android:textSize="13sp" />
 
-                <EditText
-                    android:id="@+id/admin_address_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
-                    android:inputType="text"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/Gray" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="UPI"
-                    android:textColor="#3797CF"
-                    android:textSize="13sp" />
-
-                <EditText
-                    android:id="@+id/grp_upi"
+                <Spinner
+                    android:id="@+id/edit_groups_ui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -286,15 +265,15 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/updateBtn_ui"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/grp_grad"
+                android:background="@drawable/grad"
                 android:fontFamily="sans-serif-light"
                 android:text="Update Profile"
-                android:textColor="@android:color/black"
-                android:id="@+id/Grp_update"/>
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
