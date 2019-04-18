@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     User_data vendor = null;
     private Button temp_Button;
     private Button temp_Button2;
+    private Button temp_Button3;
     //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
     @Override
@@ -70,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
         temp_Button = findViewById(R.id.btn_add);
         temp_Button2 = findViewById(R.id.btn_view);
+        temp_Button3 = findViewById(R.id.btn_add_auth);
 
         global = (G_var) getApplicationContext();
         keepLogged = findViewById(R.id.loggedIn);
@@ -94,12 +96,26 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        temp_Button3.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(LoginActivity.this, AccessedMembersActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         mgoogleButton = (SignInButton)findViewById(R.id.GoogleBtn);
-        mgoogleButton.setOnClickListener(new View.OnClickListener() {
+        mgoogleButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 signIn();
             }
         });
@@ -111,8 +127,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-
-
 
 
     private void signIn() {

@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity
 
         DatabaseReference allMerchandise;
         allMerchandise = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
-        System.out.println(allMerchandise);
+        //System.out.println(allMerchandise);
 
 
         allMerchandise.addValueEventListener(new ValueEventListener()
@@ -93,9 +93,9 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                System.out.println("heyyyy");
+                //System.out.println("heyyyy");
                 HashMap<String, Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
-                System.out.println(All_merchandise);
+                //System.out.println(All_merchandise);
 
                 for (Object o : All_merchandise.entrySet())
                 {

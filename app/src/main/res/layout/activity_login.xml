@@ -49,6 +49,13 @@
         android:text="View Products"
         />
 
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:id="@+id/btn_add_auth"
+        android:text="Add Authorized Member"
+        />
+
 
 
 </LinearLayout>
