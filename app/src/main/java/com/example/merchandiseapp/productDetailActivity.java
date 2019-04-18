@@ -3,6 +3,8 @@ package com.example.merchandiseapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +44,7 @@ public class productDetailActivity extends AppCompatActivity
 
     private FloatingActionButton addToCart;
 
-    private Button addToCartButton, buyNowButton;
+    private Button addToCartButton, buyNowButton, shareButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName;
@@ -92,6 +95,7 @@ public class productDetailActivity extends AppCompatActivity
         productName = findViewById(R.id.productName);
         SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
+        shareButton = findViewById(R.id.share_button);
 
 
         /*Spinner Display*/
@@ -167,6 +171,15 @@ public class productDetailActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 BuyNow();
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                share();
             }
         });
     }
@@ -480,6 +493,47 @@ public class productDetailActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void share()
+    {
+        /*Uri uri =Uri.parse("https://firebasestorage.googleapis.com/v0/b/merchandiseapp-68b8e.appspot.com/o/Merchandise%2Fproduct-default.jpg?alt=media&token=d3467bf6-0c58-4ff2-a6b2-15d537ce0cd9");
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Heyy");
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_STREAM,uri);
+        intent.setType("image/jpeg");
+        intent.setPackage("com.whatsapp");
+        startActivity(intent);*/
+
+        /*Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);*/
+
+        /*String text = "Look at my awesome picture";
+        Uri pictureUri = Uri.parse("file://my_picture");
+        Uri uri = Uri.parse("android.resource://com.example.merchandiseapp/" + R.drawable.common_google_signin_btn_icon_dark);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.setType("image/*");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(shareIntent, "Share images..."));*/
+
+       /* Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        String imagePath = Environment.getExternalStorageDirectory() + "/myImage.png";
+
+        File imageFileToShare = new File(imagePath);
+
+        Uri uri = Uri.fromFile(imageFileToShare);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+
+        startActivity(Intent.createChooser(share, "Share Image!"));*/
     }
 
 }

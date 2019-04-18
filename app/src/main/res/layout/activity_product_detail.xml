@@ -101,5 +101,17 @@
         android:textSize="18sp"
         />
 
+    <Button
+        android:id="@+id/share_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
+        android:layout_above="@+id/buy_now_Button"
+        android:text="Share"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+
 
 </RelativeLayout>
