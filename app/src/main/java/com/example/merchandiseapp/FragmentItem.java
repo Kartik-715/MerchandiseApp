@@ -64,6 +64,7 @@ public class FragmentItem extends Fragment
                 System.out.println(accessibleGroups) ;
 
 
+
                 final String orderType = "1" ; // Selecting Order Type //
 
                 DatabaseReference merch = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(bundle.getString("category","none"));

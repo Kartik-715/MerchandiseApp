@@ -1,4 +1,5 @@
 package com.example.merchandiseapp;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +53,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
@@ -59,7 +61,10 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
         holder.price.setText("Rs. "+ mData.get(position).getPrice());
         holder.productName.setText(mData.get(position).getGroupName());
         holder.productDescription.setText(mData.get(position).getCategory());
-        Picasso.get().load(mData.get(position).getImage().get(0)).into(holder.ImageProduct);
+        if(mData.get(position).getImage() != null)
+        {
+            Picasso.get().load(mData.get(position).getImage().get(0)).into(holder.ImageProduct);
+        }
 
 //        holder.itemView.setOnClickListener(new View.OnClickListener(){
 //
