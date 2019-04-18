@@ -105,13 +105,13 @@ public class GroupActivity extends AppCompatActivity
 
         }else if (id == R.id.nav_members) {
 
-//            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
-//            startActivity(intent);
+            Intent intent = new Intent(GroupActivity.this,AddMembersActivity.class);
+            startActivity(intent);
 
         }else if (id == R.id.nav_authorizedMembers) {
 
-//            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
-//            startActivity(intent);
+            Intent intent = new Intent(GroupActivity.this,AccessedMembersActivity.class);
+            startActivity(intent);
 
         }
         else if (id == R.id.nav_signout) {
