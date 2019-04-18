@@ -61,7 +61,7 @@ public class FragmentItem extends Fragment
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
         recyclerView.setLayoutManager(layoutManager);
 
-        DatabaseReference test = FirebaseDatabase.getInstance().getReference().child("Group");
+        /*DatabaseReference test = FirebaseDatabase.getInstance().getReference().child("Group");
         System.out.println("Test" + test);
 
         test.addListenerForSingleValueEvent(new ValueEventListener()
@@ -114,9 +114,9 @@ public class FragmentItem extends Fragment
             {
 
             }
-        });
+        });*/
 
-       /* DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(array_test.get(0)).child("Merchandise").child(bundle.getString("category","none")) ;
+        DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(array_test.get(0)).child("Merchandise").child(bundle.getString("category","none")) ;
         final Query queries = ProductsRef;
 
         FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
@@ -141,7 +141,7 @@ public class FragmentItem extends Fragment
                     public void onClick(View v)
                     {
                         Intent intent;
-                        intent = new Intent(mHomeActivity, productDetailActivity.class);
+                        intent = new Intent(mHomeActivity, RequestDetailActivity.class);
                         intent.putExtra("pid", model.getPID());
                         intent.putExtra("order_id", "empty");
                         intent.putExtra("image", model.getImage());
@@ -162,7 +162,7 @@ public class FragmentItem extends Fragment
         };
 
         recyclerView.setAdapter(adapter);
-        adapter.startListening();*/
+        adapter.startListening();
 
     }
 

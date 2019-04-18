@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AccessedMembersActivity"></activity>
+        <activity android:name=".TakeRequestDetailsActivity"></activity>
+        <activity android:name=".RequestDetailActivity" />
+        <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
         <activity android:name=".GroupRegisterActivity" />
         <activity android:name=".AddMerchandise" />
