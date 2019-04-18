@@ -83,70 +83,89 @@ public class HomeActivity extends AppCompatActivity
 
         //global = (G_var) getApplicationContext();
 
-        /* Tab Layout Setting */
+        /******** Tab Layout Setting **********/
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
+//        DatabaseReference allGroups;
+//        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;
+//        final List<String> accessibleGroups = new ArrayList<>();
+//        accessibleGroups.add("CSEA") ;
+//        allGroups.addValueEventListener(new ValueEventListener()
+//        {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+//            {
+//                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
+//
+//                Set<String> AllCategories = new HashSet<>();
+//
+//                for(String o: accessibleGroups)
+//                {
+//                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
+//                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
+//
+//                    //System.out.println("Group Details: " + group );
+//                    //System.out.println("Group Merchandise: " + groupMerch );
+//
+//                    for(Map.Entry<String, Object> category : groupMerch.entrySet())
+//                    {
+//                        AllCategories.add(category.getKey()) ;
+//                    }
+//
+//                }
+//
+//                System.out.println("Different Categories are: " + AllCategories);
+//
+//                for (String category : AllCategories)
+//                {
+//                    FragmentItem fragment = new FragmentItem();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("category", category);
+//                    fragment.setArguments(bundle);
+//                    adaptor.AddFragment(fragment, category);
+//                }
+//
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.w("ErrMerchandise", "Couldn't Read All Merchandise");
+//            }
+//        });
+        DatabaseReference allMerchandise = FirebaseDatabase.getInstance().getReference().child("Merchandise");
 
-        DatabaseReference allGroups;
-        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;
-        final List<String> accessibleGroups = new ArrayList<>();
-        accessibleGroups.add("CSEA") ;
-
-
-
-
-
-        allGroups.addValueEventListener(new ValueEventListener()
-        {
+        allMerchandise.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String,Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue() ;
+                System.out.println(All_merchandise) ;
 
-                Set<String> AllCategories = new HashSet<>();
 
-                for(String o: accessibleGroups)
-                {
-                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
-                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
-
-                    //System.out.println("Group Details: " + group );
-                    //System.out.println("Group Merchandise: " + groupMerch );
-
-                    for(Map.Entry<String, Object> category : groupMerch.entrySet())
-                    {
-                        AllCategories.add(category.getKey()) ;
-                    }
-
-                }
-
-                System.out.println("Different Categories are: " + AllCategories);
-
-                for (String category : AllCategories)
-                {
-                    FragmentItem fragment = new FragmentItem();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category", category);
+                for (Object o : All_merchandise.entrySet()) {
+                    HashMap.Entry p1 = (HashMap.Entry) o;
+                    FragmentItem fragment = new FragmentItem() ;
+                    Bundle bundle = new Bundle() ;
+                    bundle.putString("category", (String) p1.getKey() );
                     fragment.setArguments(bundle);
-                    adaptor.AddFragment(fragment, category);
+                    adaptor.AddFragment(fragment, (String) p1.getKey());
                 }
-
-
-
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("ErrMerchandise", "Couldn't Read All Merchandise");
+                Log.w("ErrMerchandise", "Couldn't Read All Merchandise") ;
             }
-        });
+        }) ;
 
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
 
-        /* Tab Layout Setting */
+        /******** Tab Layout Setting **********/
 
 
         //Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();

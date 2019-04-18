@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,6 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        System.out.println("New View Holder Created");
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         View view = mInflater.inflate(R.layout.item_list,parent,false);
         return (new MyViewHolder(view));
@@ -56,32 +56,28 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         //holder.ImageProduct.setImageBitmap();
-        System.out.println("This is an Item: " + mData.get(position));
         holder.price.setText("Rs. "+ mData.get(position).getPrice());
         holder.productName.setText(mData.get(position).getGroupName());
         holder.productDescription.setText(mData.get(position).getCategory());
         Picasso.get().load(mData.get(position).getImage().get(0)).into(holder.ImageProduct);
 
-        /*holder.itemView.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick (View view)
-            {
-
-                Intent intent = new Intent( mContext , productDetailActivity.class);
-                intent.putExtra( "brandName", brandName );
-                intent.putExtra( "ImageUrl", imageUrl  );
-                intent.putExtra( "price",  price.get(0));
-                mContext.startActivity(intent);
-
-            }
-
-        }
-
-        );*/
-
-        // load image from the internet using Glide
-        //Glide.with(mContext).load(mData.get(position).getImage_url()).apply(options).into(holder.AnimeThumbnail);
+//        holder.itemView.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick (View view)
+//            {
+//
+//                Intent intent = new Intent( mContext , productDetailActivity.class);
+//                intent.putExtra( "brandName", brandName );
+//                intent.putExtra( "ImageUrl", imageUrl  );
+//                intent.putExtra( "price",  price.get(0));
+//                mContext.startActivity(intent);
+//
+//            }
+//
+//        }
+//
+//        );
 
     }
 
