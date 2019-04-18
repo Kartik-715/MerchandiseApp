@@ -1,23 +1,45 @@
 package com.example.merchandiseapp;
 
+import java.util.ArrayList;
+
 public class RequestDetails {
     private String Category;
     private String Image;
     private String PID;
     private String Price;
-    private String TotalQuantity;
+    private ArrayList<String> Quantity;
+    private ArrayList<String> Size;
 
-    public RequestDetails(String category,
-                          String image, String PID, String price, String totalQuantity) {
+    public RequestDetails(String category, String image, String PID, String price, ArrayList<String> quantity, ArrayList<String> size) {
         Category = category;
         Image = image;
         this.PID = PID;
         Price = price;
-        TotalQuantity = totalQuantity;
+        Quantity = quantity;
+        Size = size;
     }
+
+
     public RequestDetails()
     {
 
+    }
+
+
+    public ArrayList<String> getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(ArrayList<String> quantity) {
+        Quantity = quantity;
+    }
+
+    public ArrayList<String> getSize() {
+        return Size;
+    }
+
+    public void setSize(ArrayList<String> size) {
+        Size = size;
     }
 
     public String getCategory() {
@@ -52,11 +74,5 @@ public class RequestDetails {
         Price = price;
     }
 
-    public String getTotalQuantity() {
-        return TotalQuantity;
-    }
 
-    public void setTotalQuantity(String totalQuantity) {
-        TotalQuantity = totalQuantity;
-    }
 }

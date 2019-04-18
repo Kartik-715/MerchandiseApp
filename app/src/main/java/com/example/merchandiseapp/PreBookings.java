@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Holder.PreBookingHolder;
@@ -68,7 +71,7 @@ public class PreBookings extends AppCompatActivity {
         // Icon Of Alert Dialog
         alertDialogBuilder.setIcon(R.drawable.checked);
         // Setting Alert Dialog Message
-        alertDialogBuilder.setMessage("Are you sure,You want to remove item");
+        alertDialogBuilder.setMessage("Are you sure,You want to remove item?");
         alertDialogBuilder.setCancelable(false);
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -106,11 +109,11 @@ public class PreBookings extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // Setting Alert Dialog Title
-        alertDialogBuilder.setTitle("Confirm Remove..!!!");
+        alertDialogBuilder.setTitle("Confirm Make Private..!!!");
         // Icon Of Alert Dialog
         alertDialogBuilder.setIcon(R.drawable.checked);
         // Setting Alert Dialog Message
-        alertDialogBuilder.setMessage("Are you sure,You want to remove item");
+        alertDialogBuilder.setMessage("Are you sure,You want to make the product private and stop taking more requests? ");
         alertDialogBuilder.setCancelable(false);
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -223,13 +226,30 @@ public class PreBookings extends AppCompatActivity {
                     = new FirebaseRecyclerAdapter<RequestDetails,  PreBookingHolder>(options) {
                 @Override
                 protected void onBindViewHolder(@NonNull final PreBookingHolder holder, int position, @NonNull final RequestDetails model) {
-                    System.out.println(model);
+                    System.out.println("*******************+++++*********************"+model.getQuantity());
 
+                        final ArrayList<String> qty = model.getQuantity();
+                        final ArrayList<String> sz = model.getSize();
 
-                        //holder.txtProductQuantity.setText("Quantity = " + model.getTotalQuantity());
+                        long totalquantity = 0;
+                        for (int i=0;i<qty.size();i++)
+                        {
+                            totalquantity+=Long.parseLong(qty.get(i));
+                        }
+                        holder.txtProductQuantity.setText("Total Quantity = " + String.valueOf(totalquantity));
                         holder.txtProductPrice.setText("Price: " + model.getPrice());
                         holder.txtProductName.setText(model.getCategory());
                         Picasso.get().load(model.getImage()).into(holder.CartImage);
+
+                    Spinner dropdown = holder.spinner_qty;
+                    String[] items = new String[qty.size()];
+                    for (int i=0;i<qty.size();i++)
+                    {
+                        items[i] = sz.get(i)+" : " + qty.get(i);
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, items);
+                    dropdown.setAdapter(adapter);
+                    dropdown.setSelection(0);
                         //orderid_list.add(model.getOrderid());
 
                         PID = model.getPID();
@@ -259,11 +279,10 @@ public class PreBookings extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
 
-//                        Intent intent = new Intent(CartActivity.this, productDetailActivity.class);
-//                        intent.putExtra("pid", model.getPid());
-//                        intent.putExtra("order_id", model.getOrderid());
-//                        intent.putExtra("image", model.getImage());
-//                        intent.putExtra("category", model.getCategory());
+//                        Intent intent = new Intent(PreBookings.this, GroupRequestDetails.class);
+//                        intent.putExtra("PID", model.getPID());
+//                        intent.putExtra("Category", model.getCategory());
+//                        intent.putExtra("GroupName",GroupName);
 //                        startActivity(intent);
                             }
                         });
