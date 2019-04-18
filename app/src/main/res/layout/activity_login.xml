@@ -38,29 +38,9 @@
     <Button
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:id="@+id/btn_add"
-        android:text="Add Member"
-        />
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="50dp"
         android:id="@+id/btn_view"
         android:text="View Products"
         />
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:id="@+id/btn_add_auth"
-        android:text="Add Authorized Member"
-        />
-
-    <Button
-        android:id="@+id/btn_unpaid_request"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="View Unpaid Request" />
 
 
 </LinearLayout>

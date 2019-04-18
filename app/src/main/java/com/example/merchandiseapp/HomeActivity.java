@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity
     private TabLayout tabLayout;
     private ViewPager viewPager;
     View headerView;
+    private String flag;
 
 
     @Override
@@ -80,14 +81,16 @@ public class HomeActivity extends AppCompatActivity
         //global = (G_var) getApplicationContext();
 
         /* Tab Layout Setting */
+        flag = getIntent().getStringExtra("flag");
+        Prevalent.currentFlag = flag;
+
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
 
-
         DatabaseReference allMerchandise;
         allMerchandise = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
-        //System.out.println(allMerchandise);
 
 
         allMerchandise.addValueEventListener(new ValueEventListener()
@@ -95,14 +98,13 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                //System.out.println("heyyyy");
                 HashMap<String, Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
-                //System.out.println(All_merchandise);
 
                 for (Object o : All_merchandise.entrySet())
                 {
                     HashMap.Entry p1 = (HashMap.Entry) o;
                     FragmentItem fragment = new FragmentItem();
+
                     Bundle bundle = new Bundle();
                     bundle.putString("category", (String) p1.getKey());
                     fragment.setArguments(bundle);
@@ -229,37 +231,61 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.manage_profile) {
+        if (id == R.id.manage_profile)
+        {
             Intent intent = new Intent(this, ManageProfile.class);
             startActivity(intent);
-        } else if (id == R.id.wallet) {
+        }
+
+        else if (id == R.id.wallet)
+        {
             Intent intent = new Intent(this, myWallet.class);
             startActivity(intent);
-        }else if (id == R.id.orders) {
+        }
+        else if (id == R.id.orders)
+        {
             Intent intent = new Intent(this,Order_History.class);
             startActivity(intent);
 
-        }/* else if (id == R.id.nav_manage) {
+        }
 
-        } else if (id == R.id.nav_share) {
+        else if (id == R.id.nav_share) {
             Intent intent = new Intent(HomeActivity.this, com.example.merchandiseapp.GroupRegisterActivity.class);
             startActivity(intent);
 
-        }*/ else if (id == R.id.nav_send) {
+        }
+
+        else if (id == R.id.nav_send)
+        {
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_logout)
+        }
+        else if (id == R.id.nav_logout)
         {
             Intent intent = new Intent(HomeActivity.this, AddMembersActivity.class);
             startActivity(intent);
-            /*mGoogleSignInClient.revokeAccess()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // ...
-                        }
-                    });*/
+        }
+
+        else if(id == R.id.customized_orders)
+        {
+            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+            intent.putExtra("flag", "0");
+            startActivity(intent);
+        }
+
+        else if(id == R.id.orders_list)
+        {
+            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+            intent.putExtra("flag", "1");
+            startActivity(intent);
+        }
+
+        else if(id == R.id.unpaid_request)
+        {
+            Intent intent = new Intent(HomeActivity.this, ViewRequestsActivity.class);
+            startActivity(intent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

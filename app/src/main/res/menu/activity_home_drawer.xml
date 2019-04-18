@@ -30,6 +30,21 @@
             android:title="FAQs"
             android:id="@+id/faq"
             android:icon="@drawable/faq_nav"/>
+
+        <item
+            android:title="Customized Orders"
+            android:id="@+id/customized_orders"
+            android:icon="@drawable/faq_nav"/>
+
+        <item
+            android:title="Orders"
+            android:id="@+id/orders_list"
+            android:icon="@drawable/faq_nav"/>
+
+        <item
+            android:title="View Un-Paid Requests"
+            android:id="@+id/unpaid_request"
+            android:icon="@drawable/faq_nav"/>
     </group>
 
     <item android:title="Communicate">

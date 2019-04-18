@@ -42,6 +42,9 @@
         </activity>
         <activity android:name=".CustomAdapter"></activity>
         <activity android:name=".ListView" />
+        <activity android:name=".TakeRequestDetailsActivity"></activity>
+        <activity android:name=".RequestDetailActivity" />
+        <activity android:name=".ViewRequestsActivity" />
         <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
         <activity android:name=".GroupRequestDetails">

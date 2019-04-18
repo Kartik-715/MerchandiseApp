@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +49,6 @@ public class FragmentItem extends Fragment
 
     public FragmentItem()
     {
-
     }
 
     private void setupRecyclerView(RecyclerView recyclerView)
@@ -140,8 +140,15 @@ public class FragmentItem extends Fragment
                     @Override
                     public void onClick(View v)
                     {
+                        System.out.println("Aryan : " + Prevalent.currentFlag);
                         Intent intent;
-                        intent = new Intent(mHomeActivity, productDetailActivity.class);
+                        String flag = Prevalent.currentFlag;
+
+                        if(flag.equals("0"))
+                            intent = new Intent(mHomeActivity, RequestDetailActivity.class);
+                        else
+                            intent = new Intent(mHomeActivity, productDetailActivity.class);
+
                         intent.putExtra("pid", model.getPID());
                         intent.putExtra("order_id", "empty");
                         intent.putExtra("image", model.getImage());
