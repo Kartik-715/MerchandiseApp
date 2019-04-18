@@ -18,11 +18,14 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.facebook.common.internal.Objects;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,9 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     Spinner areaSpinner;
 
 
+    String user;
+    JSONObject Juser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,24 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         radioButton2 = findViewById(R.id.Group);
         areaSpinner = (Spinner) findViewById(R.id.redirect_spinner);
 
+        //getting user details from json passed by outlook login................
+        Bundle b = getIntent().getExtras();
+        if(b!=null){
+            user = (String) b.get("user");
+         //   Toast.makeText(getApplicationContext(),"JSON STRING "+ user ,Toast.LENGTH_SHORT).show();
+            try{
+                Juser = new JSONObject(user);
+             //Juser is the required Json object to be used
+                //testing to find the user display name
+           //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
+                //setting the textview to mail of the logged in user
+                email.setText(Juser.getString("mail").toString());
+            }
+            catch (Exception ex)
+            {
+                Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
+            }
+        }
 
         Button button = findViewById(R.id.submitBtn);
         button.setOnClickListener(new View.OnClickListener() {

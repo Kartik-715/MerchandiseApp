@@ -13,10 +13,14 @@ import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.JsonArray;
 import com.microsoft.identity.client.*;
 import com.microsoft.identity.client.exception.*;
 
@@ -201,8 +205,60 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
         Intent i = new Intent(OutlookLogin.this, RedirectActivity.class);
+        i.putExtra("user",graphResponse.toString());
+
         startActivity(i);
-        //Toast.makeText(getApplicationContext(),graphResponse.toString(),Toast.LENGTH_SHORT).show();
+/*     Accessing details of the user from the JSONObject can be done as follows...
+       The below code is for retrieving attributes of the object
+
+        String displayName="";
+        JSONArray businessPhones;
+        String givenName;
+        String jobTitle;
+        String mail;
+        String mobilePhone;
+        String officeLocation;
+        String preferredLanguage;
+        String surname;
+        String userPrincipalName;
+        String id;
+        try{
+            displayName = graphResponse.getString("displayName");
+            Toast.makeText(getApplicationContext(),displayName,Toast.LENGTH_SHORT).show();
+
+            givenName = graphResponse.getString("givenName");
+            Toast.makeText(getApplicationContext(),givenName,Toast.LENGTH_SHORT).show();
+
+            jobTitle = graphResponse.getString("jobTitle");
+            Toast.makeText(getApplicationContext(),jobTitle,Toast.LENGTH_SHORT).show();
+
+            mail = graphResponse.getString("mail");
+            Toast.makeText(getApplicationContext(),mail,Toast.LENGTH_SHORT).show();
+
+            mobilePhone = graphResponse.getString("mobilePhone");
+            Toast.makeText(getApplicationContext(),mobilePhone,Toast.LENGTH_SHORT).show();
+
+            officeLocation = graphResponse.getString("officeLocation");
+            Toast.makeText(getApplicationContext(),officeLocation,Toast.LENGTH_SHORT).show();
+
+            preferredLanguage = graphResponse.getString("preferredLocation");
+            Toast.makeText(getApplicationContext(),preferredLanguage,Toast.LENGTH_SHORT).show();
+
+            surname = graphResponse.getString("surname");
+            Toast.makeText(getApplicationContext(),surname,Toast.LENGTH_SHORT).show();
+
+            userPrincipalName = graphResponse.getString("userPrincipalName");
+            Toast.makeText(getApplicationContext(),userPrincipalName,Toast.LENGTH_SHORT).show();
+
+            id = graphResponse.getString("id");
+            Toast.makeText(getApplicationContext(),id,Toast.LENGTH_SHORT).show();
+        }
+         catch (Exception ex)
+         {
+             Toast.makeText(getApplicationContext(),"Exception "+ex.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+
+         }
+*/
     }
 
     /* Set the UI for successful token acquisition data */
