@@ -61,18 +61,8 @@ import java.util.Set;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseReference ProductsRef;
-    private GoogleSignInClient mGoogleSignInClient;
-    private static final String TAG = HomeActivity.class.getSimpleName();
-    private Button btnLogout;
-    public FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public ImageView imageView;
-    public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     G_var global;
-    private RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
 
 
     @Override
@@ -85,8 +75,8 @@ public class HomeActivity extends AppCompatActivity
 
         /******** Tab Layout Setting **********/
 
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager_id);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
 //        DatabaseReference allGroups;
 //        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;

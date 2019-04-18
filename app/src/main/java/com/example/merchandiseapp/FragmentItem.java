@@ -78,12 +78,16 @@ public class FragmentItem extends Fragment
                         {
                             Merchandise mr = postdatasnapshot.getValue(Merchandise.class) ;
                             Set<String> s = new HashSet<>(accessibleGroups) ;
-                            Set<String> u = new HashSet<>(mr.getAccessGroup()) ;
-                            s.retainAll(u) ;
-                            if(s.size() != 0 && mr.getOrderType().equals(orderType))
+                            if(mr.getAccessGroup() != null)
                             {
-                                list.add(mr) ;
+                                Set<String> u = new HashSet<>(mr.getAccessGroup()) ;
+                                s.retainAll(u) ;
+                                if(s.size() != 0 && mr.getOrderType().equals(orderType))
+                                {
+                                    list.add(mr) ;
+                                }
                             }
+
                         }
 
                         myAdaptor adaptor = new myAdaptor(mHomeActivity,list) ;
