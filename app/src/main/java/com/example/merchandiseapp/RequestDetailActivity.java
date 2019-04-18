@@ -29,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RequestDetailActivity extends AppCompatActivity
 {
@@ -52,6 +54,7 @@ public class RequestDetailActivity extends AppCompatActivity
     private int flag;
     private int flag2;
     private String selectedSpinneritem;
+    private ArrayList<String> size_list;
 
     public interface MyCallback
     {
@@ -65,16 +68,18 @@ public class RequestDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_request_detail);
         arraySpinner = new ArrayList<>();
         image_src = new ArrayList<>();
+        size_list = new ArrayList<>();
+        orderid_list = new ArrayList<>();
+        group_list = new ArrayList<>();
+
+        User_ID = Prevalent.currentOnlineUser;
 
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
         image_src = getIntent().getStringArrayListExtra("image");
         category = getIntent().getStringExtra("category");
         group_name = getIntent().getStringExtra("groupName");
-
-        User_ID = Prevalent.currentOnlineUser;
-        orderid_list = new ArrayList<>();
-        group_list = new ArrayList<>();
+        size_list = getIntent().getStringArrayListExtra("size_list");
 
         makeRequest = (Button) findViewById(R.id.make_request);
         numberButton = findViewById(R.id.numberBtn);
@@ -155,7 +160,6 @@ public class RequestDetailActivity extends AppCompatActivity
 
         final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(productID);
         final DatabaseReference requestRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(productID).child("Requests");
-        final DatabaseReference requestRef3 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(productID).child("Requests");
 
         final HashMap<String, Object> requestMap = new HashMap<>();
         requestMap.put("Category", category);
@@ -163,6 +167,7 @@ public class RequestDetailActivity extends AppCompatActivity
         requestMap.put("IsOpen", "true");
         requestMap.put("PID", productID);
         requestMap.put("Price", productPrice.getText().toString());
+        requestMap.put("Size", size_list);
 
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
@@ -176,6 +181,132 @@ public class RequestDetailActivity extends AppCompatActivity
                 }
             }
         });
+
+
+        //UpdateQuantitySum
+        final DatabaseReference requestRef3 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(productID);
+        requestRef3.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.hasChild("Quantity"))
+                {
+                    final DatabaseReference requestRef3 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(productID);
+                    requestRef3.addListenerForSingleValueEvent(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                        {
+                            DataSnapshot temp = dataSnapshot.child("Quantity");
+
+                            ArrayList<String> quantity_list = new ArrayList<>();
+                            for(DataSnapshot dataSnapshot1 : temp.getChildren())
+                            {
+                                quantity_list.add(dataSnapshot1.getValue().toString());
+                            }
+
+                            for(int i=0;i<size_list.size();i++)
+                            {
+                                if(i == selecteditem)
+                                {
+                                    String temp_quantity = quantity_list.get(i);
+
+                                    System.out.println("Chirag1 : " + size_list.size());
+                                    System.out.println("Chirag2 : " + temp_quantity);
+
+                                    int result = Integer.parseInt(temp_quantity);
+                                    System.out.println("Chirag3 : " + result);
+                                    int add_value = Integer.parseInt(numberButton.getNumber());
+                                    System.out.println("Chirag4 : " + add_value);
+
+                                    result += add_value;
+                                    System.out.println("Chirag5 : " + result);
+                                    temp_quantity = Integer.toString(result);
+                                    System.out.println("Chirag6 : " + temp_quantity);
+                                    quantity_list.set(i,temp_quantity);
+                                }
+                            }
+
+                            final HashMap<String, Object> requestMap3 = new HashMap<>();
+                            requestMap3.put("Quantity", quantity_list);
+
+                            requestRef3.updateChildren(requestMap3).addOnCompleteListener(new OnCompleteListener<Void>()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
+                                    if(task.isSuccessful())
+                                    {
+
+                                    }
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError)
+                        {
+
+                        }
+                    });
+
+                }
+
+
+                else //If there is no Such Child as Quantity
+                {
+                    final DatabaseReference requestRef4 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(productID);
+                    ArrayList<String> quantity_list = new ArrayList<>();
+                    for(int i=0;i<size_list.size();i++)
+                    {
+                        if(i == selecteditem)
+                            quantity_list.add(numberButton.getNumber());
+
+                        else
+                            quantity_list.add("0");
+                    }
+
+
+                    final HashMap<String, Object> requestMap4 = new HashMap<>();
+                    requestMap4.put("Quantity", quantity_list);
+
+                    requestRef4.updateChildren(requestMap4).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+                            if(task.isSuccessful())
+                            {
+
+                            }
+                        }
+                    });
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
 
 
         final HashMap<String, Object> requestMap2 = new HashMap<>();
@@ -275,3 +406,4 @@ public class RequestDetailActivity extends AppCompatActivity
 
     }
 }
+

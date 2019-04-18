@@ -147,6 +147,7 @@ public class FragmentItem extends Fragment
                         intent.putExtra("image", model.getImage());
                         intent.putExtra("category", model.getCategory());
                         intent.putExtra("groupName", model.getGroupName());
+                        intent.putExtra("size_list", model.getSize());
                         mHomeActivity.startActivity(intent);
                     }
                 });
