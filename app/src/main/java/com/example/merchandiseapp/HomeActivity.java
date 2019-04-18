@@ -68,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    View headerView;
 
 
     @Override
@@ -150,7 +151,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
 
 
 
@@ -182,6 +183,15 @@ public class HomeActivity extends AppCompatActivity
         addImage();
 //        new DownloadImageTask(imageView)
 //                .execute(user.getPhotoUrl().toString());
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        imageView = headerView.findViewById(R.id.imageView);
+        addImage();
+
     }
 
     @Override
@@ -223,9 +233,11 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.wallet) {
             Intent intent = new Intent(this, myWallet.class);
             startActivity(intent);
-        }/* else if (id == R.id.nav_slideshow) {
+        }else if (id == R.id.orders) {
+            Intent intent = new Intent(this,Order_History.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        }/* else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 

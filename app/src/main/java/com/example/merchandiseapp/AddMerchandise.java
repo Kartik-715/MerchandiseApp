@@ -1,5 +1,8 @@
 package com.example.merchandiseapp;
 
+
+import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -130,7 +133,10 @@ public class AddMerchandise extends AppCompatActivity {
         addMerchandise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+       
                 Spinner dropdown = findViewById(R.id.spinner1);
+
                 GroupName = gpName.getText().toString();
                 Category = (String) dropdown.getSelectedItem();
                 Image = new ArrayList<>();
@@ -148,6 +154,8 @@ public class AddMerchandise extends AppCompatActivity {
 
 
                 myRef.updateChildren(childUpdates);
+
+
 
             }
         });
