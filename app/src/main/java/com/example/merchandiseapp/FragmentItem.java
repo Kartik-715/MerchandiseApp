@@ -24,6 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class FragmentItem extends Fragment
 {
@@ -51,7 +56,7 @@ public class FragmentItem extends Fragment
 
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView)
+    private void setupRecyclerView(final RecyclerView recyclerView)
     {
         ArrayList<String> array_test = new ArrayList<>();
 
@@ -61,52 +66,41 @@ public class FragmentItem extends Fragment
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
         recyclerView.setLayoutManager(layoutManager);
 
-        /*DatabaseReference test = FirebaseDatabase.getInstance().getReference().child("Group");
-        System.out.println("Test" + test);
+        final List<String> accessibleGroups = new ArrayList<>();
+        accessibleGroups.add("CSEA") ;
 
-        test.addListenerForSingleValueEvent(new ValueEventListener()
+        DatabaseReference allGroups = FirebaseDatabase.getInstance().getReference().child("Group");
+        System.out.println("Test" + allGroups);
+
+        allGroups.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                for(DataSnapshot postSnapshot: dataSnapshot.getChildren())
+                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
+                List<Merchandise> list = new ArrayList<>() ;
+
+
+                for(String o: accessibleGroups)
                 {
-                    System.out.println("Fuck" + postSnapshot.getKey());
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(((String) postSnapshot.getKey())).child("Merchandise").child(bundle.getString("category","none"));
-                    System.out.println("Fuck2" + ref);
+                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
+                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
+                    HashMap<String,Object> reqdMerch = (HashMap<String, Object>) groupMerch.get(bundle.getString("category", "none")) ;
 
-                    ref.addListenerForSingleValueEvent(new ValueEventListener()
+                    //System.out.println("Group Details: " + group );
+                    //System.out.println("Group Merchandise: " + groupMerch );
+
+                    for(Map.Entry<String, Object> merch : reqdMerch.entrySet())
                     {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                        {
-                            for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
-                            {
-                                if(dataSnapshot1.child("Price").getValue() != null)
-                                    System.out.println("Fuck_Loop  :  " + dataSnapshot1.child("Price").getValue().toString() );
-
-                                System.out.println("Fuck3  :  " + dataSnapshot1.getValue(Merchandise.class) );
-                                System.out.println("Fuck4  :  " + dataSnapshot1.getKey() );
-                                System.out.println("Bakchodi  :  " + dataSnapshot1.getValue() );
-                                Merchandise test = dataSnapshot1.getValue(Merchandise.class);
-                                System.out.println("Fuck5 : " + test);
-                                array_merchandise.add(test);
-                            }
-
-                            adapter();
-                            System.out.println(array_merchandise + "5555555");
-                            System.out.println(array_merchandise.get(0).getPrice() + "5555555");
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError)
-                        {
-                        }
-                    });
-                    System.out.println(array_merchandise + "233333333");
+                        Merchandise mr =  (Merchandise) merch.getValue();
+                        System.out.println("Merch : " + merch);
+                        list.add(mr) ;
+                    }
 
                 }
+
+                myAdaptor adaptor = new myAdaptor(mHomeActivity,list) ;
+                recyclerView.setAdapter(adaptor);
             }
 
             @Override
@@ -114,62 +108,12 @@ public class FragmentItem extends Fragment
             {
 
             }
-        });*/
+        });
 
-        DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Group").child(array_test.get(0)).child("Merchandise").child(bundle.getString("category","none")) ;
-        final Query queries = ProductsRef;
-
-        FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
-                .setQuery(queries, Merchandise.class)
-                .build();
-
-        FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder> adapter = new FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder>(options)
-        {
-            @Override
-            protected void onBindViewHolder(@NonNull MerchandiseViewHolder holder, int position, final Merchandise model)
-            {
-                holder.txtProductName.setText(model.getGroupName());
-                holder.txtProductDescription.setText(model.getCategory());
-                holder.txtProductPrice.setText("Price = " + model.getPrice() );
-
-                if(model.getImage() != null)
-                    Picasso.get().load(model.getImage().get(0)).into(holder.imageView);
-
-                holder.itemView.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent;
-                        intent = new Intent(mHomeActivity, RequestDetailActivity.class);
-                        intent.putExtra("pid", model.getPID());
-                        intent.putExtra("order_id", "empty");
-                        intent.putExtra("image", model.getImage());
-                        intent.putExtra("category", model.getCategory());
-                        intent.putExtra("groupName", model.getGroupName());
-                        mHomeActivity.startActivity(intent);
-                    }
-                });
-            }
-
-            @NonNull
-            @Override
-            public MerchandiseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-            {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-                return new MerchandiseViewHolder(view);
-            }
-        };
-
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
 
     }
 
-    public void adapter()
-    {
 
-    }
 
 
 }

@@ -49,9 +49,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -83,29 +88,53 @@ public class HomeActivity extends AppCompatActivity
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
 
-        DatabaseReference allMerchandise;
-        allMerchandise = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
-        //System.out.println(allMerchandise);
+        DatabaseReference allGroups;
+        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;
+        final List<String> accessibleGroups = new ArrayList<>();
+        accessibleGroups.add("CSEA") ;
 
 
-        allMerchandise.addValueEventListener(new ValueEventListener()
+
+
+
+        allGroups.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                //System.out.println("heyyyy");
-                HashMap<String, Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
-                //System.out.println(All_merchandise);
+                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
 
-                for (Object o : All_merchandise.entrySet())
+                Set<String> AllCategories = new HashSet<>();
+
+                for(String o: accessibleGroups)
                 {
-                    HashMap.Entry p1 = (HashMap.Entry) o;
+                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
+                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
+
+                    //System.out.println("Group Details: " + group );
+                    //System.out.println("Group Merchandise: " + groupMerch );
+
+                    for(Map.Entry<String, Object> category : groupMerch.entrySet())
+                    {
+                        AllCategories.add(category.getKey()) ;
+                    }
+
+                }
+
+                System.out.println("Different Categories are: " + AllCategories);
+
+                for (String category : AllCategories)
+                {
                     FragmentItem fragment = new FragmentItem();
                     Bundle bundle = new Bundle();
-                    bundle.putString("category", (String) p1.getKey());
+                    bundle.putString("category", category);
                     fragment.setArguments(bundle);
-                    adaptor.AddFragment(fragment, (String) p1.getKey());
+                    adaptor.AddFragment(fragment, category);
                 }
+
+
+
+
             }
 
             @Override
