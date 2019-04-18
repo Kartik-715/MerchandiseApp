@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,8 +68,16 @@ public class GroupRequestDetails extends AppCompatActivity {
         System.out.println(adapterViewPager);
 
 
+        Contact =new  ArrayList<String>() ;
+        Email =new  ArrayList<String>() ;
+        Quantity =new  ArrayList<String>() ;
+        Size   =new  ArrayList<String>() ;
+        UserName =new  ArrayList<String>() ;
+        list =new  ArrayList<String>() ;
+
         System.out.println(vpPager);
         vpPager.setAdapter(adapterViewPager);
+        vpPager.setPageTransformer(true, new RotateUpTransformer());
 
 //        vpPager.setPageTransformer(true, new RotateUpTransformer());
 
@@ -77,88 +88,25 @@ public class GroupRequestDetails extends AppCompatActivity {
             public void onPageSelected(final int position) {
                 Toast.makeText(GroupRequestDetails.this, "Selected page position: " + position, Toast.LENGTH_SHORT).show();
                 System.out.println("hello honey bunny");
-               final  Fragment fragment =new FirstFragment();
-                final Bundle bundle = new Bundle();
 
-                database = FirebaseDatabase.getInstance();
-                ref = database.getReference("Group").child("CSEA").child("Requests").child("F01").child("Requests");
-                list = new ArrayList<>();
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System .out.println("value  of position " + position);
+//                if(position==0 )
+//                {
+//                    System.out.println("i am cumming");
+//                    Fragment fragment = new FirstFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt("someInt", 0);
+//                    bundle.putString("someTitle", "dsa");
+//                    fragment.setArguments(bundle);
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
 
-                        long ctr=0;
-
-                        long count = dataSnapshot.getChildrenCount();
-                        for (DataSnapshot ds : dataSnapshot.getChildren()){
-
-                            System.out.println(ds.child("IsPaid").getValue().toString());
-                            HashMap<String, Object> PaidMembers = (HashMap<String , Object>) dataSnapshot.getValue();
-
-                            if (ds.child("IsPaid").getValue() != null && ds.child("IsPaid").getValue().toString().equals("true")) {
-                                Context context = getApplicationContext();
-                                if (ds.child("UserID").getValue() != null)
-                                    list.add("UserID : " + ds.child("UserID").getValue().toString());
-                                if (ds.child("Quantity").getValue() != null)
-                                    list.add("Quantity : " + ds.child("Quantity").getValue().toString());
-                                list.add("\n");
-
-                                Contact.add(ds.child("Contact").toString());
-                                Email.add(ds.child("Email").toString());
-                                Quantity.add(ds.child("Quantity").toString());
-                                Size.add(ds.child("Size").toString());
-                                UserName.add(ds.child("UserName").toString());
-
-                                    System.out.println( ds.child("UserID").toString());
-                            }
-
-                            ctr++;
-                            if( ctr == count)
-                            {
-                                System.out.println(list.size()  );
-
-                                bundle.putStringArrayList("Contact", Contact);
-                                bundle.putStringArrayList("Email", Email);
-                                bundle.putStringArrayList("Quantity", Quantity);
-                                bundle.putStringArrayList("Size", Size);
-                                bundle.putStringArrayList("UserName", UserName);
-                                fragment.setArguments(bundle);
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragmentContainer, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
-                            }
-                        }
-
-
-/*
-*
-*
-*
-* HashMap<String, Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue();
-                System.out.println(All_merchandise);
-
-
-                for (Object o : All_merchandise.entrySet()) {
-                    HashMap.Entry p1 = (HashMap.Entry) o;
-                    FragmentItem fragment = new FragmentItem();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category", (String) p1.getKey());
-                    fragment.setArguments(bundle);
-                    adaptor.AddFragment(fragment, (String) p1.getKey());
-
-*
-*
-*
-*
-*
-* */
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(GroupRequestDetails.this, "dsadsadas page position: " , Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+//                }
+//
+//                else
+//                {
+//
+//                }
             }
 //             This method will be invoked when the current page is scrolled
                 @Override
@@ -174,21 +122,15 @@ public class GroupRequestDetails extends AppCompatActivity {
                 }
 
         });
+
     }
 
-
-
-
-
-
     public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 3;
+        private static int NUM_ITEMS = 2;
 
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            System.out.println("************122222222222222222222222222222");
-
         }
 
         // Returns total number of pages
@@ -200,15 +142,15 @@ public class GroupRequestDetails extends AppCompatActivity {
         // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
-            position=0;
             System.out.println("122222222222222222222222222222");
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return FirstFragment.newInstance(0, "Paid");
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return FirstFragment.newInstance(1, "Not Paid");
+//                case 1: // Fragment # 0 - This will show FirstFragment different title
+//                    return SecondFragment.newInstance(1, "Not Paid");
                 default:
-                    return null;
+                    return SecondFragment.newInstance(2, "Non Paid");
+
 
             }
         }
@@ -216,6 +158,16 @@ public class GroupRequestDetails extends AppCompatActivity {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Paid";
+                case 1:
+                    return "Not Paid";
+                case 2:
+                    return "Tab Three";
+            }
+
+
             return "Page " + position;
         }
 

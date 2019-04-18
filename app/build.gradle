@@ -58,7 +58,8 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation files('libs/mail.jar')
-//    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+//    implementationmplementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'
