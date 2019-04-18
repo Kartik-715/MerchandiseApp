@@ -84,14 +84,37 @@ public class GroupActivity extends AppCompatActivity
         if (id == R.id.nav_profile) {
 
         } else if (id == R.id.nav_request) {
+            Intent intent = new Intent(GroupActivity.this,PreBookings.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_add_item) {
+
             Intent intent = new Intent(GroupActivity.this,AddMerchandise.class);
             startActivity(intent);
 
+        }else if (id == R.id.nav_ViewMerchandise) {
 
+            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_signout) {
+        }
+        else if (id == R.id.nav_orders) {
+
+//            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
+//            startActivity(intent);
+
+        }else if (id == R.id.nav_members) {
+
+//            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
+//            startActivity(intent);
+
+        }else if (id == R.id.nav_authorizedMembers) {
+
+//            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
+//            startActivity(intent);
+
+        }
+        else if (id == R.id.nav_signout) {
 
         }
 

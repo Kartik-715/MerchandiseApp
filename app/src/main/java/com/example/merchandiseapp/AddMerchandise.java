@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -111,29 +112,31 @@ public class AddMerchandise extends AppCompatActivity {
         accessGroupListView.setAdapter(adapter);
 
         addSQ.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ShowToast")
             @Override
             public void onClick(View view) {
-                if (size_edt.getText().toString() == "")
+                if (size_edt.getText().toString().equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"Enter the size", Toast.LENGTH_LONG);
-                    return;
                 }
-                if (qty_edt.getText().toString() == "")
+                else if (qty_edt.getText().toString().equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"Enter the quantity", Toast.LENGTH_LONG);
-                    return;
                 }
-                listSQ.add("Size="+size_edt.getText().toString()+":Qty="+qty_edt.getText().toString());
-                size.add(size_edt.getText().toString());
-                qty.add(qty_edt.getText().toString());
-                size_edt.setText("");
-                qty_edt.setText("");
-            }
+                else {
+                    listSQ.add("Size=" + size_edt.getText().toString() + ":Qty=" + qty_edt.getText().toString());
+                    size.add(size_edt.getText().toString());
+                    qty.add(qty_edt.getText().toString());
+                    size_edt.setText("");
+                    qty_edt.setText("");
+                }
+                }
         });
         sizeQtyListView.setAdapter(adapterSize_qty);
 
 
         addMerchandise.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ShowToast")
             @Override
             public void onClick(View view) {
                 Spinner dropdown = findViewById(R.id.spinner1);
@@ -147,40 +150,36 @@ public class AddMerchandise extends AppCompatActivity {
                 if(listSQ.size()==0)
                 {
                     Toast.makeText(getApplicationContext(),"Enter Valid Quantity and Size",Toast.LENGTH_LONG);
-                    return;
                 }
-                if(PID=="")
+                else if(PID.equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"Enter Valid Product ID",Toast.LENGTH_LONG);
-                    return;
                 }
-                if(Price=="")
+                else if(Price.equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"Enter a Valid Price",Toast.LENGTH_LONG);
-                    return;
                 }
+                else {
+                    myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
+                    myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise");
+                    Merchandise merchandise = new Merchandise(GroupName, Category, Image, Material, PID, Price, qty, size, AccessGroups, OrderType, "true");
+                    HashMap<String, Object> merchandiseValues = merchandise.toMap();
 
-                myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
-                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise");
-                Merchandise merchandise = new Merchandise(GroupName,Category,Image,Material,PID,Price,qty,size,AccessGroups,OrderType,"true");
-                HashMap<String, Object> merchandiseValues = merchandise.toMap();
+                    HashMap<String, Object> childUpdates = new HashMap<>();
 
-                HashMap<String, Object> childUpdates = new HashMap<>();
-
-                childUpdates.put( Category +"/"+PID, merchandiseValues);
+                    childUpdates.put(Category + "/" + PID, merchandiseValues);
 
 
+                    myRef.updateChildren(childUpdates);
+                    myRef2.updateChildren(childUpdates);
 
-                myRef.updateChildren(childUpdates);
-                myRef2.updateChildren(childUpdates);
-
-                access_editText.setText("");
-                size_edt.setText("");
-                qty_edt.setText("");
-                mat.setText("");
-                price_edt.setText("");
-                prod_Id.setText("");
-
+                    access_editText.setText("");
+                    size_edt.setText("");
+                    qty_edt.setText("");
+                    mat.setText("");
+                    price_edt.setText("");
+                    prod_Id.setText("");
+                }
 
             }
         });
