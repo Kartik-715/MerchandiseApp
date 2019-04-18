@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +13,16 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -130,6 +136,7 @@ public class AddMerchandise extends AppCompatActivity {
                     size_edt.setText("");
                     qty_edt.setText("");
                 }
+
                 }
         });
         sizeQtyListView.setAdapter(adapterSize_qty);
@@ -149,36 +156,66 @@ public class AddMerchandise extends AppCompatActivity {
 
                 if(listSQ.size()==0)
                 {
-                    Toast.makeText(getApplicationContext(),"Enter Valid Quantity and Size",Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(),"Enter Valid Quantity and Size",Toast.LENGTH_LONG).show();
                 }
                 else if(PID.equals(""))
                 {
-                    Toast.makeText(getApplicationContext(),"Enter Valid Product ID",Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(),"Enter Valid Product ID",Toast.LENGTH_LONG).show();
                 }
                 else if(Price.equals(""))
                 {
-                    Toast.makeText(getApplicationContext(),"Enter a Valid Price",Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(),"Enter a Valid Price",Toast.LENGTH_LONG).show();
                 }
                 else {
+
+
+
                     myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
                     myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise");
-                    Merchandise merchandise = new Merchandise(GroupName, Category, Image, Material, PID, Price, qty, size, AccessGroups, OrderType, "true");
-                    HashMap<String, Object> merchandiseValues = merchandise.toMap();
+                    final Query queries = myRef2.child(Category).orderByKey().equalTo(PID);
 
-                    HashMap<String, Object> childUpdates = new HashMap<>();
+                    queries.addListenerForSingleValueEvent(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                        {
+                            if (dataSnapshot.exists()) {
 
-                    childUpdates.put(Category + "/" + PID, merchandiseValues);
+                                   Toast.makeText(getApplicationContext(),"Enter Valid Product ID. This Id Already Exist",Toast.LENGTH_LONG).show();
+
+                            } else {
+                                    //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
+                                Merchandise merchandise = new Merchandise(GroupName, Category, Image, Material, PID, Price, qty, size, AccessGroups, OrderType, "true");
+                                HashMap<String, Object> merchandiseValues = merchandise.toMap();
+
+                                HashMap<String, Object> childUpdates = new HashMap<>();
+
+                                childUpdates.put(Category + "/" + PID, merchandiseValues);
 
 
-                    myRef.updateChildren(childUpdates);
-                    myRef2.updateChildren(childUpdates);
+                                myRef.updateChildren(childUpdates);
+                                myRef2.updateChildren(childUpdates);
 
-                    access_editText.setText("");
-                    size_edt.setText("");
-                    qty_edt.setText("");
-                    mat.setText("");
-                    price_edt.setText("");
-                    prod_Id.setText("");
+                                access_editText.setText("");
+                                size_edt.setText("");
+                                qty_edt.setText("");
+                                mat.setText("");
+                                price_edt.setText("");
+                                prod_Id.setText("");
+                                Toast.makeText(getApplicationContext(),"Merchandise Added Successfully",Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+
+                    });
+
+
+
+
                 }
 
             }

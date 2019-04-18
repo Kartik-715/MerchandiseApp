@@ -15,7 +15,7 @@ public class viewMerchandiseHolder extends RecyclerView.ViewHolder implements Vi
 
     public TextView txtProductName, txtProductPrice, txtProductQuantity,txtProductStatus;
     public ImageView CartImage;
-    public Button DeleteButton, MakePubliceButton ;
+    public Button DeleteButton, MakePubliceButton , EditMerchandiseButton;
     private ItemClickListner itemClickListner;
     public Spinner spinner_qty;
 
@@ -28,6 +28,7 @@ public class viewMerchandiseHolder extends RecyclerView.ViewHolder implements Vi
         txtProductStatus = itemView.findViewById(R.id.product_status);
         DeleteButton = itemView.findViewById(R.id.cart_remove_item);
         MakePubliceButton = itemView.findViewById(R.id.cart_make_public);
+        EditMerchandiseButton = itemView.findViewById(R.id.cart_edit_item);
         CartImage = itemView.findViewById(R.id.product_image);
         spinner_qty = itemView.findViewById(R.id.product_quantity_spinner);
     }

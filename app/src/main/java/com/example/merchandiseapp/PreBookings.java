@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -36,10 +37,11 @@ public class PreBookings extends AppCompatActivity {
     private ArrayList<String> orderid_list;
     private DatabaseReference preOederListRef;
     private DatabaseReference myRef;
+    private DatabaseReference myRef1;
+    private DatabaseReference myRef2;
     private String GroupName;
     private int countCards;
     private HashMap<String, Object> All_orders = new HashMap<String, Object>();
-    private ArrayList<String> ProductID = new ArrayList<>();
     private String PID;
     private String Category;
     @Override
@@ -78,11 +80,16 @@ public class PreBookings extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
+
                 preOederListRef.child(PID).child("IsOpen").setValue("false");
 
 
-                myRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
-                myRef.child("IsOpen").setValue("false");
+                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
+                myRef1.child("IsOpen").setValue("false");
+
+                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
+                myRef2.child("IsOpen").setValue("false");
+
                 finish();
                 startActivity(getIntent());
             }
@@ -120,8 +127,14 @@ public class PreBookings extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                myRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
-                myRef.child("IsOpen").setValue("false");
+
+
+                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
+                myRef1.child("IsOpen").setValue("false");
+
+                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
+                myRef2.child("IsOpen").setValue("false");
+
                 finish();
                 startActivity(getIntent());
             }
@@ -160,16 +173,7 @@ public class PreBookings extends AppCompatActivity {
                 countCards = (int) dataSnapshot.getChildrenCount();
                 All_orders= (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println("*******watch out for this***********"+All_orders);
-                Iterator it = null;
                 if(All_orders != null) {
-                    it = All_orders.entrySet().iterator();
-
-
-                    while (it.hasNext()) {
-                        HashMap.Entry pair = (HashMap.Entry) it.next();
-                        ProductID.add((String) pair.getKey());
-                        it.remove();
-                    }
 
                     if (dataSnapshot.exists()) {
                         //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
@@ -198,7 +202,7 @@ public class PreBookings extends AppCompatActivity {
 
     private void DataExists(Query queries)
     {
-        System.out.println(ProductID);
+
 
             System.out.println(queries);
             FirebaseRecyclerOptions<RequestDetails> options = new FirebaseRecyclerOptions.Builder<RequestDetails>()
@@ -207,6 +211,7 @@ public class PreBookings extends AppCompatActivity {
 
             final FirebaseRecyclerAdapter<RequestDetails, PreBookingHolder> adapter
                     = new FirebaseRecyclerAdapter<RequestDetails,  PreBookingHolder>(options) {
+                @SuppressLint("SetTextI18n")
                 @Override
                 protected void onBindViewHolder(@NonNull final PreBookingHolder holder, int position, @NonNull final RequestDetails model) {
                     System.out.println("*******************+++++*********************"+model.getQuantity());
@@ -284,6 +289,5 @@ public class PreBookings extends AppCompatActivity {
 
             recyclerView.setAdapter(adapter);
             adapter.startListening();
-            ProductID.remove(0);
     }
 }
