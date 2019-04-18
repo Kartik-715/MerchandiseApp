@@ -36,12 +36,24 @@
             android:name=".GroupActivity"
             android:label="GroupActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MultipleImages">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity android:name=".CustomAdapter" />
+        <activity android:name=".ListView" />
+        <activity android:name=".GroupRequestDetails"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".GroupActivity"
+            android:label="@string/title_activity_vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".grp_manage_profile" />
         <activity
             android:name=".grpUser"
@@ -62,6 +74,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FullPageImageActivity" />
         <activity android:name=".DeliveredActivity" />
+        <activity android:name=".multiple_images" />
+
+
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
