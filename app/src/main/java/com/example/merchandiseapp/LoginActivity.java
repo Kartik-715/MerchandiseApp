@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     User_data vendor = null;
     private Button temp_Button;
     private Button temp_Button2;
-    private Button temp_Button3;
+    private Button temp_Button3, temp_Button4;
     //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
     @Override
@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         temp_Button = findViewById(R.id.btn_add);
         temp_Button2 = findViewById(R.id.btn_view);
         temp_Button3 = findViewById(R.id.btn_add_auth);
+        temp_Button4 = findViewById(R.id.btn_unpaid_request);
 
         global = (G_var) getApplicationContext();
         keepLogged = findViewById(R.id.loggedIn);
@@ -103,6 +104,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent intent = new Intent(LoginActivity.this, AccessedMembersActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        temp_Button4.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(LoginActivity.this, ViewRequestsActivity.class);
                 startActivity(intent);
             }
         });

@@ -126,6 +126,7 @@ public class RequestDetailActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 makeRequest();
+                makeRequest2();
             }
         });
 
@@ -242,8 +243,6 @@ public class RequestDetailActivity extends AppCompatActivity
                                     }
                                 }
                             });
-
-
                         }
 
                         @Override
@@ -300,15 +299,6 @@ public class RequestDetailActivity extends AppCompatActivity
 
 
 
-
-
-
-
-
-
-
-
-
         final HashMap<String, Object> requestMap2 = new HashMap<>();
         requestMap2.put("Address", "");
         requestMap2.put("Contact", "");
@@ -332,6 +322,60 @@ public class RequestDetailActivity extends AppCompatActivity
             {
                 if(task.isSuccessful())
                 {
+                    /*Toast.makeText(RequestDetailActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RequestDetailActivity.this, TakeRequestDetailsActivity.class);
+                    intent.putExtra("orderID", neworderID);
+                    intent.putExtra("group_name", group_name);
+                    intent.putExtra("product_id", productID);
+                    startActivity(intent);*/
+
+                }
+            }
+        });
+
+    }
+
+    private void makeRequest2()
+    {
+        String saveCurrentTime, saveCurrentDate;
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
+        saveCurrentDate = currentDate.format(calForDate.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
+        saveCurrentTime = currentTime.format(calForDate.getTime());
+
+        final String neworderID = saveCurrentDate + " " + saveCurrentTime;
+        final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(User_ID).child(neworderID);
+
+        final HashMap<String, Object> requestMap2 = new HashMap<>();
+        requestMap2.put("Address", "");
+        requestMap2.put("Contact", "");
+        requestMap2.put("Date", saveCurrentDate);
+        requestMap2.put("Email", "");
+        requestMap2.put("GroupName", group_name);
+        requestMap2.put("IsPaid", "false");
+        requestMap2.put("IsPlaced", "false");
+        requestMap2.put("OrderID", neworderID);
+        requestMap2.put("Quantity", numberButton.getNumber());
+        requestMap2.put("Size", selectedSpinneritem);
+        requestMap2.put("Status", "incart");
+        requestMap2.put("Time", saveCurrentTime);
+        requestMap2.put("UserID", User_ID);
+        requestMap2.put("ProductID", productID);
+        if(image_src.get(0) != null)
+            requestMap2.put("Image", image_src.get(0));
+        else
+            requestMap2.put("Image", "");
+        requestMap2.put("UserName", "Chirag");
+
+        requestRef.updateChildren(requestMap2).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
                     Toast.makeText(RequestDetailActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RequestDetailActivity.this, TakeRequestDetailsActivity.class);
                     intent.putExtra("orderID", neworderID);
@@ -342,7 +386,6 @@ public class RequestDetailActivity extends AppCompatActivity
                 }
             }
         });
-
     }
 
     private void intializefields()

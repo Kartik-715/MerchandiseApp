@@ -46,6 +46,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                Pay_Now_Function2();
                 Pay_Now_Function();
             }
         });
@@ -55,6 +56,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                Pay_Later_Function2();
                 Pay_Later_Function();
             }
         });
@@ -139,5 +141,43 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
 
     }
 
+    private void Pay_Now_Function2()
+    {
+        final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderID);
+        final HashMap<String, Object> requestMap = new HashMap<>();
+        requestMap.put("Contact", PhoneNumber.getText().toString());
+        requestMap.put("Address", Address.getText().toString());
+        requestMap.put("Email",Email_ID.getText().toString());
+        requestMap.put("IsPaid", "true");
+
+        requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+
+            }
+        });
+    }
+
+    private void Pay_Later_Function2()
+    {
+        final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderID);
+        final HashMap<String, Object> requestMap = new HashMap<>();
+        requestMap.put("Contact", PhoneNumber.getText().toString());
+        requestMap.put("Address", Address.getText().toString());
+        requestMap.put("Email",Email_ID.getText().toString());
+        requestMap.put("IsPaid", "false");
+
+        requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+
+            }
+        });
+
+    }
 
 }

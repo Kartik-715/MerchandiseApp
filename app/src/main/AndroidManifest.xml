@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TakeRequestDetailsActivity"></activity>
+        <activity android:name=".ViewRequestsActivity"></activity>
+        <activity android:name=".TakeRequestDetailsActivity" />
         <activity android:name=".RequestDetailActivity" />
         <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />

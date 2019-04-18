@@ -1,4 +1,5 @@
-package com.example.merchandiseapp;
+package com.example.merchandiseapp.Holder;
+
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,23 +11,23 @@ import android.widget.TextView;
 import com.example.merchandiseapp.Interface.ItemClickListner;
 import com.example.merchandiseapp.R;
 
-public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+public class RequestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     public TextView txtProductName, txtProductPrice, txtProductQuantity;
-    public ImageView CartImage;
-    public Button DeleteButton, EditButton;
+    public ImageView RequestImage;
+    public Button DeleteButton, PayNowButton;
     private ItemClickListner itemClickListner;
 
-    public OrderViewHolder(@NonNull View itemView)
+    public RequestViewHolder(@NonNull View itemView)
     {
         super(itemView);
 
-        txtProductQuantity = itemView.findViewById(R.id.cart_product_quantity);
-        txtProductName = itemView.findViewById(R.id.cart_product_name);
-        txtProductPrice = itemView.findViewById(R.id.cart_product_price);
-        DeleteButton = itemView.findViewById(R.id.cart_remove_item);
-        EditButton = itemView.findViewById(R.id.cart_edit_item);
-        CartImage = itemView.findViewById(R.id.product_image);
+        txtProductQuantity = itemView.findViewById(R.id.request_product_quantity);
+        txtProductName = itemView.findViewById(R.id.request_product_name);
+        txtProductPrice = itemView.findViewById(R.id.request_product_price);
+        DeleteButton = itemView.findViewById(R.id.request_remove_item);
+        PayNowButton = itemView.findViewById(R.id.request_pay_now);
+        RequestImage = itemView.findViewById(R.id.product_image);
 
     }
 
@@ -40,5 +41,5 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
     {
         this.itemClickListner = itemClickListner;
     }
-}
 
+}
