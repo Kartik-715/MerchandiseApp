@@ -2,6 +2,7 @@ package com.example.merchandiseapp;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -88,6 +89,20 @@ public class RequestDetailActivity extends AppCompatActivity
         SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
 
+        ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image_2);
+        ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
+        viewPager.setAdapter(adapter);
+
+        viewPager.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(RequestDetailActivity.this, FullPageImageActivity.class);
+                intent.putExtra("image", image_src);
+                startActivity(intent);
+            }
+        });
 
         intializeSpinner(new MyCallback()
         {
