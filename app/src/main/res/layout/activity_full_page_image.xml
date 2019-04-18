@@ -7,15 +7,17 @@
     tools:context=".FullPageImageActivity">
 
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/displayImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
     
     <android.support.v4.view.ViewPager
         android:id="@+id/ViewPager_Image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        >
 
     </android.support.v4.view.ViewPager>
 

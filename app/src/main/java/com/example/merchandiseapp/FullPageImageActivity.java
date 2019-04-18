@@ -22,7 +22,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class FullPageImageActivity extends AppCompatActivity
 {
     private ArrayList<String> image;
-    private ImageView displayImage;
     private Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,10 +29,11 @@ public class FullPageImageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_page_image);
         image = getIntent().getStringArrayListExtra("image");
-        displayImage = findViewById(R.id.displayImage);
 
+        for(int i=0;i<image.size();i++)
+            System.out.println(image.get(0) + " : Chiguu " + i);
         ViewPager viewPager = findViewById(R.id.ViewPager_Image);
-        ImageAdapter adapter = new ImageAdapter(this, image);
+        ImageAdapter adapter = new ImageAdapter(this, image, "1");
         viewPager.setAdapter(adapter);
     }
 

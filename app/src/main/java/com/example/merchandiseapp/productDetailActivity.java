@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,7 +98,20 @@ public class productDetailActivity extends AppCompatActivity
         productPrice = findViewById(R.id.productPrice);
         shareButton = findViewById(R.id.share_button);
 
+        ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image);
+        ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
+        viewPager.setAdapter(adapter);
 
+        viewPager.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(productDetailActivity.this, FullPageImageActivity.class);
+                intent.putExtra("image", image_src);
+                startActivity(intent);
+            }
+        });
         /*Spinner Display*/
         arraySpinner = new ArrayList<>();
 
