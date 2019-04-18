@@ -141,7 +141,7 @@ public class FragmentItem extends Fragment
                     public void onClick(View v)
                     {
                         Intent intent;
-                        intent = new Intent(mHomeActivity, RequestDetailActivity.class);
+                        intent = new Intent(mHomeActivity, productDetailActivity.class);
                         intent.putExtra("pid", model.getPID());
                         intent.putExtra("order_id", "empty");
                         intent.putExtra("image", model.getImage());

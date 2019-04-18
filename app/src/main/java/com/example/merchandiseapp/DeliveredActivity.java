@@ -51,10 +51,10 @@ public class DeliveredActivity extends AppCompatActivity
     {
         super.onStart();
 
-        final DatabaseReference deliveredList = FirebaseDatabase.getInstance().getReference().child("Orders");
+        final DatabaseReference deliveredList = FirebaseDatabase.getInstance().getReference().child("Orders_Temp");
 
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(deliveredList.child(Prevalent.currentOnlineUser).orderByChild("status").equalTo("delivered"), Order.class)
+                .setQuery(deliveredList.child(Prevalent.currentOnlineUser).orderByChild("Status").equalTo("Delivered"), Order.class)
                 .build();
 
         FirebaseRecyclerAdapter<Order, DeliveredViewHolder> adapter
@@ -65,9 +65,9 @@ public class DeliveredActivity extends AppCompatActivity
             {
                 holder.txtProductDeliveryDate.setText("Delivered on : ");
                 holder.txtProductName.setText(model.getGroupName());
-                //Picasso.get().load(model.getImage()).into(holder.DeliveredImage);
+                if(model.getImage() != null)
+                    Picasso.get().load(model.getImage().get(0)).into(holder.DeliveredImage);
                 orderid_list.add(model.getOrderID());
-
             }
 
             @NonNull
