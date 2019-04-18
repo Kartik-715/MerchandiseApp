@@ -17,26 +17,18 @@
         >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textView_Category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Category:"
             android:textSize="18sp" />
 
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView3"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown" />
-
         <EditText
             android:id="@+id/EditText_Price"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/spinner1"
+            android:layout_below="@+id/textView_Category"
             android:hint="Price" />
 
         <EditText
