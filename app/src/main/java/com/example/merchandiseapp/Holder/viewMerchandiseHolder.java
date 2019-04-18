@@ -25,7 +25,7 @@ public class viewMerchandiseHolder extends RecyclerView.ViewHolder implements Vi
         txtProductQuantity = itemView.findViewById(R.id.cart_product_quantity);
         txtProductName = itemView.findViewById(R.id.cart_product_name);
         txtProductPrice = itemView.findViewById(R.id.cart_product_price);
-        txtProductStatus = itemView.findViewById(R.id.product_status);
+        txtProductStatus = itemView.findViewById(R.id.cart_product_status);
         DeleteButton = itemView.findViewById(R.id.cart_remove_item);
         MakePubliceButton = itemView.findViewById(R.id.cart_make_public);
         EditMerchandiseButton = itemView.findViewById(R.id.cart_edit_item);
