@@ -33,6 +33,7 @@ public class FullPageImageActivity extends AppCompatActivity
         for(int i=0;i<image.size();i++)
             System.out.println(image.get(0) + " : Chiguu " + i);
         ViewPager viewPager = findViewById(R.id.ViewPager_Image);
+        viewPager.setPageTransformer(true, new ZoomOutTransformation());
         ImageAdapter adapter = new ImageAdapter(this, image, "1");
         viewPager.setAdapter(adapter);
     }
