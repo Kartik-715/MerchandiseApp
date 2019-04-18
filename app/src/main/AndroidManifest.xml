@@ -29,13 +29,10 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".PreBookings"></activity> <!-- <activity android:name=".LoginActivity" /> -->
-        <activity android:name=".CustomAdapter" />
-        <activity android:name=".ListView" />
-        <activity android:name=".GroupRequestDetails"></activity>
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".MultipleImages">
 
 
@@ -49,11 +46,8 @@
         <activity android:name=".CustomAdapter" />
         <activity android:name=".ListView" />
         <activity android:name=".GroupRequestDetails"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".GroupActivity"
-            android:label="@string/title_activity_vendor"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <!--<activity android:name=".LoginActivity" />-->
+
         <activity android:name=".grp_manage_profile" />
         <activity
             android:name=".grpUser"
