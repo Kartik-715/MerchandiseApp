@@ -233,9 +233,11 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.wallet) {
             Intent intent = new Intent(this, myWallet.class);
             startActivity(intent);
-        }/* else if (id == R.id.nav_slideshow) {
+        }else if (id == R.id.orders) {
+            Intent intent = new Intent(this,Order_History.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        }/* else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 

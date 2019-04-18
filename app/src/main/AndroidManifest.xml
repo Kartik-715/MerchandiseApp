@@ -52,6 +52,7 @@
             android:label="Staff"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".myWallet" />
+        <activity android:name=".Order_History" />
         <activity android:name=".StartProfileUser" />
         <activity
             android:name=".ManageProfile"
