@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
-
-
     <application
         android:name=".G_var"
         android:allowBackup="true"
@@ -22,13 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <!--<service-->
-            <!--android:name=".java.MyFirebaseMessagingService"-->
-            <!--android:exported="false">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
+        <activity android:name=".ViewMerchandise"></activity>
+        <!-- <service -->
+        <!-- android:name=".java.MyFirebaseMessagingService" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <activity android:name=".PreBookings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +39,7 @@
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".grp_manage_profile" />
         <activity
             android:name=".grpUser"
@@ -66,7 +65,7 @@
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CartActivity"></activity>
+        <activity android:name=".CartActivity" />
         <activity android:name=".productsCourrier" />
         <activity
             android:name=".CourierActivity"
