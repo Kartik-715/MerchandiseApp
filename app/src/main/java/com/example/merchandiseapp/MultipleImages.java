@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -114,8 +115,13 @@ public class MultipleImages extends AppCompatActivity {
 
             else if (data.getData() != null)
             {
-                System.out.println("yo baby");
 
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Warning");
+                alert.setMessage("Please Select at least two images...");
+                System.out.println("yo baby");
+                AlertDialog alertBox = alert.create();
+                alertBox.show();
             }
 
 
