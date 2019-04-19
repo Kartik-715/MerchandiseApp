@@ -123,7 +123,7 @@ public class CartActivity extends AppCompatActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(CartActivity.this, HomeActivity.class);
-        intent.putExtra("flag", Prevalent.currentFlag);
+        intent.putExtra("orderType", Prevalent.currentOrderType);
         startActivity(intent);
     }
 
@@ -141,7 +141,7 @@ public class CartActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(CartActivity.this, HomeActivity.class);
-                intent.putExtra("flag", "1");
+                intent.putExtra("orderType", Prevalent.currentOrderType);
                 startActivity(intent);
             }
         });

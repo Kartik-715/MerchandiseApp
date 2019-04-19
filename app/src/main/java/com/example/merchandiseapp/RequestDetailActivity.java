@@ -151,7 +151,7 @@ public class RequestDetailActivity extends AppCompatActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(RequestDetailActivity.this, HomeActivity.class);
-        intent.putExtra("flag", Prevalent.currentFlag);
+        intent.putExtra("orderType", Prevalent.currentOrderType);
         startActivity(intent);
     }
 

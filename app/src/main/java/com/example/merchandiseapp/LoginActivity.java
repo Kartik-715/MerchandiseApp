@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                intent.putExtra("flag", "0");
+                intent.putExtra("orderType", "1");
                 startActivity(intent);
             }
         });
