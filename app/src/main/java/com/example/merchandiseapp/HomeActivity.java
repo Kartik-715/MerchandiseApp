@@ -176,9 +176,9 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        final FirebaseAuth mauth = FirebaseAuth.getInstance();
-        FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name", user.getDisplayName());
+//        final FirebaseAuth mauth = FirebaseAuth.getInstance();
+//        FirebaseUser user = mauth.getCurrentUser();
+//        Log.d("name", user.getDisplayName());
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
