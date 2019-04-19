@@ -282,6 +282,7 @@ public class HomeActivity extends AppCompatActivity
                     Log.d(TAG, "User at this position does not exist: " + e.toString());
                 }
             Intent intent = new Intent(HomeActivity.this, OutlookLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
 

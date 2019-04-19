@@ -12,30 +12,73 @@
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="0dp"
         android:layout_marginRight="5dp"
         android:src="@drawable/logo" />
 
-    <Button
-        android:id="@+id/callGraph"
-        android:text="Login With Outlook"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/roundbutton"
+    <EditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_height="40dp"
+        android:hint="  Email"
+        android:textSize="20dp"
+        android:textColorHint="@color/Gray"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textAllCaps="false"
-      />
+        android:textColor="@color/white"
+        android:background="@drawable/roundtextbox"/>
 
-    <TextView
-        android:text="Getting Graph Data..."
-        android:textColor="#3f3f3f"
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundtextbox"
+        android:hint="  Password"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/Gray" />
+    <Button
+        android:id="@+id/Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/graphData"
-        android:visibility="invisible"/>
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundbutton"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+    <Button
+        android:id="@+id/JoinNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundbutton"
+        android:text="Join Now"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:layout_marginTop="5dp"
+        android:textSize="15dp"/>
+    <Button
+        android:id="@+id/callGraph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundbutton"
+        android:text="Login With Outlook"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

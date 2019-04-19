@@ -2,12 +2,18 @@ package com.example.merchandiseapp;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
@@ -20,6 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonArray;
 import com.microsoft.identity.client.*;
 import com.microsoft.identity.client.exception.*;
@@ -34,7 +45,11 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
     Button callGraphButton;
-    Button signOutButton;
+    Button LoginButton;
+    FirebaseDatabase database;
+    DatabaseReference ref;
+    boolean flag = false;
+    EditText email,password;
 
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
@@ -46,11 +61,20 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         setContentView(R.layout.activity_outlook_login);
         hideNav();
         callGraphButton = (Button) findViewById(R.id.callGraph);
+        LoginButton = (Button) findViewById(R.id.Login);
        // signOutButton = (Button) findViewById(R.id.clearCache);
+        email = (EditText)findViewById(R.id.Email);
+        password = (EditText)findViewById(R.id.password);
 
         callGraphButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onCallGraphClicked();
+            }
+        });
+
+        LoginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onLoginButtonClicked();
             }
         });
 
@@ -121,6 +145,46 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
     }
 
+    private void onLoginButtonClicked(){
+        String Email = email.getText().toString().trim();
+        final String Password = password.getText().toString().trim();
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("Users");
+        if(TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)){
+           Toast.makeText(getApplicationContext(),"Please fill all the fields",Toast.LENGTH_LONG).show();
+           return;
+        }
+        flag = false;
+        int hash = Email.hashCode();
+        final String hashValue = Integer.toString(hash);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds:dataSnapshot.getChildren()){
+                    if (ds.getValue().toString().equals(hashValue)) {
+                        if(ds.child(hashValue).child("Password").getValue().toString().equals(Password)){
+                            flag = true;
+                            Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
+                            intent.putExtra("Type","users");
+                            intent.putExtra("Email",email.getText().toString());
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                if(flag == false){
+                    Toast.makeText(getApplicationContext(), "Invalid Email or Password", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Trouble sigining you in \n Please try again", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     /* Clears an account's tokens from the cache.
      * Logically similar to "sign out" but only signs out of this app.
      */
@@ -204,7 +268,23 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+               // .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
 
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
     //
     // Helper methods manage UI updates
     // ================================
