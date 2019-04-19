@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ public class PreBookings extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference myRef1;
     private DatabaseReference myRef2;
+    private DatabaseReference myRef3;
     private String GroupName;
     private int countCards;
     private HashMap<String, Object> All_orders = new HashMap<String, Object>();
@@ -83,12 +85,88 @@ public class PreBookings extends AppCompatActivity {
 
                 preOederListRef.child(PID).child("IsOpen").setValue("false");
 
-
                 myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
                 myRef1.child("IsOpen").setValue("false");
 
                 myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
                 myRef2.child("IsOpen").setValue("false");
+
+
+                myRef3 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Requests").child(PID);
+
+
+                myRef3.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        int flag1=0,flag2=0;
+
+                        final ArrayList<String> toPay= new ArrayList<>();
+                        final ArrayList<String> quantity= new ArrayList<>();
+                        long ctr=0,count = dataSnapshot.child("Requests").getChildrenCount();
+                        String price1 = dataSnapshot.child("Price").getValue().toString();
+                        final Long price = Long.parseLong(price1) ;
+
+                        if(flag1==0)
+                        {
+                                flag1+=1;
+                               for (DataSnapshot ds:dataSnapshot.child("Requests").getChildren()){
+
+                                if( ds.child("IsPaid").getValue().toString().equals("true") )
+                                {
+                                    toPay.add(ds.child("UserID").getValue().toString());
+                                    quantity.add(ds.child("Quantity").getValue().toString());
+                                }
+                                ctr++;
+                                if(ctr==count)
+                                {
+                                    myRef1 =FirebaseDatabase.getInstance().getReference().child("Users");
+
+                                    if(flag2==0) {
+                                        flag2+=1;
+                                        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+
+                                                for (int i = 0; i < toPay.size(); i++) {
+
+                                                    String money1 = dataSnapshot1.child(toPay.get(i)).child("Wallet_Money").getValue().toString();
+                                                    Long money = Long.parseLong(money1);
+                                                    System.out.println(toPay.get(i) + quantity.get(i));
+                                                    Long add = Long.parseLong(quantity.get(i)) * price;
+                                                    money += add;
+                                                    String money2 = money.toString();
+
+                                                    FirebaseDatabase.getInstance().getReference().child("Users")
+                                                            .child(toPay.get(i)).child("Wallet_Money").setValue(money2);
+
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError1) {
+
+                                            }
+                                        });
+                                    }
+
+
+
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
 
                 finish();
                 startActivity(getIntent());
