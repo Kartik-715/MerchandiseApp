@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,7 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Holder.PreBookingHolder;
 import com.example.merchandiseapp.Holder.viewMerchandiseHolder;
+import com.example.merchandiseapp.Holder.viewOrderHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -30,48 +33,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class ViewMerchandise extends AppCompatActivity {
+public class ViewOrder extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-
+    private ArrayList<String> orderid_list;
     private DatabaseReference preOederListRef;
+    private DatabaseReference myRef;
     private DatabaseReference myRef1;
     private DatabaseReference myRef2;
+    private DatabaseReference myRef3;
     private String GroupName;
     private int countCards;
     private HashMap<String, Object> All_orders = new HashMap<String, Object>();
     private String PID;
     private String Category;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_merchandise);
+        setContentView(R.layout.activity_view_order);
 
 
 
-
-        /*Here the groupname and category has to be extracted*/
+        /*Here the groupname has to be extracted*/
         GroupName = "CSEA";
-        Category = "Footwear";
+
+        orderid_list = new ArrayList<String>();
 
 
-
-        recyclerView = findViewById(R.id.viewMerchandise_list);
+        recyclerView = findViewById(R.id.viewOrder_list);
         System.out.println(recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public void deleteMerchandise(View view,final String PID,final String Category){
+
+
+    public void makeMerchandisePrivate(View view){
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // Setting Alert Dialog Title
-        alertDialogBuilder.setTitle("Confirm Remove..!!!");
+        alertDialogBuilder.setTitle("Confirm Make Private..!!!");
         // Icon Of Alert Dialog
         alertDialogBuilder.setIcon(R.drawable.checked);
         // Setting Alert Dialog Message
-        alertDialogBuilder.setMessage("Are you sure,You want to remove item and stop taking anymore orders?");
+        alertDialogBuilder.setMessage("Are you sure,You want to make the product private and stop taking more requests? ");
         alertDialogBuilder.setCancelable(false);
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -80,59 +87,11 @@ public class ViewMerchandise extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
 
 
-                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category);
-                myRef1.child(PID).child("IsOpen").setValue("false");
+                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
+                myRef1.child("IsOpen").setValue("false");
 
-                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category);
-                myRef2.child(PID).child("IsOpen").setValue("false");
-
-                finish();
-                startActivity(getIntent());
-
-
-
-
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"You clicked over No",Toast.LENGTH_SHORT).show();
-            }
-        });
-        alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    public void makeMerchandisePublic(View view,final String PID,final String Category){
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        // Setting Alert Dialog Title
-        alertDialogBuilder.setTitle("Confirm Make Public..!!!");
-        // Icon Of Alert Dialog
-        alertDialogBuilder.setIcon(R.drawable.checked);
-        // Setting Alert Dialog Message
-        alertDialogBuilder.setMessage("Are you sure,You want to make the product Public and start taking Orders? ");
-        alertDialogBuilder.setCancelable(false);
-
-        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-
-                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category);
-                myRef1.child(PID).child("IsOpen").setValue("true");
-
-                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category);
-                myRef2.child(PID).child("IsOpen").setValue("true");
+                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
+                myRef2.child("IsOpen").setValue("false");
 
                 finish();
                 startActivity(getIntent());
@@ -155,15 +114,14 @@ public class ViewMerchandise extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
 
     @Override
     protected void onStart()
     {
         super.onStart();
 
-        preOederListRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category);
-        final Query queries = preOederListRef.orderByKey();
+        preOederListRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Orders");
+        final Query queries = preOederListRef;
 
         queries.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -173,9 +131,7 @@ public class ViewMerchandise extends AppCompatActivity {
                 countCards = (int) dataSnapshot.getChildrenCount();
                 All_orders= (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println("*******watch out for this***********"+All_orders);
-
                 if(All_orders != null) {
-
 
                     if (dataSnapshot.exists()) {
                         //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
@@ -198,7 +154,8 @@ public class ViewMerchandise extends AppCompatActivity {
 
     private void NoDataExists()
     {
-        Toast.makeText(getApplicationContext(),"No Merchandise added as of now.",Toast.LENGTH_LONG);
+        Toast.makeText(getApplicationContext(),"No Orders Placed as of now.",Toast.LENGTH_LONG);
+
     }
 
     private void DataExists(Query queries)
@@ -206,42 +163,31 @@ public class ViewMerchandise extends AppCompatActivity {
 
 
         System.out.println(queries);
-        FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
-                .setQuery(queries,Merchandise.class)
+        FirebaseRecyclerOptions<OrderDetails> options = new FirebaseRecyclerOptions.Builder<OrderDetails>()
+                .setQuery(queries, OrderDetails.class)
                 .build();
 
-        final FirebaseRecyclerAdapter<Merchandise, viewMerchandiseHolder> adapter
-                = new FirebaseRecyclerAdapter<Merchandise, viewMerchandiseHolder>(options) {
+        final FirebaseRecyclerAdapter<OrderDetails, viewOrderHolder> adapter
+                = new FirebaseRecyclerAdapter<OrderDetails,  viewOrderHolder>(options) {
+            @SuppressLint("SetTextI18n")
             @Override
-            protected void onBindViewHolder(@NonNull final viewMerchandiseHolder holder, int position, @NonNull final Merchandise model) {
-
-                System.out.println("*******************+++++*********************"+model.getQuantity()+model.getIsOpen());
-
-                if (model.getIsOpen().equals("true"))
-                {
-                    holder.MakePubliceButton.setVisibility(View.INVISIBLE);
-                    holder.txtProductStatus.setText("OPEN");
-                }
-                else
-                {
-                    holder.DeleteButton.setVisibility(View.INVISIBLE);
-                    holder.txtProductStatus.setText("CLOSED");
-                }
+            protected void onBindViewHolder(@NonNull final viewOrderHolder holder, int position, @NonNull final OrderDetails model) {
+                System.out.println("*******************+++++*********************"+model.getQuantity());
 
                 final ArrayList<String> qty = model.getQuantity();
                 final ArrayList<String> sz = model.getSize();
-                final ArrayList<String> img = model.getImage();
 
                 long totalquantity = 0;
                 for (int i=0;i<qty.size();i++)
                 {
                     totalquantity+=Long.parseLong(qty.get(i));
                 }
-                holder.txtProductQuantity.setText("Total Quantity = " + String.valueOf(totalquantity));
+                holder.txtProductQuantity.setText("Total Quantity: " + String.valueOf(totalquantity));
                 holder.txtProductPrice.setText("Price: " + model.getPrice());
-                holder.txtProductName.setText(model.getCategory());
-                if(img!=null) {
-                    Picasso.get().load(img.get(0)).into(holder.CartImage);
+                holder.txtProductName.setText(model.getCategory()+" : "+model.getPID());
+
+                if (model!=null) {
+                    Picasso.get().load(model.getImage()).into(holder.CartImage);
                 }
 
                 Spinner dropdown = holder.spinner_qty;
@@ -260,37 +206,25 @@ public class ViewMerchandise extends AppCompatActivity {
 
                 System.out.println(PID+model.getPID());
 
-                holder.DeleteButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        deleteMerchandise(v,model.getPID(),model.getCategory());
-                    }
-
-
-                });
-
-                holder.MakePubliceButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        makeMerchandisePublic(view,model.getPID(),model.getCategory());
-                    }
-                });
-
-                holder.EditMerchandiseButton.setOnClickListener(new View.OnClickListener() {
+                holder.ReviewButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        Intent intent = new Intent(ViewMerchandise.this,EditMerchandise.class);
-                        intent.putExtra("PID",model.getPID());
-                        intent.putExtra("GroupName",GroupName);
-                        intent.putExtra("Category",Category);
-                        startActivity(intent);
-
+//                        Intent intent = new Intent(PreBookings.this, GroupRequestDetails.class);
+//                        intent.putExtra("PID", model.getPID());
+//                        intent.putExtra("Category", model.getCategory());
+//                        intent.putExtra("GroupName",GroupName);
+//                        startActivity(intent);
 
                     }
                 });
 
+                holder.AllOrderButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
 
 
 
@@ -298,15 +232,14 @@ public class ViewMerchandise extends AppCompatActivity {
 
             @NonNull
             @Override
-            public viewMerchandiseHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.view_merchandise_list_item, viewGroup, false);
-                viewMerchandiseHolder holder = new viewMerchandiseHolder(view);
+            public viewOrderHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.vieworder_list_item, viewGroup, false);
+                viewOrderHolder holder = new viewOrderHolder(view);
                 return holder;
             }
         };
 
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-
     }
 }

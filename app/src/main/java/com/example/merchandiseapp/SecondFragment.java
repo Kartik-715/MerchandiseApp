@@ -39,10 +39,9 @@ public class SecondFragment extends Fragment {
     private ViewPager viewPager;
     ListView listView;
     FirebaseDatabase database;
-    DatabaseReference ref;
+    DatabaseReference ref,myRef;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
-    DatabaseReference myRef ;
 
     String Category;
     String PID;
@@ -57,7 +56,7 @@ public class SecondFragment extends Fragment {
     private   ArrayList<String> Size ;
     private   ArrayList<String> UserName ;
     private   ArrayList<String> UserID ;
-    private Button mbutton;
+
     // Store instance variables
     private String title;
     private int page;
@@ -92,24 +91,6 @@ public class SecondFragment extends Fragment {
         PID = args.getString("productID");
 
 
-
-
-//        if(get)
-//        final  Fragment fragment =new FirstFragment();
-//        final Bundle bundle = new Bundle();
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -126,8 +107,7 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mbutton = view.findViewById(R.id.sendNotification);
-
+        final Button mbutton  = (Button) view.findViewById(R.id.sendNoti);
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Group").child(GroupName).child("Requests").child(PID).child("Requests");
@@ -182,10 +162,10 @@ public class SecondFragment extends Fragment {
                                     myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(UserID.get(i));
 
                                     String notiList;
-                                    notiList = "Your order has been declined.Fuck OFF!!mu me lele";
+                                    notiList = "Your order has been declined.Fuck OFF!!21 me lele";
 
                                     HashMap<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put(  "notiList",notiList           );
+                                    childUpdates.put(  "notiList",notiList);
                                     myRef.updateChildren(childUpdates);
                                     System.out.println("Hello + " + UserID.get(i));
                                 }
@@ -226,6 +206,7 @@ public class SecondFragment extends Fragment {
 
 
                     }
+
                 }
 
 
@@ -259,6 +240,4 @@ public class SecondFragment extends Fragment {
 
 
     }
-
-
 }

@@ -36,7 +36,20 @@ public class UplaodListAdapter extends RecyclerView.Adapter<UplaodListAdapter.Vi
 
         String fileName = fileNameList.get(position);
         holder.fileNameView.setText(fileName);
+        String fileDone = fileDoneList.get(position);
 
+        if(fileDone.equals("uploading"))
+        {
+            System.out.println("123");
+            holder.fileDoneView.setImageResource(R.mipmap.ic_launcher_progress);
+
+        }
+        else
+        {
+            System.out.println("456");
+
+            holder.fileDoneView.setImageResource(R.mipmap.ic_launcher_foreground);
+        }
 
     }
 

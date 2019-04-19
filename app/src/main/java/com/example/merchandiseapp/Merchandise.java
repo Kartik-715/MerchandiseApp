@@ -51,7 +51,7 @@ public class Merchandise
         result.put("Material",Material);
         result.put("PID",PID);
         result.put("Price",Price);
-        result.put("Qunatity",Quantity);
+        result.put("Quantity",Quantity);
         result.put("Size", Size);
         result.put("AccessGroup",AccessGroup);
         result.put("OrderType",OrderType);

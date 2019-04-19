@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/product_image"
             android:layout_width="130dp"
-            android:layout_height="170dp"
+            android:layout_height="140dp"
             android:layout_below="@+id/product_name"
             android:layout_marginTop="2dp"
             android:scaleType="centerCrop" />
@@ -43,7 +43,7 @@
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
-            android:text="Quantity:"
+            android:text="Toatal Orders:"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -76,58 +76,33 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
-        <TextView
-            android:id="@+id/cart_product_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cart_product_price"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/product_image"
-            android:paddingLeft="20dp"
-            android:text="Product Status : Open"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+
         <Button
-            android:id="@+id/cart_edit_item"
-            android:layout_width="150dp"
+            android:id="@+id/cart_review_item"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_below="@+id/product_image"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp"
-
-
+            android:layout_marginTop="18dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginHorizontal="40dp"
             android:background="@color/Tomato"
-            android:text="Edit Merchandise"
+            android:text="View Reviews"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/cart_remove_item"
-            android:layout_width="150dp"
+            android:id="@+id/cart_view_all_order"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_below="@+id/product_image"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="50dp"
-
+            android:layout_marginTop="18dp"
+            android:layout_toRightOf="@+id/cart_remove_item"
             android:background="@color/Tomato"
-            android:text="Remove"
+            android:layout_marginHorizontal="40dp"
+            android:layout_alignParentRight="true"
+            android:text="All Orders"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
-        <Button
-            android:id="@+id/cart_make_public"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/product_image"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="50dp"
-            android:background="@color/Tomato"
-            android:text="Make Public"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white" />
-
 
 
 

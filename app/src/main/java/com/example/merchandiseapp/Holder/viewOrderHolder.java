@@ -11,24 +11,22 @@ import android.widget.TextView;
 import com.example.merchandiseapp.Interface.ItemClickListner;
 import com.example.merchandiseapp.R;
 
-public class viewMerchandiseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class viewOrderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView txtProductName, txtProductPrice, txtProductQuantity,txtProductStatus;
+    public TextView txtProductName, txtProductPrice, txtProductQuantity;
     public ImageView CartImage;
-    public Button DeleteButton, MakePubliceButton , EditMerchandiseButton;
+    public Button ReviewButton,AllOrderButton;
     private ItemClickListner itemClickListner;
     public Spinner spinner_qty;
 
 
-    public viewMerchandiseHolder(@NonNull View itemView) {
+    public viewOrderHolder(@NonNull View itemView) {
         super(itemView);
         txtProductQuantity = itemView.findViewById(R.id.cart_product_quantity);
         txtProductName = itemView.findViewById(R.id.cart_product_name);
         txtProductPrice = itemView.findViewById(R.id.cart_product_price);
-        txtProductStatus = itemView.findViewById(R.id.cart_product_status);
-        DeleteButton = itemView.findViewById(R.id.cart_remove_item);
-        MakePubliceButton = itemView.findViewById(R.id.cart_make_public);
-        EditMerchandiseButton = itemView.findViewById(R.id.cart_edit_item);
+        ReviewButton = itemView.findViewById(R.id.cart_review_item);
+        AllOrderButton = itemView.findViewById(R.id.cart_view_all_order);
         CartImage = itemView.findViewById(R.id.product_image);
         spinner_qty = itemView.findViewById(R.id.product_quantity_spinner);
     }
