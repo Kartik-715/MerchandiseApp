@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(LoginActivity.this, LoginActivity2.class);
+                Intent intent = new Intent(LoginActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
         });

@@ -116,8 +116,8 @@ public class DetailsActivity extends AppCompatActivity
                     });
         }
 
-
-
+        Intent intent = new Intent(DetailsActivity.this, PaymentActivity.class);
+        startActivity(intent);
 
     }
 
