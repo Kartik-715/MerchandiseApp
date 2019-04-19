@@ -47,6 +47,7 @@ import java.io.InputStream;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private Button joinNowButton, loginButton;
     private SignInButton mgoogleButton;
     private static final int  RC_SIGN_IN=1;
     private GoogleSignInClient mGoogleSignInClient;
@@ -85,6 +86,26 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        joinNowButton = (Button) findViewById(R.id.main_join_now_btn);
+        loginButton = (Button) findViewById(R.id.main_login_btn);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(LoginActivity.this, LoginActivity2.class);
+                startActivity(intent);
+            }
+        });
+
+
+        joinNowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
