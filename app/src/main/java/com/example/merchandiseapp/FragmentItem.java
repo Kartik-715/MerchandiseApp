@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ public class FragmentItem extends Fragment
 {
     private HomeActivity mHomeActivity;
     Bundle bundle;
+    ProgressDialog loadingBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -45,9 +47,9 @@ public class FragmentItem extends Fragment
         return rv;
     }
 
-    public FragmentItem()
+    public FragmentItem(ProgressDialog loadingBar)
     {
-
+        this.loadingBar = loadingBar;
     }
 
     private void setupRecyclerView(final RecyclerView recyclerView)
@@ -91,10 +93,9 @@ public class FragmentItem extends Fragment
                                     list.add(mr);
                                 }
                             }
-
                         }
 
-                        myAdaptor adaptor = new myAdaptor(mHomeActivity, list);
+                        myAdaptor adaptor = new myAdaptor(mHomeActivity, list, loadingBar);
                         recyclerView.setAdapter(adaptor);
                     }
 

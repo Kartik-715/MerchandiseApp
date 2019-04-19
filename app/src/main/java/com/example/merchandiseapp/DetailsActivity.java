@@ -15,8 +15,11 @@ import android.widget.Toast;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +49,8 @@ public class DetailsActivity extends AppCompatActivity
         Email_ID.setText(Prevalent.currentEmail);
         Address.setText(Prevalent.currentAddress);
         PhoneNumber.setText(Prevalent.currentPhone);
+
+        Prevalent.currentMoney = "0";
 
         Payment.setOnClickListener(new View.OnClickListener()
         {
@@ -114,8 +119,35 @@ public class DetailsActivity extends AppCompatActivity
 
                         }
                     });
+            cartListRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    String price = dataSnapshot.child("Price").getValue().toString();
+                    System.out.println("Price: " + price);
+                    int price_amount = Integer.parseInt(price);
+
+                    String global_price = Prevalent.currentMoney;
+                    int global_amount = Integer.parseInt(global_price);
+                    System.out.println("Global Price : " + price);
+
+                    global_amount += price_amount;
+                    String global_price2 = Integer.toString(global_amount);
+                    Prevalent.currentMoney = global_price2;
+
+                    System.out.println("Global_Price_Adding : " + Prevalent.currentMoney);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });
         }
 
+        System.out.println("Kartik : " + Prevalent.currentMoney);
         Intent intent = new Intent(DetailsActivity.this, PaymentActivity.class);
         startActivity(intent);
 
