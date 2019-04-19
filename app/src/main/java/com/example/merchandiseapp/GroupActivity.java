@@ -100,8 +100,8 @@ public class GroupActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_orders) {
 
-//            Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
-//            startActivity(intent);
+            Intent intent = new Intent(GroupActivity.this,ViewOrder.class);
+            startActivity(intent);
 
         }else if (id == R.id.nav_members) {
 

@@ -79,6 +79,8 @@ public class AddMerchandise extends AppCompatActivity {
     private String Price;
     private String OrderType="1";
 
+    private RadioButton rbYes;
+
     ArrayAdapter adapter;
     ArrayAdapter adapterSize_qty;
 
@@ -100,6 +102,10 @@ public class AddMerchandise extends AppCompatActivity {
         add_accessgroup = (Button) findViewById(R.id.button_add_accessgroup);
         addSQ = (Button) findViewById(R.id.button_size_qty);
         addMerchandise = (Button) findViewById(R.id.button_submit);
+        addMerchandise.setEnabled(false);
+
+        rbYes = (RadioButton) findViewById(R.id.radioButtonYes);
+        rbYes.toggle();
 
         access_editText = (EditText) findViewById(R.id.editText_accessgroup);
         size_edt = (EditText) findViewById(R.id.editText_size);
@@ -172,8 +178,10 @@ public class AddMerchandise extends AppCompatActivity {
                 Spinner dropdown = findViewById(R.id.spinner1);
                 Category = (String) dropdown.getSelectedItem();
                 Material = mat.getText().toString();
+
                 PID = prod_Id.getText().toString();
-                Price = price_edt.getText().toString();
+                Long pr =  Long.parseLong(price_edt.getText().toString());
+                Price = pr.toString();
 
 
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
@@ -192,9 +200,10 @@ public class AddMerchandise extends AppCompatActivity {
                 }
                 else {
 
+                    Intent intent = new Intent(AddMerchandise.this,GroupActivity.class);
+                    startActivity(intent);
 
-
-                    myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
+                    myRef = FirebaseDatabase.getInstance().getReference().child("Group").child(GroupName).child("Merchandise");
                     myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise");
                     final Query queries = myRef2.child(Category).orderByKey().equalTo(PID);
 
@@ -229,6 +238,8 @@ public class AddMerchandise extends AppCompatActivity {
                                 price_edt.setText("");
                                 prod_Id.setText("");
                                 Toast.makeText(getApplicationContext(),"Merchandise Added Successfully",Toast.LENGTH_LONG).show();
+
+
                                 }
                             }
 
@@ -284,10 +295,18 @@ public class AddMerchandise extends AppCompatActivity {
             case R.id.radioButtonYes:
                 if (checked)
                     OrderType = "1";
+                sizeQtyListView.setEnabled(true);
+                addSQ.setEnabled(true);
+                size_edt.setEnabled(true);
+                qty_edt.setEnabled(true);
                 break;
             case R.id.radioButtonNO:
                 if (checked)
                     OrderType = "2";
+                    sizeQtyListView.setEnabled(false);
+                    addSQ.setEnabled(false);
+                    size_edt.setEnabled(false);
+                    qty_edt.setEnabled(false);
                 break;
         }
     }
@@ -303,7 +322,7 @@ public class AddMerchandise extends AppCompatActivity {
             {
                 System.out.println("select more images");
 
-                int totalItemSelected =data.getClipData().getItemCount();
+                final int totalItemSelected =data.getClipData().getItemCount();
                 System.out.println(totalItemSelected);
 
 
@@ -348,6 +367,12 @@ public class AddMerchandise extends AppCompatActivity {
                                     System.out.println(downloadUrl);
                                     Image.add(downloadUrl.toString());
                                     //do something with downloadurl
+
+                                    if(Image.size()==totalItemSelected)
+                                    {
+                                        addMerchandise.setEnabled(true);
+                                    }
+
                                 }
                             });
 

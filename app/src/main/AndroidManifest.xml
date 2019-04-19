@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AccessedMembersActivity"></activity>
+        <activity android:name=".ViewOrder"></activity>
+        <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
         <activity android:name=".EditMerchandise" />
         <activity android:name=".ViewMerchandise" /> <!-- <service -->

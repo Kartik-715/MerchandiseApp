@@ -65,7 +65,6 @@
             android:layout_height="200dp"
             android:layout_below="@+id/TextView_accessGroups"
             android:background="@color/BlanchedAlmond"
-            android:fadingEdge="vertical"
             android:scrollbars="vertical">
 
         </ListView>

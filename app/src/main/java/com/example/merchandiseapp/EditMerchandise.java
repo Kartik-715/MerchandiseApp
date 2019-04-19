@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,6 +82,8 @@ public class EditMerchandise extends AppCompatActivity {
             PID =  intent.getStringExtra("PID");
             Category =  intent.getStringExtra("Category");
 
+            System.out.println(GroupName+PID+Category);
+
 
 
 
@@ -107,7 +110,7 @@ public class EditMerchandise extends AppCompatActivity {
 
 
 
-        myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
+        myRef = FirebaseDatabase.getInstance().getReference().child("Group").child(GroupName).child("Merchandise");
 
         myRef.child(Category).child(PID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -117,8 +120,26 @@ public class EditMerchandise extends AppCompatActivity {
                 Material = dataSnapshot.child("Material").getValue().toString();
                 size = (ArrayList<String>) dataSnapshot.child("Size").getValue();
                 qty = (ArrayList<String>) dataSnapshot.child("Quantity").getValue();
-                AccessGroups = (ArrayList<String>) dataSnapshot.child("Size").getValue();
+                AccessGroups = (ArrayList<String>) dataSnapshot.child("AccessGroup").getValue();
                 Image = (ArrayList<String>) dataSnapshot.child("Image").getValue();
+                System.out.println("123456789101112123"+AccessGroups);
+
+                for (int i =0;i<qty.size();i++)
+                {
+                    listSQ.add("Size=" + size.get(i) + ":Qty=" + qty.get(i));
+                }
+
+                System.out.println("123456789101112123"+AccessGroups);
+                System.out.println(listSQ);
+
+                adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,AccessGroups);
+                adapterSize_qty  = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,listSQ);
+                accessGroupListView.setAdapter(adapter);
+                sizeQtyListView.setAdapter(adapterSize_qty);
+                System.out.println(dataSnapshot);
+
+                price_edt.setText(Price);
+                mat.setText(Material);
             }
 
             @Override
@@ -128,21 +149,12 @@ public class EditMerchandise extends AppCompatActivity {
         });
 
 
-        for (int i =0;i<qty.size();i++)
-        {
-            listSQ.add("Size=" + size.get(i) + ":Qty=" + qty.get(i));
-        }
-
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,AccessGroups);
-        adapterSize_qty  = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listSQ);
 
 
 
 
-        AccessGroups.add(GroupName);
 
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,AccessGroups);
-        adapterSize_qty  = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listSQ);
+
 
         add_accessgroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,12 +196,39 @@ public class EditMerchandise extends AppCompatActivity {
         });
         sizeQtyListView.setAdapter(adapterSize_qty);
 
+        accessGroupListView.setClickable(true);
+
+        accessGroupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(position==0)
+                {
+                    Toast.makeText(getApplicationContext(),"Can't romove your Group from Access Group list",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Object o = adapter.getItem(position);
+                adapter.remove(o);
+                adapter.notifyDataSetChanged();
+                System.out.println("********************************"+o);
+            }
+        });
+
+        sizeQtyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object o = adapterSize_qty.getItem(position);
+                adapterSize_qty.remove(o);
+                adapterSize_qty.notifyDataSetChanged();
+                System.out.println("********************************"+o);
+            }
+        });
+
 
         UpdateMerchandise.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View view) {
-                Image = new ArrayList<>();
                 Material = mat.getText().toString();
                 Price = price_edt.getText().toString();
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
@@ -206,47 +245,27 @@ public class EditMerchandise extends AppCompatActivity {
 
 
 
-                    myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
+                    myRef = FirebaseDatabase.getInstance().getReference().child("Group").child(GroupName).child("Merchandise");
                     myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise");
-                    final Query queries = myRef2.child(Category).orderByKey().equalTo(PID);
 
-                    queries.addListenerForSingleValueEvent(new ValueEventListener()
-                    {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                        {
-                            if (dataSnapshot.exists()) {
+                    Merchandise merchandise = new Merchandise(GroupName, Category, Image, Material, PID, Price, qty, size, AccessGroups, OrderType, "true");
+                    HashMap<String, Object> merchandiseValues = merchandise.toMap();
 
-                                Toast.makeText(getApplicationContext(),"Enter Valid Product ID. This Id Already Exist",Toast.LENGTH_LONG).show();
+                    HashMap<String, Object> childUpdates = new HashMap<>();
 
-                            } else {
-                                //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
-                                Merchandise merchandise = new Merchandise(GroupName, Category, Image, Material, PID, Price, qty, size, AccessGroups, OrderType, "true");
-                                HashMap<String, Object> merchandiseValues = merchandise.toMap();
-
-                                HashMap<String, Object> childUpdates = new HashMap<>();
-
-                                childUpdates.put(Category + "/" + PID, merchandiseValues);
+                    childUpdates.put(Category + "/" + PID, merchandiseValues);
 
 
-                                myRef.updateChildren(childUpdates);
-                                myRef2.updateChildren(childUpdates);
 
-                                access_editText.setText("");
-                                size_edt.setText("");
-                                qty_edt.setText("");
-                                mat.setText("");
-                                price_edt.setText("");
-                                Toast.makeText(getApplicationContext(),"Merchandise Added Successfully",Toast.LENGTH_LONG).show();
-                            }
-                        }
+                    myRef.updateChildren(childUpdates);
+                    myRef2.updateChildren(childUpdates);
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
+                    Toast.makeText(getApplicationContext(),"Merchandise Updated Successfully",Toast.LENGTH_LONG).show();
 
-                    });
+                    Intent intent = new Intent(getApplicationContext(),ViewMerchandise.class);
+                    startActivity(intent);
+
 
 
 
