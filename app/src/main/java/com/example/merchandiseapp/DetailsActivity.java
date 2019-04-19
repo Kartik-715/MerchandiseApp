@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
@@ -30,6 +31,7 @@ public class DetailsActivity extends AppCompatActivity
     private ArrayList<String> group_list;
     private EditText PhoneNumber, Address, Email_ID;
     private Button Payment;
+    private TextView Txt_Total_Price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,12 +47,14 @@ public class DetailsActivity extends AppCompatActivity
         Address = (EditText) findViewById(R.id.Booking_Address);
         Email_ID = (EditText) findViewById(R.id.Booking_Email);
         Payment = (Button) findViewById(R.id.Btn_Payment);
+        Txt_Total_Price = findViewById(R.id.Txt_Total_Price);
 
+        Txt_Total_Price.setText("Total Price : Rs" + Prevalent.currentMoney);
         Email_ID.setText(Prevalent.currentEmail);
         Address.setText(Prevalent.currentAddress);
         PhoneNumber.setText(Prevalent.currentPhone);
 
-        Prevalent.currentMoney = "0";
+        System.out.println("Disha10 : " + Prevalent.currentMoney);
 
         Payment.setOnClickListener(new View.OnClickListener()
         {
@@ -124,7 +128,7 @@ public class DetailsActivity extends AppCompatActivity
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    String price = dataSnapshot.child("Price").getValue().toString();
+                    /*String price = dataSnapshot.child("Price").getValue().toString();
                     System.out.println("Price: " + price);
                     int price_amount = Integer.parseInt(price);
 
@@ -136,7 +140,7 @@ public class DetailsActivity extends AppCompatActivity
                     String global_price2 = Integer.toString(global_amount);
                     Prevalent.currentMoney = global_price2;
 
-                    System.out.println("Global_Price_Adding : " + Prevalent.currentMoney);
+                    System.out.println("Global_Price_Adding : " + Prevalent.currentMoney);*/
                 }
 
                 @Override
@@ -147,10 +151,16 @@ public class DetailsActivity extends AppCompatActivity
             });
         }
 
-        System.out.println("Kartik : " + Prevalent.currentMoney);
+        //  System.out.println("Kartik : " + Prevalent.currentMoney);
         Intent intent = new Intent(DetailsActivity.this, PaymentActivity.class);
         startActivity(intent);
 
+    }
+
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(DetailsActivity.this, CartActivity.class);
+        startActivity(intent);
     }
 
 }

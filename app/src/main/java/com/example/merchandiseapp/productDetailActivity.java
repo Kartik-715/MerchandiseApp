@@ -283,7 +283,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("Size", selectedSpinneritem);
 
         //Removing the previous one and making new one
-
+        final int oneTypeProductPrice = ( Integer.valueOf(productPrice.getText().toString()) ) * ( Integer.valueOf(numberButton.getNumber()) ) ;
         cartListRef.child(productID).child("Orders").child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
@@ -293,7 +293,6 @@ public class productDetailActivity extends AppCompatActivity
                 {
 
                 }
-
             }
         });
 
@@ -342,6 +341,7 @@ public class productDetailActivity extends AppCompatActivity
 
                             if(task.isSuccessful())
                             {
+                                Prevalent.currentMoney = Integer.toString(oneTypeProductPrice);
                                 orderid_list.add(orderID);
                                 group_list.add(group_name);
                                 Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
@@ -354,7 +354,6 @@ public class productDetailActivity extends AppCompatActivity
                 }
             }
         });
-
     }
 
     private void addingToCartList()
@@ -399,9 +398,6 @@ public class productDetailActivity extends AppCompatActivity
 
             }
         });
-
-
-
 
 
         //Updating the Orders Child inside the Product ID
@@ -483,6 +479,7 @@ public class productDetailActivity extends AppCompatActivity
                                                 Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
+                                                intent.putExtra("orderType", Prevalent.currentOrderType);
                                                 startActivity(intent);
 
                                             }

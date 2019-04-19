@@ -44,7 +44,7 @@ public class CartActivity extends AppCompatActivity
     private TextView TxtEmptyCart;
     private int countCards;
 
-
+    private int overTotalPrice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -77,10 +77,18 @@ public class CartActivity extends AppCompatActivity
 
     private void NextActivity()
     {
+        //System.out.println("Chirag : " + overTotalPrice);
+        String totalPrice = Integer.toString(overTotalPrice);
+        Prevalent.currentMoney = totalPrice;
+        //System.out.println("Disha : " + totalPrice);
+        //System.out.println("Disha1 : " + Prevalent.currentMoney);
+        Prevalent.currentMoney = totalPrice;
         Intent intent = new Intent(CartActivity.this, DetailsActivity.class);
         intent.putExtra("orderid_list", orderid_list);
         intent.putExtra("group_list", group_list);
+        //intent.putExtra("total_money", totalPrice);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -171,6 +179,14 @@ public class CartActivity extends AppCompatActivity
 
                 orderid_list.add(model.getOrderID());
                 group_list.add(model.getGroupName());
+
+                int oneTypeProductPrice = ( Integer.valueOf(model.getPrice()) ) * ( Integer.valueOf(model.getQuantity()) ) ;
+                overTotalPrice = overTotalPrice +  oneTypeProductPrice;
+
+                System.out.println("Disha2 : " + overTotalPrice);
+                System.out.println("Disha3 : " + oneTypeProductPrice);
+                System.out.println("Disha4 : " + overTotalPrice);
+
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
                 {
