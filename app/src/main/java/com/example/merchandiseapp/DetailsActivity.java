@@ -15,8 +15,11 @@ import android.widget.Toast;
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,8 +117,32 @@ public class DetailsActivity extends AppCompatActivity
 
                         }
                     });
+            Prevalent.currentMoney = "0";
+            cartListRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    String price = dataSnapshot.child("Price").getValue().toString();
+                    int price_amount = Integer.parseInt(price);
+
+                    String global_price = Prevalent.currentMoney;
+                    int global_amount = Integer.parseInt(global_price);
+
+                    global_amount += price_amount;
+                    String global_price2 = Integer.toString(global_amount);
+                    Prevalent.currentMoney = global_price2;
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });
         }
 
+        System.out.println("Kartik : " + Prevalent.currentMoney);
         Intent intent = new Intent(DetailsActivity.this, PaymentActivity.class);
         startActivity(intent);
 

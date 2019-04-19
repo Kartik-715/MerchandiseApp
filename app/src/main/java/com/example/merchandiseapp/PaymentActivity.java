@@ -40,8 +40,10 @@ public class PaymentActivity extends AppCompatActivity
 
         Btn_Payment = findViewById(R.id.Btn_Payment);
         radioGroup = findViewById(R.id.radiogroup);
+        Prevalent.currentMoney = "50";
+        Prevalent.currentWalletMoney = "75";
 
-        //updateWallet();
+        updateWallet();
 
         Btn_Payment.setOnClickListener(new View.OnClickListener()
         {
@@ -60,8 +62,7 @@ public class PaymentActivity extends AppCompatActivity
 
         if(radioButton.getText().toString().equals("Wallet Money"))
         {
-            Prevalent.currentMoney = "50";
-            Prevalent.currentWalletMoney = "55";
+
             int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
             int currentMoney = Integer.parseInt(Prevalent.currentMoney);
 
@@ -136,6 +137,7 @@ public class PaymentActivity extends AppCompatActivity
             {
                 if(dataSnapshot.child("Wallet_Money").exists())
                 {
+
                 }
 
                 else //Just add the Money as "0" in the data

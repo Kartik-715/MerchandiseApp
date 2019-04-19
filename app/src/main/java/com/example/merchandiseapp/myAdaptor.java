@@ -94,10 +94,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
         }
 
         );
-
     }
-
-
 
     @Override
     public int getItemCount()
@@ -105,14 +102,16 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
         return mData.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder
+    {
 
         TextView price;
         ImageView ImageProduct;
         TextView productName;
         TextView productDescription;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView)
+        {
             super(itemView);
             System.out.println("Setting up View Holder");
             price = itemView.findViewById(R.id.product_price);
