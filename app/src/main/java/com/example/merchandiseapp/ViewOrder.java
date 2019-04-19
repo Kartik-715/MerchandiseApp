@@ -56,7 +56,7 @@ public class ViewOrder extends AppCompatActivity {
 
 
         /*Here the groupname has to be extracted*/
-        GroupName = "CSEA";
+        GroupName = getIntent().getStringExtra("GroupName");
 
         orderid_list = new ArrayList<String>();
 

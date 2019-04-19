@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,10 +16,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.microsoft.identity.client.IAccount;
+import com.microsoft.identity.client.PublicClientApplication;
+
+import java.util.List;
 
 public class GroupActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     G_var global;
+    private static final String TAG = GroupActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,41 +105,82 @@ public class GroupActivity extends AppCompatActivity implements NavigationView.O
 
         if (id == R.id.nav_profile) {
             Intent intent = new Intent(GroupActivity.this,GroupManageProfile.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
-        } else if (id == R.id.nav_stock) {
-
-        } else if (id == R.id.nav_request) {
+        }  else if (id == R.id.nav_request) {
             Intent intent = new Intent(GroupActivity.this,PreBookings.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
         } else if (id == R.id.nav_add_item) {
 
             Intent intent = new Intent(GroupActivity.this,AddMerchandise.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
         }else if (id == R.id.nav_ViewMerchandise) {
 
             Intent intent = new Intent(GroupActivity.this,ViewMerchandise.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
         }
         else if (id == R.id.nav_orders) {
 
             Intent intent = new Intent(GroupActivity.this,ViewOrder.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
         }else if (id == R.id.nav_members) {
 
             Intent intent = new Intent(GroupActivity.this,AddMembersActivity.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
         }else if (id == R.id.nav_authorizedMembers) {
 
             Intent intent = new Intent(GroupActivity.this,AccessedMembersActivity.class);
+            intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
         }
         else if (id == R.id.nav_signout) {
+
+            PublicClientApplication sampleApp = new PublicClientApplication(
+                    this.getApplicationContext(),
+                    R.raw.auth_config);
+            /* Attempt to get a account and remove their cookies from cache */
+            List<IAccount> accounts = null;
+
+            try {
+                accounts = sampleApp.getAccounts();
+
+                if (accounts == null) {
+                    /* We have no accounts */
+
+                } else if (accounts.size() == 1) {
+                    /* We have 1 account */
+                    /* Remove from token cache */
+                    sampleApp.removeAccount(accounts.get(0));
+                    //  updateSignedOutUI();
+
+                }
+                else {
+                    /* We have multiple accounts */
+                    for (int i = 0; i < accounts.size(); i++) {
+                        sampleApp.removeAccount(accounts.get(i));
+                    }
+                }
+
+                Toast.makeText(getBaseContext(), "Signed Out!", Toast.LENGTH_SHORT)
+                        .show();
+
+            } catch (IndexOutOfBoundsException e) {
+                Log.d(TAG, "User at this position does not exist: " + e.toString());
+            }
+            Intent intent = new Intent(GroupActivity.this, OutlookLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
 
         }
 
