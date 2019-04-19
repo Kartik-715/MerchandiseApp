@@ -42,7 +42,9 @@ public class ViewPagerAdaptor extends FragmentPagerAdapter {
 
     public void clearFragments()
     {
-        fragmentList = new ArrayList<>() ;
-        fragmentListTitle = new ArrayList<>() ;
+        fragmentList.clear();
+        fragmentListTitle.clear();
+        notifyDataSetChanged();
+
     }
 }

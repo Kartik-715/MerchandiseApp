@@ -29,6 +29,7 @@ public class FragmentItem extends Fragment
     private HomeActivity mHomeActivity;
     Bundle bundle;
     ProgressDialog loadingBar;
+    private List<Merchandise> list ;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -47,75 +48,34 @@ public class FragmentItem extends Fragment
         return rv;
     }
 
+    public FragmentItem()
+    {
+
+    }
+
     public FragmentItem(ProgressDialog loadingBar)
     {
         this.loadingBar = loadingBar;
     }
+
+
 
     private void setupRecyclerView(final RecyclerView recyclerView)
     {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
         recyclerView.setLayoutManager(layoutManager);
-
-        String uid = Prevalent.currentOnlineUser;
-
-        DatabaseReference userGroups = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Groups");
-        userGroups.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                final List<String> accessibleGroups = (List<String>) dataSnapshot.getValue();
-                System.out.println(accessibleGroups);
-
-
-                final String orderType = Prevalent.currentOrderType; // Selecting Order Type //
-
-                DatabaseReference merch = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(bundle.getString("category", "none"));
-
-                merch.addListenerForSingleValueEvent(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                    {
-                        List<Merchandise> list = new ArrayList<>();
-                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
-                        {
-                            Merchandise mr = postdatasnapshot.getValue(Merchandise.class);
-                            Set<String> s = new HashSet<>(accessibleGroups);
-                            if (mr.getAccessGroup() != null)
-                            {
-                                Set<String> u = new HashSet<>(mr.getAccessGroup());
-                                s.retainAll(u);
-                                if (s.size() != 0 && mr.getOrderType().equals(orderType))
-                                {
-                                    list.add(mr);
-                                }
-                            }
-                        }
-
-                        myAdaptor adaptor = new myAdaptor(mHomeActivity, list, loadingBar);
-                        recyclerView.setAdapter(adaptor);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError)
-                    {
-                        Log.d("Error", "Couldn't read this Merchandise");
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
-
-            }
-        });
-
+        myAdaptor adaptor = new myAdaptor(mHomeActivity, list, loadingBar);
+        recyclerView.setAdapter(adaptor);
 
     }
+
+    public void setObject(List<Merchandise> x)
+    {
+        this.list = x ;
+    }
+
+
 
 
 }

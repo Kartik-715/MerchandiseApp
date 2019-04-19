@@ -31,6 +31,20 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
 
     }
 
+    /* Within the RecyclerView.Adapter class */
+
+    // Clean all elements of the recycler
+    public void clear() {
+        mData.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Merchandise> list) {
+        mData.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
