@@ -64,20 +64,14 @@ import java.util.Set;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseReference ProductsRef;
-    private GoogleSignInClient mGoogleSignInClient;
-    private static final String TAG = HomeActivity.class.getSimpleName();
-    private Button btnLogout;
-    public FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     public ImageView imageView;
-    public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     G_var global;
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     View headerView;
-    private String flag;
+    private String orderType;
     boolean doubleBackToExitPressedOnce = false;
     private ProgressDialog loadingBar;
 
@@ -91,84 +85,99 @@ public class HomeActivity extends AppCompatActivity
         //global = (G_var) getApplicationContext();
 
         /* Tab Layout Setting */
-        flag = getIntent().getStringExtra("flag");
-        Prevalent.currentFlag = flag;
+        orderType = getIntent().getStringExtra("orderType");
+        Prevalent.currentOrderType = orderType;
 
         loadingBar = new ProgressDialog(this);
         loadingBar.setTitle("Home Page");
         loadingBar.setMessage("Please wait, while we are Loading Home Page");
         loadingBar.setCanceledOnTouchOutside(false);
-        loadingBar.show();
+        //loadingBar.show();
 
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
+//        DatabaseReference allGroups;
+//        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;
+//        final List<String> accessibleGroups = new ArrayList<>();
+//        accessibleGroups.add("CSEA") ;
+//        allGroups.addValueEventListener(new ValueEventListener()
+//        {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+//            {
+//                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
+//
+//                Set<String> AllCategories = new HashSet<>();
+//
+//                for(String o: accessibleGroups)
+//                {
+//                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
+//                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
+//
+//                    //System.out.println("Group Details: " + group );
+//                    //System.out.println("Group Merchandise: " + groupMerch );
+//
+//                    for(Map.Entry<String, Object> category : groupMerch.entrySet())
+//                    {
+//                        AllCategories.add(category.getKey()) ;
+//                    }
+//
+//                }
+//
+//                System.out.println("Different Categories are: " + AllCategories);
+//
+//                for (String category : AllCategories)
+//                {
+//                    FragmentItem fragment = new FragmentItem();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("category", category);
+//                    fragment.setArguments(bundle);
+//                    adaptor.AddFragment(fragment, category);
+//                }
+//
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.w("ErrMerchandise", "Couldn't Read All Merchandise");
+//            }
+//        });
+        DatabaseReference allMerchandise = FirebaseDatabase.getInstance().getReference().child("Merchandise");
 
-        DatabaseReference allGroups;
-        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;
-        final List<String> accessibleGroups = new ArrayList<>();
-        accessibleGroups.add("CSEA") ;
-
-
-
-
-
-        allGroups.addValueEventListener(new ValueEventListener()
-        {
+        allMerchandise.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String,Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue() ;
+                System.out.println(All_merchandise) ;
+                adaptor.clearFragments() ;
 
-                Set<String> AllCategories = new HashSet<>();
 
-                for(String o: accessibleGroups)
-                {
-                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
-                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
-
-                    //System.out.println("Group Details: " + group );
-                    //System.out.println("Group Merchandise: " + groupMerch );
-
-                    for(Map.Entry<String, Object> category : groupMerch.entrySet())
-                    {
-                        AllCategories.add(category.getKey()) ;
-                    }
-
-                }
-
-                System.out.println("Different Categories are: " + AllCategories);
-
-                for (String category : AllCategories)
-                {
-                    FragmentItem fragment = new FragmentItem();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category", category);
+                for (Object o : All_merchandise.entrySet()) {
+                    HashMap.Entry p1 = (HashMap.Entry) o;
+                    FragmentItem fragment = new FragmentItem() ;
+                    Bundle bundle = new Bundle() ;
+                    bundle.putString("category", (String) p1.getKey() );
                     fragment.setArguments(bundle);
-                    adaptor.AddFragment(fragment, category);
+                    adaptor.AddFragment(fragment, (String) p1.getKey());
                 }
-
-
-
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("ErrMerchandise", "Couldn't Read All Merchandise");
+                Log.w("ErrMerchandise", "Couldn't Read All Merchandise") ;
             }
-        });
+        }) ;
 
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
 
-        /* Tab Layout Setting */
+        /******** Tab Layout Setting **********/
 
-
-        //Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();
-
-        //Log.d("name", global.getUsername());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
@@ -181,12 +190,13 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
+
             }
         });
 
-        final FirebaseAuth mauth = FirebaseAuth.getInstance();
-        FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name", user.getDisplayName());
+//        final FirebaseAuth mauth = FirebaseAuth.getInstance();
+//        FirebaseUser user = mauth.getCurrentUser();
+//        Log.d("name", user.getDisplayName());
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -197,9 +207,7 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        headerView = navigationView.getHeaderView(0);
+        View headerView = navigationView.getHeaderView(0);
 
 
 
@@ -331,14 +339,14 @@ public class HomeActivity extends AppCompatActivity
         else if(id == R.id.customized_orders)
         {
             Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-            intent.putExtra("flag", "0");
+            intent.putExtra("orderType", "2");
             startActivity(intent);
         }
 
         else if(id == R.id.orders_list)
         {
             Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-            intent.putExtra("flag", "1");
+            intent.putExtra("orderType", "1");
             startActivity(intent);
         }
 

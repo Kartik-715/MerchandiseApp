@@ -94,7 +94,7 @@ public class LoginActivity2 extends AppCompatActivity
                                 loadingBar.dismiss();
 
                                 Intent intent = new Intent(LoginActivity2.this, HomeActivity.class);
-                                intent.putExtra("flag", "1");
+                                intent.putExtra("orderType", "1");
                                 Prevalent.currentOnlineUser = hashcode;
                                 Prevalent.currentEmail = email;
                                 startActivity(intent);
