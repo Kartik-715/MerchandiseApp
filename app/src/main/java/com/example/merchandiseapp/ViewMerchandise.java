@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -278,6 +279,11 @@ public class ViewMerchandise extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
+                        Intent intent = new Intent(ViewMerchandise.this,EditMerchandise.class);
+                        intent.putExtra("PID",model.getPID());
+                        intent.putExtra("GroupName",GroupName);
+                        intent.putExtra("Category",Category);
+                        startActivity(intent);
 
 
                     }
