@@ -60,5 +60,4 @@
         android:layout_centerHorizontal="true"
         android:text="send by upi"/>
 
-
 </RelativeLayout>

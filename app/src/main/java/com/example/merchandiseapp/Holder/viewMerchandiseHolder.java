@@ -13,9 +13,9 @@ import com.example.merchandiseapp.R;
 
 public class viewMerchandiseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView txtProductName, txtProductPrice, txtProductQuantity;
+    public TextView txtProductName, txtProductPrice, txtProductQuantity,txtProductStatus;
     public ImageView CartImage;
-    public Button DeleteButton, MakePubliceButton ;
+    public Button DeleteButton, MakePubliceButton , EditMerchandiseButton;
     private ItemClickListner itemClickListner;
     public Spinner spinner_qty;
 
@@ -25,8 +25,10 @@ public class viewMerchandiseHolder extends RecyclerView.ViewHolder implements Vi
         txtProductQuantity = itemView.findViewById(R.id.cart_product_quantity);
         txtProductName = itemView.findViewById(R.id.cart_product_name);
         txtProductPrice = itemView.findViewById(R.id.cart_product_price);
+        txtProductStatus = itemView.findViewById(R.id.cart_product_status);
         DeleteButton = itemView.findViewById(R.id.cart_remove_item);
         MakePubliceButton = itemView.findViewById(R.id.cart_make_public);
+        EditMerchandiseButton = itemView.findViewById(R.id.cart_edit_item);
         CartImage = itemView.findViewById(R.id.product_image);
         spinner_qty = itemView.findViewById(R.id.product_quantity_spinner);
     }

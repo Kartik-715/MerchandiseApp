@@ -2,5 +2,6 @@
 <resources>
     <item name="nav_logout" type="id" />
     <item name="asd" type="id" />
-    <item name="sendNotification" type="id"></item>
+    <item name="sendNoti" type="id" />
+    <item name="rel1" type="id" />
 </resources>

@@ -1,5 +1,7 @@
 package com.example.merchandiseapp;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.example.merchandiseapp.Holder.PreBookingHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +29,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PreBookings extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -36,10 +41,12 @@ public class PreBookings extends AppCompatActivity {
     private ArrayList<String> orderid_list;
     private DatabaseReference preOederListRef;
     private DatabaseReference myRef;
+    private DatabaseReference myRef1;
+    private DatabaseReference myRef2;
+    private DatabaseReference myRef3;
     private String GroupName;
     private int countCards;
     private HashMap<String, Object> All_orders = new HashMap<String, Object>();
-    private ArrayList<String> ProductID = new ArrayList<>();
     private String PID;
     private String Category;
     @Override
@@ -51,7 +58,7 @@ public class PreBookings extends AppCompatActivity {
 
 
         /*Here the groupname has to be extracted*/
-        GroupName = "CSEA";
+        GroupName = getIntent().getStringExtra("GroupName");
 
         orderid_list = new ArrayList<String>();
 
@@ -78,11 +85,179 @@ public class PreBookings extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
+
                 preOederListRef.child(PID).child("IsOpen").setValue("false");
 
+                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
+                myRef1.child("IsOpen").setValue("false");
 
-                myRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
-                myRef.child("IsOpen").setValue("false");
+                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
+                myRef2.child("IsOpen").setValue("false");
+
+
+                myRef3 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Requests").child(PID);
+
+
+                myRef3.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        int flag1=0,flag2=0;
+
+                        final ArrayList<String> toPay= new ArrayList<>();
+                        final ArrayList<String> quantity= new ArrayList<>();
+                        long ctr=0,count = dataSnapshot.child("Requests").getChildrenCount();
+                        String price1 = dataSnapshot.child("Price").getValue().toString();
+                        final Long price = Long.parseLong(price1) ;
+
+                        if(flag1==0)
+                        {
+                                flag1+=1;
+                               for (DataSnapshot ds:dataSnapshot.child("Requests").getChildren()){
+
+                                if( ds.child("IsPaid").getValue().toString().equals("true") )
+                                {
+                                    toPay.add(ds.child("UserID").getValue().toString());
+                                    quantity.add(ds.child("Quantity").getValue().toString());
+                                }
+                                ctr++;
+                                if(ctr==count)
+                                {
+                                    myRef1 =FirebaseDatabase.getInstance().getReference().child("Users");
+
+                                    if(flag2==0) {
+                                        flag2+=1;
+                                        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+
+
+
+                                                HashMap<String , Long> obj = new HashMap<>();
+
+                                                for(int i=0;i<toPay.size();i++)
+                                                {
+//                                                    obj.
+//                                                    String a = "0";
+                                                        Long a =0L;
+                                                    obj.put(toPay.get(i),a );
+//                                                    obj["aryan"]+=10;
+                                                }
+
+                                                for(int i=0;i<toPay.size();i++)
+                                                {
+//                                                    obj.
+
+                                                    Long mon = obj.get(toPay.get(i));
+                                                    mon = mon+ Long.parseLong( quantity.get(i));
+
+                                                    obj.put(  toPay.get(i), mon);
+//                                                    obj["aryan"]+=10;
+                                                }
+
+                                                Iterator it = obj.entrySet().iterator();
+                                                while(it.hasNext())
+                                                {
+                                                    HashMap.Entry pair = (HashMap.Entry) it.next();
+
+                                                    String money1 = dataSnapshot1.child(pair.getKey().toString()).child("Wallet_Money").getValue().toString();
+                                                    Long money = Long.parseLong(money1);
+                                                    System.out.println(pair.getKey()+" "+price.toString() +" "+ pair.getValue().toString() +" "+ money.toString());
+
+                                                    String temp1 =pair.getValue().toString();
+
+                                                    Long add = Long.parseLong( temp1) * price;
+                                                    money += add;
+                                                    String money2 = money.toString();
+                                                    myRef2 = FirebaseDatabase.getInstance().getReference().child("Users").child(pair.getKey().toString()).child("Wallet_Money");
+                                                    myRef2.setValue(money2);
+//                                                            FirebaseDatabase.getInstance().getReference().child("Users")
+//                                                                    .child(toPay.get(i)).child("Wallet_Money").
+
+
+
+                                                    it.remove();
+                                                }
+
+//                                                for (int i = 0; i < obj.size(); i++) {
+//
+//                                                    String money1 = dataSnapshot1.child(toPay.get(i)).child("Wallet_Money").getValue().toString();
+//                                                    Long money = Long.parseLong(money1);
+//                                                    System.out.println(toPay.get(i)+" "+price.toString() +" "+ quantity.get(i) +" "+ money.toString());
+//                                                    Long add = Long.parseLong(quantity.get(i)) * price;
+//                                                    money += add;
+//                                                    String money2 = money.toString();
+//                                                    myRef2 = FirebaseDatabase.getInstance().getReference().child("Users").child(toPay.get(i)).child("Wallet_Money");
+////
+////                                                            FirebaseDatabase.getInstance().getReference().child("Users")
+////                                                                    .child(toPay.get(i)).child("Wallet_Money").
+//                                                    myRef2.setValue(money2);
+//
+//                                                }
+                                            }
+
+                                            //
+//                                                    myRef2.setValue(money2, new DatabaseReference().CompletionListener(){
+//                                                        void onComplete(DatabaseError error, DatabaseReference ref) {
+//                                                            System.out.println("Value was set. Error = "+error);
+//                                                        }
+//                                                        {}
+//
+//                                                        @Override
+//                                                        public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
+//                                                            if (firebaseError != null) {
+//                                                                System.out.println("Data could not be saved. " + firebaseError.getMessage());
+//                                                            } else {
+//                                                                System.out.println("Data saved successfully.");
+//                                                            }
+//                                                        }
+
+
+
+
+//                                                    );
+
+//
+//
+
+//
+//
+//                                                    final AtomicBoolean done = new AtomicBoolean(false);
+//                                                    ref.setValue(new , new Firebase.CompletionListener() {
+//                                                        @Override
+//                                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+//                                                            done.set(true);
+//                                                        }
+//                                                    });
+//                                                    while (!done.get());
+
+
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError1) {
+
+                                            }
+                                        });
+                                    }
+
+
+
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
                 finish();
                 startActivity(getIntent());
             }
@@ -120,8 +295,14 @@ public class PreBookings extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                myRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
-                myRef.child("IsOpen").setValue("false");
+
+
+                myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
+                myRef1.child("IsOpen").setValue("false");
+
+                myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
+                myRef2.child("IsOpen").setValue("false");
+
                 finish();
                 startActivity(getIntent());
             }
@@ -160,16 +341,7 @@ public class PreBookings extends AppCompatActivity {
                 countCards = (int) dataSnapshot.getChildrenCount();
                 All_orders= (HashMap<String, Object>) dataSnapshot.getValue();
                 System.out.println("*******watch out for this***********"+All_orders);
-                Iterator it = null;
                 if(All_orders != null) {
-                    it = All_orders.entrySet().iterator();
-
-
-                    while (it.hasNext()) {
-                        HashMap.Entry pair = (HashMap.Entry) it.next();
-                        ProductID.add((String) pair.getKey());
-                        it.remove();
-                    }
 
                     if (dataSnapshot.exists()) {
                         //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
@@ -198,7 +370,7 @@ public class PreBookings extends AppCompatActivity {
 
     private void DataExists(Query queries)
     {
-        System.out.println(ProductID);
+
 
             System.out.println(queries);
             FirebaseRecyclerOptions<RequestDetails> options = new FirebaseRecyclerOptions.Builder<RequestDetails>()
@@ -207,6 +379,7 @@ public class PreBookings extends AppCompatActivity {
 
             final FirebaseRecyclerAdapter<RequestDetails, PreBookingHolder> adapter
                     = new FirebaseRecyclerAdapter<RequestDetails,  PreBookingHolder>(options) {
+                @SuppressLint("SetTextI18n")
                 @Override
                 protected void onBindViewHolder(@NonNull final PreBookingHolder holder, int position, @NonNull final RequestDetails model) {
                     System.out.println("*******************+++++*********************"+model.getQuantity());
@@ -284,6 +457,5 @@ public class PreBookings extends AppCompatActivity {
 
             recyclerView.setAdapter(adapter);
             adapter.startListening();
-            ProductID.remove(0);
     }
 }

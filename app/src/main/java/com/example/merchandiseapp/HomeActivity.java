@@ -39,7 +39,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -51,6 +50,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.microsoft.identity.client.IAccount;
+import com.microsoft.identity.client.PublicClientApplication;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -287,6 +288,10 @@ public class HomeActivity extends AppCompatActivity
 //        Prevalent.currentOnlineUser = hashcode;
 //        Prevalent.currentEmail = temp_email;
 
+        /*User_ID = user.getUid();
+
+        Prevalent.currentOnlineUser = User_ID;
+        Prevalent.currentEmail = User_Email;*/
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
@@ -370,11 +375,11 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-        else if (id == R.id.wallet)
+        /*else if (id == R.id.wallet)
         {
             Intent intent = new Intent(this, myWallet.class);
             startActivity(intent);
-        }
+        }*/
         else if (id == R.id.orders)
         {
             Intent intent = new Intent(this,Order_History.class);
@@ -382,10 +387,10 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
-        else if (id == R.id.nav_share) {
+        else if (id == R.id.nav_share)
+        {
             Intent intent = new Intent(HomeActivity.this, com.example.merchandiseapp.GroupRegisterActivity.class);
             startActivity(intent);
-
         }
 
         else if (id == R.id.nav_send)
@@ -393,10 +398,41 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
-        }
-        else if (id == R.id.nav_logout)
-        {
-            Intent intent = new Intent(HomeActivity.this, AddMembersActivity.class);
+        } else if (id == R.id.nav_logout) {
+            PublicClientApplication sampleApp = new PublicClientApplication(
+                    this.getApplicationContext(),
+                    R.raw.auth_config);
+                /* Attempt to get a account and remove their cookies from cache */
+                List<IAccount> accounts = null;
+
+                try {
+                    accounts = sampleApp.getAccounts();
+
+                    if (accounts == null) {
+                        /* We have no accounts */
+
+                    } else if (accounts.size() == 1) {
+                        /* We have 1 account */
+                        /* Remove from token cache */
+                        sampleApp.removeAccount(accounts.get(0));
+                        //  updateSignedOutUI();
+
+                    }
+                    else {
+                        /* We have multiple accounts */
+                        for (int i = 0; i < accounts.size(); i++) {
+                            sampleApp.removeAccount(accounts.get(i));
+                        }
+                    }
+
+                    Toast.makeText(getBaseContext(), "Signed Out!", Toast.LENGTH_SHORT)
+                            .show();
+
+                } catch (IndexOutOfBoundsException e) {
+                    //Log.d(TAG, "User at this position does not exist: " + e.toString());
+                }
+            Intent intent = new Intent(HomeActivity.this, OutlookLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
 

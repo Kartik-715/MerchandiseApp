@@ -2,17 +2,22 @@ package com.example.merchandiseapp;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.Request;
-
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -22,6 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonArray;
 import com.microsoft.identity.client.*;
 import com.microsoft.identity.client.exception.*;
@@ -32,11 +42,16 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     /* Azure AD v2 Configs */
     final static String SCOPES [] = {"https://graph.microsoft.com/User.Read"};
     final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-
+    G_var global;
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
     Button callGraphButton;
-    Button signOutButton;
+    Button LoginButton;
+    Button Join;
+    FirebaseDatabase database;
+    DatabaseReference ref;
+    boolean flag = false;
+    EditText email,password;
 
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
@@ -46,9 +61,13 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outlook_login);
-
+        hideNav();
         callGraphButton = (Button) findViewById(R.id.callGraph);
-        signOutButton = (Button) findViewById(R.id.clearCache);
+        LoginButton = (Button) findViewById(R.id.Login);
+       // signOutButton = (Button) findViewById(R.id.clearCache);
+        email = (EditText)findViewById(R.id.email);
+        password = (EditText)findViewById(R.id.password);
+        Join = findViewById(R.id.JoinNow);
 
         callGraphButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,9 +75,17 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             }
         });
 
-        signOutButton.setOnClickListener(new View.OnClickListener() {
+        LoginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                onSignOutClicked();
+                onLoginButtonClicked();
+            }
+        });
+
+        Join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OutlookLogin.this,UserSignUp.class);
+                startActivity(i);
             }
         });
 
@@ -68,6 +95,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             sampleApp = new PublicClientApplication(
                     this.getApplicationContext(),
                     R.raw.auth_config);
+         //  if(sampleApp != null) global.setSampleApp(sampleApp);
         }
 
         /* Attempt to get a user and acquireTokenSilent
@@ -89,6 +117,21 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             Log.d(TAG, "Account at this position does not exist: " + e.toString());
         }
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        hideNav();
+    }
+    public void hideNav(){
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     //
@@ -113,29 +156,67 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
     }
 
+    private void onLoginButtonClicked() {
+        String Email = email.getText().toString().trim();
+        final String Password = password.getText().toString().trim();
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("Users");
+        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)) {
+            Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+        flag = false;
+        int hash = Email.hashCode();
+        final String hashValue = Integer.toString(hash);
+        ref.child(hashValue).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child("Password").getValue().toString().equals(Password)) {
+                        flag = true;
+                        Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
+                        intent.putExtra("Type", "users");
+                        intent.putExtra("Email", email.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                else Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     /* Clears an account's tokens from the cache.
      * Logically similar to "sign out" but only signs out of this app.
      */
-    private void onSignOutClicked() {
+    /*private void onSignOutClicked() {
 
-        /* Attempt to get a account and remove their cookies from cache */
+        // Attempt to get a account and remove their cookies from cache
+
         List<IAccount> accounts = null;
 
         try {
             accounts = sampleApp.getAccounts();
 
             if (accounts == null) {
-                /* We have no accounts */
+                // We have no accounts
 
             } else if (accounts.size() == 1) {
-                /* We have 1 account */
-                /* Remove from token cache */
+                // We have 1 account
+                // Remove from token cache
                 sampleApp.removeAccount(accounts.get(0));
-                updateSignedOutUI();
+              //  updateSignedOutUI();
 
             }
             else {
-                /* We have multiple accounts */
+                // We have multiple accounts
                 for (int i = 0; i < accounts.size(); i++) {
                     sampleApp.removeAccount(accounts.get(i));
                 }
@@ -148,7 +229,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             Log.d(TAG, "User at this position does not exist: " + e.toString());
         }
     }
-
+*/
     /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
     private void callGraphAPI() {
         Log.d(TAG, "Starting volley request to graph");
@@ -195,7 +276,23 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+               // .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
 
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
     //
     // Helper methods manage UI updates
     // ================================
@@ -264,23 +361,23 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     }
 
     /* Set the UI for successful token acquisition data */
-    private void updateSuccessUI() {
+ /*   private void updateSuccessUI() {
         callGraphButton.setVisibility(View.INVISIBLE);
         signOutButton.setVisibility(View.VISIBLE);
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.welcome)).setText("Welcome, " +
                 authResult.getAccount().getUsername());
-        findViewById(R.id.graphData).setVisibility(View.VISIBLE);
-    }
+      //  findViewById(R.id.graphData).setVisibility(View.VISIBLE);
+    }*/
 
     /* Set the UI for signed out account */
-    private void updateSignedOutUI() {
+   /* private void updateSignedOutUI() {
         callGraphButton.setVisibility(View.VISIBLE);
         signOutButton.setVisibility(View.INVISIBLE);
         findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
-        ((TextView) findViewById(R.id.graphData)).setText("No Data");
-    }
+      //  findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
+        //((TextView) findViewById(R.id.graphData)).setText("No Data");
+    }*/
 
     //
     // App callbacks for MSAL
@@ -312,7 +409,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-                updateSuccessUI();
+              //  updateSuccessUI();
             }
 
             @Override
@@ -355,7 +452,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-                updateSuccessUI();
+                //updateSuccessUI();
             }
 
             @Override

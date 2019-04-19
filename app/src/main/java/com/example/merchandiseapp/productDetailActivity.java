@@ -71,6 +71,8 @@ public class productDetailActivity extends AppCompatActivity
     private ArrayList<String> arraySpinner;
     private int flag;
     private String selectedSpinneritem;
+    private ArrayList<String> size_list;
+    private ArrayList<String> quantity_list;
 
 
     public interface MyCallback
@@ -87,12 +89,16 @@ public class productDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_product_detail);
 
         image_src = new ArrayList<>();
+        size_list = new ArrayList<>();
+        quantity_list = new ArrayList<>();
 
         productID = getIntent().getStringExtra("pid");
         orderID = getIntent().getStringExtra("order_id");
         image_src = getIntent().getStringArrayListExtra("image");
         category = getIntent().getStringExtra("category");
         group_name = getIntent().getStringExtra("groupName");
+        size_list = getIntent().getStringArrayListExtra("size_list");
+        quantity_list = getIntent().getStringArrayListExtra("quantity_list2");
 
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
@@ -236,6 +242,26 @@ public class productDetailActivity extends AppCompatActivity
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders");
         final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Orders_Temp");
 
+        final HashMap<String,Object> productIDMap = new HashMap<>();
+        productIDMap.put("Category", category);
+        productIDMap.put("Image", image_src.get(0));
+        productIDMap.put("PID", productID);
+        productIDMap.put("Price", productPrice.getText().toString());
+        productIDMap.put("Size", size_list);
+        productIDMap.put("Quantity", quantity_list);
+
+        cartListRef.child(productID).updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+
+            }
+        });
+
+
+
+
 
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("ProductID",productID);
@@ -257,7 +283,8 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("Size", selectedSpinneritem);
 
         //Removing the previous one and making new one
-        cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        final int oneTypeProductPrice = ( Integer.valueOf(productPrice.getText().toString()) ) * ( Integer.valueOf(numberButton.getNumber()) ) ;
+        cartListRef.child(productID).child("Orders").child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -268,6 +295,18 @@ public class productDetailActivity extends AppCompatActivity
                 }
             }
         });
+
+        /*cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
+
+                }
+            }
+        });*/
 
         cartListRef2.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -281,7 +320,7 @@ public class productDetailActivity extends AppCompatActivity
             }
         });
 
-        cartListRef.child(User_ID).child(neworderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        cartListRef.child(productID).child("Orders").child(neworderID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -302,6 +341,7 @@ public class productDetailActivity extends AppCompatActivity
 
                             if(task.isSuccessful())
                             {
+                                Prevalent.currentMoney = Integer.toString(oneTypeProductPrice);
                                 orderid_list.add(orderID);
                                 group_list.add(group_name);
                                 Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
@@ -314,7 +354,6 @@ public class productDetailActivity extends AppCompatActivity
                 }
             }
         });
-
     }
 
     private void addingToCartList()
@@ -343,6 +382,25 @@ public class productDetailActivity extends AppCompatActivity
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders");
         final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Orders_Temp");
 
+        final HashMap<String,Object> productIDMap = new HashMap<>();
+        productIDMap.put("Category", category);
+        productIDMap.put("Image", image_src.get(0));
+        productIDMap.put("PID", productID);
+        productIDMap.put("Price", productPrice.getText().toString());
+        productIDMap.put("Size", size_list);
+        productIDMap.put("Quantity", quantity_list);
+
+        cartListRef.child(productID).updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+
+            }
+        });
+
+
+        //Updating the Orders Child inside the Product ID
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("ProductID",productID);
         //cartMap.put("pname",productName.getText().toString());
@@ -363,7 +421,7 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("Size", selectedSpinneritem);
 
         //Removing the previous one and making new one
-        cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        /*cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -372,6 +430,19 @@ public class productDetailActivity extends AppCompatActivity
                 {
 
                 }
+            }
+        });*/
+
+        cartListRef.child(productID).child("Orders").child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(task.isSuccessful())
+                {
+
+                }
+
             }
         });
 
@@ -387,7 +458,7 @@ public class productDetailActivity extends AppCompatActivity
             }
         });
 
-        cartListRef.child(User_ID).child(neworderID).updateChildren(cartMap)
+        cartListRef.child(productID).child("Orders").child(neworderID).updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>()
                 {
                     @Override
@@ -396,11 +467,6 @@ public class productDetailActivity extends AppCompatActivity
 
                         if(task.isSuccessful())
                         {
-                           /* Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
-                            startActivity(intent);*/
-
                             cartListRef2.child(User_ID).child(neworderID).updateChildren(cartMap)
                                     .addOnCompleteListener(new OnCompleteListener<Void>()
                                     {
@@ -413,6 +479,7 @@ public class productDetailActivity extends AppCompatActivity
                                                 Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
+                                                intent.putExtra("orderType", Prevalent.currentOrderType);
                                                 startActivity(intent);
 
                                             }

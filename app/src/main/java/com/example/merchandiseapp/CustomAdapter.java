@@ -24,6 +24,9 @@ public class CustomAdapter extends BaseAdapter {
     ArrayList<String> Size;
     ArrayList<String> UserName;
 
+    public CustomAdapter()
+    {
+    }
 
     //    Contact = new ArrayList<>();
 //    Email = new ArrayList<>();

@@ -88,35 +88,48 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
+        <Button
+            android:id="@+id/cart_edit_item"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/product_image"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp"
+
+
+            android:background="@color/Tomato"
+            android:text="Edit Merchandise"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/cart_remove_item"
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_below="@+id/product_image"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="15dp"
+            android:layout_marginLeft="50dp"
+
             android:background="@color/Tomato"
             android:text="Remove"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
-
-
         <Button
             android:id="@+id/cart_make_public"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_below="@+id/product_image"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_toEndOf="@id/cart_remove_item"
+            android:layout_marginLeft="50dp"
             android:background="@color/Tomato"
             android:text="Make Public"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
+
+
+
 
     </RelativeLayout>
 

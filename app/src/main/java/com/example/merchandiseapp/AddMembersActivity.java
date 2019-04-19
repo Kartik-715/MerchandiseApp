@@ -50,7 +50,7 @@ public class AddMembersActivity extends AppCompatActivity
 
     }
 
-     private  void MemberAdd()
+    private  void MemberAdd()
     {
         inputText = EmailID.getText().toString();
         inputText = inputText.trim();

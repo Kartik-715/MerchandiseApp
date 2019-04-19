@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity
 
     private Button btn;
     DatabaseReference myRef ;
+    private ImageView img;
 
 
     public static final String Database_PATH = "Merchandise";
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         btn = findViewById(R.id.button);
+        img = findViewById(R.id.imageView2);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

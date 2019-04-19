@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,17 +89,24 @@ public class MultipleImages extends AppCompatActivity {
                     String fileName = getFileName(fileUri);
 
                     fileNameList.add(fileName);
-                    fileDoneList.add("Uploading");
+                    fileDoneList.add("uploading");
                     System.out.println(fileNameList);
 
                     uplaodListAdapter.notifyDataSetChanged();
 
+                    final int finalI=i;
                     StorageReference fileToUpload = mStorage.child("Merchandise").child(fileName);
                     fileToUpload.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             System.out.println("image uplaoded");
+                            fileDoneList.remove(finalI);
                             Toast.makeText(MultipleImages.this,"Done",Toast.LENGTH_SHORT).show();
+                            fileDoneList.add(finalI,"Done");
+                            uplaodListAdapter.notifyDataSetChanged();
+
+
+
                         }
                     });
 
@@ -107,8 +115,13 @@ public class MultipleImages extends AppCompatActivity {
 
             else if (data.getData() != null)
             {
-                System.out.println("yo baby");
 
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Warning");
+                alert.setMessage("Please Select at least two images...");
+                System.out.println("yo baby");
+                AlertDialog alertBox = alert.create();
+                alertBox.show();
             }
 
 
