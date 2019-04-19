@@ -63,6 +63,8 @@ public class GroupManageProfile extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageReference;
 
+    List<String> areas = new ArrayList<String>();
+
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
     private static final String TAG = GroupRegister.class.getSimpleName();
@@ -76,6 +78,7 @@ public class GroupManageProfile extends AppCompatActivity {
 
         global = (G_var) getApplicationContext();
 
+        flag_locationCheck = 0;
         name = findViewById(R.id.grpName);
         location = findViewById(R.id.add_loacation_grp);
         imageView = findViewById(R.id.grpPic);
@@ -96,19 +99,23 @@ public class GroupManageProfile extends AppCompatActivity {
         userData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String areaname;
-                final List<String> areas = new ArrayList<String>();
-                flag =0;
-                for (DataSnapshot Snapshot : dataSnapshot.getChildren()){
-                    flag++;
-                    areaname = Snapshot.getValue().toString();
-                    areas.add(areaname);
+                if(dataSnapshot.exists()){
+                    String areaname;
+                    areas= new ArrayList<String>();
+                    flag =0;
+                    for (DataSnapshot Snapshot : dataSnapshot.getChildren()){
+                        flag++;
+                        areaname = Snapshot.getValue().toString();
+                        areas.add(areaname);
+                    }
+
+                    loc.setVisibility(View.VISIBLE);
+                    ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(GroupManageProfile.this, android.R.layout.simple_spinner_item, areas);
+                    areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    loc.setAdapter(areasAdapter);
                 }
 
-                loc.setVisibility(View.VISIBLE);
-                ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(GroupManageProfile.this, android.R.layout.simple_spinner_item, areas);
-                areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                loc.setAdapter(areasAdapter);
+                else loc.setAdapter(null);
             }
 
             @Override
@@ -244,55 +251,62 @@ public class GroupManageProfile extends AppCompatActivity {
 
         DatabaseReference GroupData = FirebaseDatabase.getInstance().getReference().child("Group").child(name.getText().toString()).child("Details").child("Locations");
 
+
         if(location_exists(location.getText().toString()))
         {
             Toast.makeText(getApplicationContext(),"Location already exists",Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if(GroupData == null) Toast.makeText(getApplicationContext(),"hdebhf",Toast.LENGTH_SHORT).show();
+
         String g = Integer.toString(flag);
         GroupData.child(g).setValue(location.getText().toString());
 
         location.setText("");
     }
 
-   public boolean location_exists(final String location)
-   {
+   public boolean location_exists(final String location) {
 
-       final DatabaseReference location_check = FirebaseDatabase.getInstance().getReference().child("Group").child(name.getText().toString()).child("Details").child("Locations");
+        if (areas == null) return false;
 
-       location_check.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               flag_locationCheck = 0;
+       for (int i = 0; i < areas.size(); i++)
+           if(location.equals(areas.get(i))) return true;
 
-               String areaname;
-               for (DataSnapshot Snapshot : dataSnapshot.getChildren()){
-                   areaname = Snapshot.getValue().toString();
-                   if(areaname.equals(location)) {
-                       flag_locationCheck = 1;
-
-                   }
-
-               }
-
-           }
-
-
-
-
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-
-           }
-       });
-
-       if(flag_locationCheck == 1) {
-
-           Toast.makeText(getApplicationContext(),Integer.toString(flag_locationCheck),Toast.LENGTH_SHORT).show();
-           flag_locationCheck = 0;
-           return true;
-       }
-         else return false;
+       return false;
+//       final DatabaseReference location_check = FirebaseDatabase.getInstance().getReference().child("Group").child(name.getText().toString()).child("Details").child("Locations");
+//
+//       location_check.addValueEventListener(new ValueEventListener() {
+//           @Override
+//           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//               String areaname;
+//               for (DataSnapshot Snapshot : dataSnapshot.getChildren()){
+//                   areaname = Snapshot.getValue().toString();
+//                   if(areaname.equals(location)) {
+//                       flag_locationCheck = 1;
+//                       break;
+//                   }
+//
+//               }
+//
+//           }
+//
+//           @Override
+//           public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//           }
+//       });
+//
+//       Toast.makeText(getApplicationContext(),Integer.toString(flag_locationCheck),Toast.LENGTH_SHORT).show();
+//
+//       if(flag_locationCheck == 1) {
+//
+//
+//           flag_locationCheck = 0;
+//           return true;
+//       }
+//         else return false;
    }
     public void hideNav(){
         this.getWindow().getDecorView().setSystemUiVisibility(

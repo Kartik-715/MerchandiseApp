@@ -106,6 +106,13 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        home.setVisibility(View.INVISIBLE);
+        areaSpinner.setAdapter(null);
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
