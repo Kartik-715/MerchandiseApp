@@ -240,7 +240,9 @@ public class ViewMerchandise extends AppCompatActivity {
                 holder.txtProductQuantity.setText("Total Quantity = " + String.valueOf(totalquantity));
                 holder.txtProductPrice.setText("Price: " + model.getPrice());
                 holder.txtProductName.setText(model.getCategory());
-                Picasso.get().load(img.get(0)).into(holder.CartImage);
+                if(img!=null) {
+                    Picasso.get().load(img.get(0)).into(holder.CartImage);
+                }
 
                 Spinner dropdown = holder.spinner_qty;
                 String[] items = new String[qty.size()];
