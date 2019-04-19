@@ -124,8 +124,6 @@ public class HomeActivity extends AppCompatActivity
         System.out.println("Chigu " + Prevalent.currentName);
         System.out.println("Chigu " + Prevalent.currentAddress);
 
-
-
         /*loadingBar = new ProgressDialog(this);
         loadingBar.setTitle("Home Page");
         loadingBar.setMessage("Please wait, while we are Loading Home Page");

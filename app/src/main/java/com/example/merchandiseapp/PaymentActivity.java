@@ -290,7 +290,7 @@ public class PaymentActivity extends AppCompatActivity
 
             public void onBackPressedCancelTransaction()
             {
-                Toast.makeText(PaymentActivity.this, "Back pressed. Transaction cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(PaymentActivity.this, "Something pressed. Transaction cancelled", Toast.LENGTH_LONG).show();
                 finish();
             }
 

@@ -250,6 +250,7 @@ public class productDetailActivity extends AppCompatActivity
         productIDMap.put("Price", productPrice.getText().toString());
         productIDMap.put("Size", size_list);
         productIDMap.put("Quantity", quantity_list);
+        productIDMap.put("UserName", Prevalent.currentName);
 
         cartListRef.child(productID).updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -390,6 +391,7 @@ public class productDetailActivity extends AppCompatActivity
         productIDMap.put("Price", productPrice.getText().toString());
         productIDMap.put("Size", size_list);
         productIDMap.put("Quantity", quantity_list);
+        productIDMap.put("UserName", Prevalent.currentName);
 
         cartListRef.child(productID).updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
