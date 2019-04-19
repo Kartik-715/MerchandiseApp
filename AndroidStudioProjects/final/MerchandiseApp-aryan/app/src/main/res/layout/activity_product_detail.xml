@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".productDetailActivity">
+
+    <android.support.v7.widget.AppCompatImageView
+
+        android:id="@+id/productImage"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:scaleType="centerCrop"
+        android:src="@color/colorAccent"
+        android:adjustViewBounds="true"
+
+        />
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productImage"
+        android:layout_marginTop="18dp"
+
+        android:gravity="center"
+        android:text="T-Shirt"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/productPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productName"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:text="499"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+
+        android:id="@+id/numberBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productPrice"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:elevation="6dp"
+        android:gravity="center"
+        app:backGroundColor="#FF3659"
+        app:finalNumber="10"
+        app:initialNumber="1"
+        app:textSize="16sp"
+
+        />
+
+    <Spinner
+        android:id="@+id/size_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+
+        >
+
+    </Spinner>
+
+
+    <Button
+        android:id="@+id/pd_add_to_cart_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
+        android:layout_alignParentBottom="true"
+        android:text="Add to Cart"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/buy_now_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="15dp"
+        android:layout_above="@+id/pd_add_to_cart_button"
+        android:text="Buy Now"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+
+
+</RelativeLayout>
