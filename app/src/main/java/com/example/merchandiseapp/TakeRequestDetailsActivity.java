@@ -161,6 +161,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             public void onComplete(@NonNull Task<Void> task)
             {
                 Intent intent = new Intent(TakeRequestDetailsActivity.this, HomeActivity.class);
+                intent.putExtra("orderType", Prevalent.currentOrderType);
                 startActivity(intent);
             }
         });

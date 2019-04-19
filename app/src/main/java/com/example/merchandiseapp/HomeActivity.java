@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity
         loadingBar.setTitle("Home Page");
         loadingBar.setMessage("Please wait, while we are Loading Home Page");
         loadingBar.setCanceledOnTouchOutside(false);
-        //loadingBar.show();
+        loadingBar.show();
 
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -159,7 +159,7 @@ public class HomeActivity extends AppCompatActivity
 
                 for (Object o : All_merchandise.entrySet()) {
                     HashMap.Entry p1 = (HashMap.Entry) o;
-                    FragmentItem fragment = new FragmentItem() ;
+                    FragmentItem fragment = new FragmentItem(loadingBar) ;
                     Bundle bundle = new Bundle() ;
                     bundle.putString("category", (String) p1.getKey() );
                     fragment.setArguments(bundle);

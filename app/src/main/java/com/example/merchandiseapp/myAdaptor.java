@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -17,13 +19,14 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
 
     private Context mContext ;
     private List<Merchandise> mData;
-
+    private ProgressDialog loadingBar;
     private itemClickListener listener;
 
-    public myAdaptor(Context mContext, List<Merchandise>lst) {
+    public myAdaptor(Context mContext, List<Merchandise>lst, ProgressDialog loadingBar) {
 
         this.mContext = mContext;
         this.mData= lst;
+        this.loadingBar = loadingBar;
         System.out.println("Size of myItems: "+ mData.size());
 
     }
@@ -66,23 +69,31 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
             Picasso.get().load(mData.get(position).getImage().get(0)).into(holder.ImageProduct);
         }
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick (View view)
-//            {
-//
-//                Intent intent = new Intent( mContext , productDetailActivity.class);
-//                intent.putExtra( "brandName", brandName );
-//                intent.putExtra( "ImageUrl", imageUrl  );
-//                intent.putExtra( "price",  price.get(0));
-//                mContext.startActivity(intent);
-//
-//            }
-//
-//        }
-//
-//        );
+        loadingBar.dismiss();
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view)
+            {
+
+                Intent intent;
+                if(Prevalent.currentOrderType.equals("1"))
+                    intent = new Intent( mContext , productDetailActivity.class);
+                else
+                    intent = new Intent( mContext , RequestDetailActivity.class);
+
+                intent.putExtra( "pid", mData.get(position).getPID() );
+                intent.putExtra( "order_id", "empty"  );
+                intent.putExtra( "image", mData.get(position).getImage()  );
+                intent.putExtra( "category", mData.get(position).getCategory()  );
+                intent.putExtra( "groupName", mData.get(position).getGroupName()  );
+                intent.putExtra( "size_list",  mData.get(position).getSize());
+                mContext.startActivity(intent);
+
+            }
+        }
+
+        );
 
     }
 
