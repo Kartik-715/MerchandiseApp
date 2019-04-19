@@ -1,6 +1,8 @@
 package com.example.merchandiseapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +44,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 public class UserRegister extends AppCompatActivity {
 
@@ -55,9 +69,25 @@ public class UserRegister extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageReference;
 
+    private static final String TAG = "PhoneAuth";
+
+    private EditText phoneText;
+    private EditText codeText;
+    private Button verifyButton;
+    private Button sendButton;
+    private Button resendButton;
+    private Button signoutButton;
+    private TextView statusText;
+
+    private String phoneVerificationId;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
+    private PhoneAuthProvider.ForceResendingToken resendToken;
+
+    private FirebaseAuth fbAuth;
+
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
-    private static final String TAG = GroupRegister.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +102,8 @@ public class UserRegister extends AppCompatActivity {
         usrGender = findViewById(R.id.user_gender);
         usrPic = findViewById(R.id.userPic);
         usrAddress = findViewById(R.id.user_address);
+
+        fbAuth = FirebaseAuth.getInstance();
 
         Bundle b = getIntent().getExtras();
         if(b!=null){
@@ -117,7 +149,9 @@ public class UserRegister extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(validate_entries()) update_info();
+                if(validate_entries()){
+                    sendCode();
+                }
             }
         });
 
@@ -255,5 +289,125 @@ public class UserRegister extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    public void sendCode() {
+
+        String phoneNumber = usrPhone.getText().toString();
+
+        setUpVerificatonCallbacks();
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                verificationCallbacks);
+    }
+
+    private void setUpVerificatonCallbacks() {
+
+        verificationCallbacks =
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                    @Override
+                    public void onVerificationCompleted(
+                            PhoneAuthCredential credential) {
+
+                        signInWithPhoneAuthCredential(credential);
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+
+                        if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                            // Invalid request
+                            Log.d(TAG, "Invalid credential: "
+                                    + e.getLocalizedMessage());
+                        } else if (e instanceof FirebaseTooManyRequestsException) {
+                            // SMS quota exceeded
+                            Log.d(TAG, "SMS Quota exceeded.");
+                        }
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId,
+                                           PhoneAuthProvider.ForceResendingToken token) {
+
+                        phoneVerificationId = verificationId;
+                        resendToken = token;
+
+                        callAlertDialog();
+                    }
+                };
+    }
+
+    public void verifyCode(String code) {
+
+        code = codeText.getText().toString();
+
+        PhoneAuthCredential credential =
+                PhoneAuthProvider.getCredential(phoneVerificationId, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        fbAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            update_info();
+                        } else {
+                            if (task.getException() instanceof
+                                    FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void resendCode() {
+
+        String phoneNumber = usrPhone.getText().toString();
+
+        setUpVerificatonCallbacks();
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                verificationCallbacks,
+                resendToken);
+    }
+
+    public void callAlertDialog(){
+
+        final View view = getLayoutInflater().inflate(R.layout.otp_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserRegister.this);
+        builder.setTitle("OTP Verification");
+        builder.setCancelable(false);
+
+
+        final EditText otp = (EditText) view.findViewById(R.id.otp);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                verifyCode(otp.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Resend", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resendCode();
+            }
+        }).setCancelable(false);
+
+
+        builder.setView(view);
+        builder.create().show();
     }
 }

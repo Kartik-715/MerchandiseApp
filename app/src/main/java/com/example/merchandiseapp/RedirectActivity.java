@@ -110,6 +110,8 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     public void onResume(){
         super.onResume();
         hideNav();
+        home.setVisibility(View.INVISIBLE);
+        areaSpinner.setAdapter(null);
     }
     public void hideNav(){
         this.getWindow().getDecorView().setSystemUiVisibility(
@@ -120,6 +122,10 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
+
+
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

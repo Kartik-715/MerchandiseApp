@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/grad"
     android:orientation="vertical"
-    tools:context="com.azuresamples.msalandroidapp.MainActivity">
+    tools:context="com.example.merchandiseapp.OutlookLogin">
 
     <ImageView
         android:layout_width="match_parent"
@@ -27,7 +27,15 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:textAllCaps="false"
-        android:onClick="onClick"
-        />
+      />
+
+    <TextView
+        android:text="Getting Graph Data..."
+        android:textColor="#3f3f3f"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/graphData"
+        android:visibility="invisible"/>
 
 </LinearLayout>

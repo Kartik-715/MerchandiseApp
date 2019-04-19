@@ -56,6 +56,8 @@ public class SplashScreen extends AppCompatActivity {
                 UserData.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
                         global.setUsername(dataSnapshot.child("Name").getValue().toString());
                         global.setAddress(dataSnapshot.child("Address").getValue().toString());
                         global.setContact(dataSnapshot.child("Contact").getValue().toString());
