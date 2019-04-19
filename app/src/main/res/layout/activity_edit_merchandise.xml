@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Category:"
+            android:textStyle="bold"
             android:textSize="18sp" />
 
         <EditText
@@ -38,53 +39,24 @@
             android:layout_below="@+id/EditText_Price"
             android:hint="Material" />
 
-        <EditText
-            android:id="@+id/EditText_prodID"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/EditText_Material"
-            android:hint="Product Id" />
-
         <TextView
-            android:id="@+id/TextView_orderType"
+            android:id="@+id/textView_PID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/EditText_prodID"
-            android:layout_marginTop="10dp"
-            android:hint="In Stock?"
+            android:layout_marginTop="20dp"
+            android:text="Product ID:"
+            android:layout_below="@+id/EditText_Material"
+            android:textStyle="bold"
             android:textSize="18sp" />
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/radiogrp"
-            android:layout_below="@+id/TextView_orderType"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioButtonYes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-
-            <RadioButton
-                android:id="@+id/radioButtonNO"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:text="No"
-                android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
 
         <TextView
             android:id="@+id/TextView_accessGroups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/radiogrp"
+            android:layout_below="@+id/textView_PID"
             android:layout_marginTop="10dp"
             android:hint="Access Groups"
+            android:textStyle="bold"
             android:textSize="18sp" />
 
         <ListView
@@ -133,6 +105,7 @@
             android:layout_below="@+id/listView_accessgroup"
             android:layout_marginTop="10dp"
             android:hint="Quantity : Size"
+            android:textStyle="bold"
             android:textSize="18sp" />
 
 

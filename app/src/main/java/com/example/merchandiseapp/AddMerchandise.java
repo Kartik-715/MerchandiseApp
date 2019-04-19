@@ -155,6 +155,7 @@ public class AddMerchandise extends AppCompatActivity {
                     listSQ.add("Size=" + size_edt.getText().toString() + ":Qty=" + qty_edt.getText().toString());
                     size.add(size_edt.getText().toString());
                     qty.add(qty_edt.getText().toString());
+                    adapterSize_qty.notifyDataSetChanged();
                     size_edt.setText("");
                     qty_edt.setText("");
                 }

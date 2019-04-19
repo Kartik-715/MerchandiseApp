@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,14 +33,17 @@ public class EditMerchandise extends AppCompatActivity {
 
     private Button add_accessgroup;
     private Button addSQ;
-    private Button addMerchandise;
+    private Button UpdateMerchandise;
 
     private EditText access_editText;
     private EditText size_edt;
     private EditText qty_edt;
     private EditText mat;
     private EditText price_edt;
-    private EditText prod_Id;
+
+
+    private TextView txtView_category;
+    private TextView txtView_PID;
 
 
 
@@ -53,7 +57,7 @@ public class EditMerchandise extends AppCompatActivity {
     private String Material;
     private String PID;
     private String Price;
-    private String OrderType="1";
+    private String OrderType;
 
     ArrayAdapter adapter;
     ArrayAdapter adapterSize_qty;
@@ -61,6 +65,7 @@ public class EditMerchandise extends AppCompatActivity {
     DatabaseReference myRef ;
     DatabaseReference myRef2 ;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,13 +76,23 @@ public class EditMerchandise extends AppCompatActivity {
 //        Group Name, PID and Category to be passed by the user
             Intent intent  = getIntent();
 
-            intent.getExtras();
+
+            GroupName =  intent.getStringExtra("GroupName");
+            PID =  intent.getStringExtra("PID");
+            Category =  intent.getStringExtra("Category");
 
 
+
+
+        txtView_category = (TextView) findViewById(R.id.textView_Category);
+        txtView_category.setText(txtView_category.getText().toString()+" "+ Category);
+
+        txtView_PID = (TextView) findViewById(R.id.textView_PID);
+        txtView_PID.setText(txtView_PID.getText().toString()+" "+ PID);
 
         add_accessgroup = (Button) findViewById(R.id.button_add_accessgroup);
         addSQ = (Button) findViewById(R.id.button_size_qty);
-        addMerchandise = (Button) findViewById(R.id.button_submit);
+        UpdateMerchandise = (Button) findViewById(R.id.button_submit);
 
         access_editText = (EditText) findViewById(R.id.editText_accessgroup);
         size_edt = (EditText) findViewById(R.id.editText_size);
@@ -85,7 +100,6 @@ public class EditMerchandise extends AppCompatActivity {
 
         mat = (EditText) findViewById(R.id.EditText_Material);
         price_edt = (EditText) findViewById(R.id.EditText_Price);
-        prod_Id = (EditText) findViewById(R.id.EditText_prodID);
 
         accessGroupListView = (ListView) findViewById(R.id.listView_accessgroup);
         sizeQtyListView =(ListView) findViewById(R.id.listView_size_qty);
@@ -95,7 +109,32 @@ public class EditMerchandise extends AppCompatActivity {
 
         myRef = FirebaseDatabase.getInstance().getReference().child("Group").child("CSEA").child("Merchandise");
 
+        myRef.child(Category).child(PID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                OrderType = dataSnapshot.child("OrderType").getValue().toString();
+                Price = dataSnapshot.child("Price").getValue().toString();
+                Material = dataSnapshot.child("Material").getValue().toString();
+                size = (ArrayList<String>) dataSnapshot.child("Size").getValue();
+                qty = (ArrayList<String>) dataSnapshot.child("Quantity").getValue();
+                AccessGroups = (ArrayList<String>) dataSnapshot.child("Size").getValue();
+                Image = (ArrayList<String>) dataSnapshot.child("Image").getValue();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        for (int i =0;i<qty.size();i++)
+        {
+            listSQ.add("Size=" + size.get(i) + ":Qty=" + qty.get(i));
+        }
+
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,AccessGroups);
+        adapterSize_qty  = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listSQ);
 
 
 
@@ -136,6 +175,7 @@ public class EditMerchandise extends AppCompatActivity {
                     listSQ.add("Size=" + size_edt.getText().toString() + ":Qty=" + qty_edt.getText().toString());
                     size.add(size_edt.getText().toString());
                     qty.add(qty_edt.getText().toString());
+                    adapterSize_qty.notifyDataSetChanged();
                     size_edt.setText("");
                     qty_edt.setText("");
                 }
@@ -145,25 +185,18 @@ public class EditMerchandise extends AppCompatActivity {
         sizeQtyListView.setAdapter(adapterSize_qty);
 
 
-        addMerchandise.setOnClickListener(new View.OnClickListener() {
+        UpdateMerchandise.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View view) {
-                Spinner dropdown = findViewById(R.id.spinner1);
-                Category = (String) dropdown.getSelectedItem();
                 Image = new ArrayList<>();
                 Material = mat.getText().toString();
-                PID = prod_Id.getText().toString();
                 Price = price_edt.getText().toString();
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
 
                 if(listSQ.size()==0)
                 {
                     Toast.makeText(getApplicationContext(),"Enter Valid Quantity and Size",Toast.LENGTH_LONG).show();
-                }
-                else if(PID.equals(""))
-                {
-                    Toast.makeText(getApplicationContext(),"Enter Valid Product ID",Toast.LENGTH_LONG).show();
                 }
                 else if(Price.equals(""))
                 {
@@ -204,7 +237,6 @@ public class EditMerchandise extends AppCompatActivity {
                                 qty_edt.setText("");
                                 mat.setText("");
                                 price_edt.setText("");
-                                prod_Id.setText("");
                                 Toast.makeText(getApplicationContext(),"Merchandise Added Successfully",Toast.LENGTH_LONG).show();
                             }
                         }
@@ -224,21 +256,6 @@ public class EditMerchandise extends AppCompatActivity {
             }
         });
     }
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radioButtonYes:
-                if (checked)
-                    OrderType = "1";
-                break;
-            case R.id.radioButtonNO:
-                if (checked)
-                    OrderType = "2";
-                break;
-        }
-    }
 
 }
