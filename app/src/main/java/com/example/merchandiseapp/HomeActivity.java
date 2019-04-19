@@ -134,6 +134,7 @@ public class HomeActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 HashMap<String,Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue() ;
                 System.out.println(All_merchandise) ;
+                adaptor.clearFragments() ;
 
 
                 for (Object o : All_merchandise.entrySet()) {
@@ -157,10 +158,6 @@ public class HomeActivity extends AppCompatActivity
 
         /******** Tab Layout Setting **********/
 
-
-        //Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();
-
-        //Log.d("name", global.getUsername());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
