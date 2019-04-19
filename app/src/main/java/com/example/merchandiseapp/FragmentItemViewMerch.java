@@ -43,10 +43,6 @@ public class FragmentItemViewMerch extends Fragment
 
     }
 
-    /*public FragmentItem(ProgressDialog loadingBar)
-    {
-        this.loadingBar = loadingBar;
-    }*/
 
 
 

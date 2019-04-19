@@ -15,24 +15,23 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.merchandiseapp.Interface.ItemClickListner;
-import com.example.merchandiseapp.Prevalent.Prevalent;
-import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+/* To DO: REPLACE CSEA WITH PREVALENT_GROUP.currentGroupName in this file  */
 
 public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyViewHolder> {
 
     private Context mContext ;
     private List<Merchandise> mData;
-    private itemClickListener listener;
+    private ItemClickListner listener;
 
     public viewMerchAdaptor(Context mContext, List<Merchandise>lst) {
 
@@ -41,32 +40,14 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
 
     }
 
-    /* Within the RecyclerView.Adapter class */
 
-    // Clean all elements of the recycler
-    public void clear() {
-        mData.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<Merchandise> list) {
-        mData.addAll(list);
-        notifyDataSetChanged();
-    }
-
+    @NotNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
 
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         View view = mInflater.inflate(R.layout.view_merchandise_list_item,parent,false);
         return (new MyViewHolder(view));
-    }
-
-
-    public void setitemClickListener(itemClickListener listener)
-    {
-        this.listener=listener;
     }
 
 
@@ -147,7 +128,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
 
                 Intent intent = new Intent(mContext,EditMerchandise.class);
                 intent.putExtra("PID",model.getPID());
-                intent.putExtra("GroupName",Prevalent_Groups.currentGroupName);
+                intent.putExtra("GroupName","CSEA");
                 intent.putExtra("Category",model.getCategory());
                 mContext.startActivity(intent);
 
@@ -201,7 +182,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
     }
 
 
-    public void deleteMerchandise(View view,final String PID,final String Category){
+    private void deleteMerchandise(View view, final String PID, final String Category){
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
         // Setting Alert Dialog Title
@@ -218,7 +199,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
             public void onClick(DialogInterface arg0, int arg1) {
 
 
-                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(Prevalent_Groups.currentGroupName).child("Merchandise").child(Category);
+                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child("CSEA").child("Merchandise").child(Category);
                 myRef1.child(PID).child("IsOpen").setValue("false");
 
                 DatabaseReference myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category);
@@ -250,7 +231,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
         alertDialog.show();
     }
 
-    public void makeMerchandisePublic(View view,final String PID,final String Category){
+    private void makeMerchandisePublic(View view, final String PID, final String Category){
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
         // Setting Alert Dialog Title
@@ -266,7 +247,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
 
-                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(Prevalent_Groups.currentGroupName).child("Merchandise").child(Category);
+                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child("CSEA").child("Merchandise").child(Category);
                 myRef1.child(PID).child("IsOpen").setValue("true");
 
                 DatabaseReference myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category);
