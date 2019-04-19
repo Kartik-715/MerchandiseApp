@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -38,6 +39,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -97,11 +99,11 @@ public class HomeActivity extends AppCompatActivity
         orderType = getIntent().getStringExtra("orderType");
         Prevalent.currentOrderType = orderType;
 
-        loadingBar = new ProgressDialog(this);
-        loadingBar.setTitle("Home Page");
-        loadingBar.setMessage("Please wait, while we are Loading Home Page");
-        loadingBar.setCanceledOnTouchOutside(false);
-        loadingBar.show();
+//        loadingBar = new ProgressDialog(this);
+//        loadingBar.setTitle("Home Page");
+//        loadingBar.setMessage("Please wait, while we are Loading Home Page");
+//        loadingBar.setCanceledOnTouchOutside(false);
+//        loadingBar.show();
 
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -122,59 +124,107 @@ public class HomeActivity extends AppCompatActivity
 
                 final String orderType = Prevalent.currentOrderType; // Selecting Order Type //
 
-                FirebaseDatabase.getInstance().getReference().child("Merchandise").addListenerForSingleValueEvent(new ValueEventListener()
-                {
+               DatabaseReference merch = FirebaseDatabase.getInstance().getReference().child("Merchandise") ;
+               merch.addValueEventListener(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                       //adaptor.clearFragments();
+                       Log.w("DataChanged","Data is Changed") ;
 
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                    {
-                        //adaptor.clearFragments();
-                        Log.w("DataChanged","Data is Changed") ;
+                       for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
+                       {
+                           List<Merchandise> list = new ArrayList<>();
+                           for(DataSnapshot merchandise: postdatasnapshot.getChildren())
+                           {
+                               //System.out.println(merchandise) ;
+                               Merchandise mr = merchandise.getValue(Merchandise.class);
+                               Set<String> ss = new HashSet<>(accessibleGroups);
+                               if (mr.getAccessGroup() != null)
+                               {
+                                   Set<String> u = new HashSet<>(mr.getAccessGroup());
+                                   ss.retainAll(u);
+                                   if (ss.size() != 0 && mr.getOrderType().equals(orderType))
+                                   {
+                                       list.add(mr);
+                                   }
+                               }
+                           }
 
-                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
-                        {
-                            List<Merchandise> list = new ArrayList<>();
-                            for(DataSnapshot merchandise: postdatasnapshot.getChildren())
-                            {
-                                //System.out.println(merchandise) ;
-                                Merchandise mr = merchandise.getValue(Merchandise.class);
-                                Set<String> s = new HashSet<>(accessibleGroups);
-                                if (mr.getAccessGroup() != null)
-                                {
-                                    Set<String> u = new HashSet<>(mr.getAccessGroup());
-                                    s.retainAll(u);
-                                    if (s.size() != 0 && mr.getOrderType().equals(orderType))
-                                    {
-                                        list.add(mr);
-                                    }
-                                }
-                            }
+                           if(list.size() != 0)
+                           {
+                               FragmentItem fragment = new FragmentItem() ;
+                               Bundle bundle = new Bundle() ; // Incase you want to pass some arguments into Fragment //
+                               fragment.setObject(list);
+                               fragment.setArguments(bundle);
+                               System.out.println("Added a fragment!");
+                               adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey() );
 
-                            if(list.size() != 0)
-                            {
-                                FragmentItem fragment = new FragmentItem() ;
-                                Bundle bundle = new Bundle() ; // Incase you want to pass some arguments into Fragment //
-                                fragment.setObject(list);
-                                fragment.setArguments(bundle);
-                                System.out.println("Added a fragment!");
-                                adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey() );
+                           }
 
-                            }
-
-                        }
-
-                        // I have the list now! //
+                       }
 
 
+                   }
 
-                    }
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError)
-                    {
-                        Log.d("Error", "Couldn't read this Merchandise");
-                    }
-                });
+                   }
+               }) ;
+
+//                FirebaseDatabase.getInstance().getReference().child("Merchandise").addListenerForSingleValueEvent(new ValueEventListener()
+//                {
+//
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+//                    {
+//                        //adaptor.clearFragments();
+//                        Log.w("DataChanged","Data is Changed") ;
+//
+//                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
+//                        {
+//                            List<Merchandise> list = new ArrayList<>();
+//                            for(DataSnapshot merchandise: postdatasnapshot.getChildren())
+//                            {
+//                                //System.out.println(merchandise) ;
+//                                Merchandise mr = merchandise.getValue(Merchandise.class);
+//                                Set<String> s = new HashSet<>(accessibleGroups);
+//                                if (mr.getAccessGroup() != null)
+//                                {
+//                                    Set<String> u = new HashSet<>(mr.getAccessGroup());
+//                                    s.retainAll(u);
+//                                    if (s.size() != 0 && mr.getOrderType().equals(orderType))
+//                                    {
+//                                        list.add(mr);
+//                                    }
+//                                }
+//                            }
+//
+//                            if(list.size() != 0)
+//                            {
+//                                FragmentItem fragment = new FragmentItem() ;
+//                                Bundle bundle = new Bundle() ; // Incase you want to pass some arguments into Fragment //
+//                                fragment.setObject(list);
+//                                fragment.setArguments(bundle);
+//                                System.out.println("Added a fragment!");
+//                                adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey() );
+//
+//                            }
+//
+//                        }
+//
+//                        // I have the list now! //
+//
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError)
+//                    {
+//                        Log.d("Error", "Couldn't read this Merchandise");
+//                    }
+//                });
             }
 
             @Override

@@ -83,7 +83,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
             Picasso.get().load(mData.get(position).getImage().get(0)).into(holder.ImageProduct);
         }
 
-        loadingBar.dismiss();
+        // loadingBar.dismiss();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
