@@ -88,17 +88,24 @@ public class MultipleImages extends AppCompatActivity {
                     String fileName = getFileName(fileUri);
 
                     fileNameList.add(fileName);
-                    fileDoneList.add("Uploading");
+                    fileDoneList.add("uploading");
                     System.out.println(fileNameList);
 
                     uplaodListAdapter.notifyDataSetChanged();
 
+                    final int finalI=i;
                     StorageReference fileToUpload = mStorage.child("Merchandise").child(fileName);
                     fileToUpload.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             System.out.println("image uplaoded");
+                            fileDoneList.remove(finalI);
                             Toast.makeText(MultipleImages.this,"Done",Toast.LENGTH_SHORT).show();
+                            fileDoneList.add(finalI,"Done");
+                            uplaodListAdapter.notifyDataSetChanged();
+
+
+
                         }
                     });
 
