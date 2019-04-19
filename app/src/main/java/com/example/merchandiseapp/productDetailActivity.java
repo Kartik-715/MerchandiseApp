@@ -1,11 +1,20 @@
 package com.example.merchandiseapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +40,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +53,7 @@ public class productDetailActivity extends AppCompatActivity
 
     private FloatingActionButton addToCart;
 
-    private Button addToCartButton, buyNowButton;
+    private Button addToCartButton, buyNowButton, shareButton;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productName;
@@ -59,6 +71,7 @@ public class productDetailActivity extends AppCompatActivity
     private ArrayList<String> arraySpinner;
     private int flag;
     private String selectedSpinneritem;
+
 
     public interface MyCallback
     {
@@ -92,8 +105,22 @@ public class productDetailActivity extends AppCompatActivity
         productName = findViewById(R.id.productName);
         SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
+        shareButton = findViewById(R.id.share_button);
 
+        ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image);
+        ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
+        viewPager.setAdapter(adapter);
 
+        viewPager.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(productDetailActivity.this, FullPageImageActivity.class);
+                intent.putExtra("image", image_src);
+                startActivity(intent);
+            }
+        });
         /*Spinner Display*/
         arraySpinner = new ArrayList<>();
 
@@ -167,6 +194,15 @@ public class productDetailActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 BuyNow();
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                share();
             }
         });
     }
@@ -480,6 +516,23 @@ public class productDetailActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void share()
+    {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, image_src.get(0));
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+
+    }
+
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
+        intent.putExtra("flag", Prevalent.currentFlag);
+        startActivity(intent);
     }
 
 }

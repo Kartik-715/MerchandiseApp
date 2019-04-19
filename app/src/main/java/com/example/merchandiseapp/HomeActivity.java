@@ -1,11 +1,14 @@
 package com.example.merchandiseapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.Snackbar;
@@ -73,6 +76,10 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    View headerView;
+    private String flag;
+    boolean doubleBackToExitPressedOnce = false;
+    private ProgressDialog loadingBar;
 
 
     @Override
@@ -84,6 +91,16 @@ public class HomeActivity extends AppCompatActivity
         //global = (G_var) getApplicationContext();
 
         /* Tab Layout Setting */
+        flag = getIntent().getStringExtra("flag");
+        Prevalent.currentFlag = flag;
+
+        loadingBar = new ProgressDialog(this);
+        loadingBar.setTitle("Home Page");
+        loadingBar.setMessage("Please wait, while we are Loading Home Page");
+        loadingBar.setCanceledOnTouchOutside(false);
+        loadingBar.show();
+
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
@@ -159,14 +176,11 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -183,7 +197,9 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
+
+
+        headerView = navigationView.getHeaderView(0);
 
 
 
@@ -211,19 +227,48 @@ public class HomeActivity extends AppCompatActivity
 //                .execute(user.getPhotoUrl().toString());
     }
 
+    /*@Override
+    public void onResume() {
+
+        super.onResume();
+        imageView = headerView.findViewById(R.id.imageView);
+        addImage();
+
+    }*/
+
     @Override
     public void onBackPressed()
     {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        else
+        {
+            if(doubleBackToExitPressedOnce)
+            {
+                finish();
+                moveTaskToBack(true);
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
@@ -243,40 +288,65 @@ public class HomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
-    {
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.manage_profile) {
+        if (id == R.id.manage_profile)
+        {
             Intent intent = new Intent(this, ManageProfile.class);
             startActivity(intent);
-        } else if (id == R.id.wallet) {
+        }
+
+        else if (id == R.id.wallet)
+        {
             Intent intent = new Intent(this, myWallet.class);
             startActivity(intent);
-        }else if (id == R.id.nav_slideshow) {
+        }
+        else if (id == R.id.orders)
+        {
+            Intent intent = new Intent(this,Order_History.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        }
 
-        } else if (id == R.id.nav_share) {
+        else if (id == R.id.nav_share) {
             Intent intent = new Intent(HomeActivity.this, com.example.merchandiseapp.GroupRegisterActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_send) {
+        }
+
+        else if (id == R.id.nav_send)
+        {
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_logout)
+        }
+        else if (id == R.id.nav_logout)
         {
             Intent intent = new Intent(HomeActivity.this, AddMembersActivity.class);
             startActivity(intent);
-            /*mGoogleSignInClient.revokeAccess()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // ...
-                        }
-                    });*/
+        }
+
+        else if(id == R.id.customized_orders)
+        {
+            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+            intent.putExtra("flag", "0");
+            startActivity(intent);
+        }
+
+        else if(id == R.id.orders_list)
+        {
+            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+            intent.putExtra("flag", "1");
+            startActivity(intent);
+        }
+
+        else if(id == R.id.unpaid_request)
+        {
+            Intent intent = new Intent(HomeActivity.this, ViewRequestsActivity.class);
+            startActivity(intent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -292,7 +362,7 @@ public class HomeActivity extends AppCompatActivity
         imageView.setMinimumHeight(dm.heightPixels);
         imageView.setMinimumWidth(dm.widthPixels);
         //Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
-        imageView.setImageBitmap(global.getBitmap());
+        //imageView.setImageBitmap(global.getBitmap());
     }
 }
 

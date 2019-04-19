@@ -13,9 +13,9 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Add new item" />
         <item
-            android:id="@+id/nav_stock"
+            android:id="@+id/nav_request"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Stock" />
+            android:title="Pre Bookings" />
         <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_menu_manage"

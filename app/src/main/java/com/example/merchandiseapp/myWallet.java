@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,28 +29,35 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class myWallet extends AppCompatActivity {
-    String username;
-    DatabaseReference UserData;
-    TextView current ;
-    Button btn;
-    G_var global;
+    private String username;
+    private DatabaseReference UserData;
+    private TextView Current_Amount;
+    private EditText Money_Added;
+    private Button Btn_Add;
+    private G_var global;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_wallet);
+
         global = (G_var) getApplicationContext();
         username = global.getUsername();
-        current = (TextView) findViewById(R.id.cur_balance);
-        btn = (Button) findViewById(R.id.add_moneybtn);
+
+        Current_Amount = findViewById(R.id.cur_balance);
+        Btn_Add = findViewById(R.id.Btn_Add_Money);
+        Money_Added = findViewById(R.id.Text_Money);
+
         getInfo();
-        btn.setOnClickListener(new View.OnClickListener() {
+        Btn_Add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                transact();
+            public void onClick(View v)
+            {
+                //transact();
             }
         });
     }
-
 
     //function to handle transactions by making a paytm api call
     public  void transact()
@@ -90,27 +100,40 @@ public class myWallet extends AppCompatActivity {
 
     public void getInfo()
     {
-        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(global.getUid().toString());
-        UserData.addValueEventListener(new ValueEventListener() {
+        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+        UserData.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    String Wallet = dataSnapshot.child("WalletMoney").getValue().toString();
-                    Wallet = "Current Balance is " + Wallet;
-                    current.setText(Wallet);
-                }
-                catch (Exception ex)
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.child("Wallet_Money").exists())
                 {
-                    current.setText(username.toString() + " unable to fetch data");
+                    Current_Amount.setText(dataSnapshot.child("Wallet_Money").getValue().toString());
                 }
 
+                else //Just add the Money as "0" in the data
+                {
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("Wallet_Money", "0");
+
+                    UserData.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
 
             }
         });
+
         return;
 
     }

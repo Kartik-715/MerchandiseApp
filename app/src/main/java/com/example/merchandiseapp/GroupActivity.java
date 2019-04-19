@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class VendorActivity extends AppCompatActivity
+public class GroupActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -83,11 +83,12 @@ public class VendorActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_stock) {
+        } else if (id == R.id.nav_request) {
 
         } else if (id == R.id.nav_add_item) {
-            Intent intent = new Intent(VendorActivity.this,AddMerchandise.class);
+            Intent intent = new Intent(GroupActivity.this,AddMerchandise.class);
             startActivity(intent);
+
 
 
         } else if (id == R.id.nav_signout) {

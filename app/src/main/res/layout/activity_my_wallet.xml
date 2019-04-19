@@ -26,15 +26,15 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true">
         <EditText
-            android:id="@+id/add_money"
-            android:layout_width="wrap_content"
+            android:id="@+id/Text_Money"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="Enter amount"
-            android:padding="2dp"
+            android:padding="10dp"
             android:textAlignment="center"
             />
         <Button
-            android:id="@+id/add_moneybtn"
+            android:id="@+id/Btn_Add_Money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="2dp"

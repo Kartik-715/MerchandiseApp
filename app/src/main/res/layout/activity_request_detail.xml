@@ -17,6 +17,13 @@
 
         />
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/ViewPager_Inside_Image_2"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        >
+    </android.support.v4.view.ViewPager>
+
     <TextView
         android:id="@+id/productName"
         android:layout_width="match_parent"
@@ -83,7 +90,6 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         />
-
 
 
 </RelativeLayout>

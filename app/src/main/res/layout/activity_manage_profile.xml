@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_manage_profile"
+        layout="@layout/ui_manage_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

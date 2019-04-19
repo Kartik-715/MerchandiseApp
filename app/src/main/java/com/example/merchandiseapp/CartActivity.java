@@ -120,6 +120,13 @@ public class CartActivity extends AppCompatActivity
         });
     }
 
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+        intent.putExtra("flag", Prevalent.currentFlag);
+        startActivity(intent);
+    }
+
     private void NoDataExists()
     {
         ImageEmptyCart.setVisibility(View.VISIBLE);
@@ -134,11 +141,11 @@ public class CartActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+                intent.putExtra("flag", "1");
                 startActivity(intent);
             }
         });
     }
-
 
     private void DataExists(Query queries)
     {

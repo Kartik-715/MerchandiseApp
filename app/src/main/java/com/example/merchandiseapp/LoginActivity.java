@@ -47,6 +47,7 @@ import java.io.InputStream;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private Button joinNowButton, loginButton;
     private SignInButton mgoogleButton;
     private static final int  RC_SIGN_IN=1;
     private GoogleSignInClient mGoogleSignInClient;
@@ -59,9 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     String final_Access;
     User_data vendor = null;
-    private Button temp_Button;
     private Button temp_Button2;
-    private Button temp_Button3;
     //SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
     @Override
@@ -69,23 +68,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        temp_Button = findViewById(R.id.btn_add);
         temp_Button2 = findViewById(R.id.btn_view);
-        temp_Button3 = findViewById(R.id.btn_add_auth);
 
         global = (G_var) getApplicationContext();
         keepLogged = findViewById(R.id.loggedIn);
         progressBar=findViewById(R.id.indeterminateBar);
 // ...
-        temp_Button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(LoginActivity.this, AddMembersActivity.class);
-                startActivity(intent);
-            }
-        });
 
         temp_Button2.setOnClickListener(new View.OnClickListener()
         {
@@ -93,19 +81,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.putExtra("flag", "0");
                 startActivity(intent);
             }
         });
 
-        temp_Button3.setOnClickListener(new View.OnClickListener()
-        {
+        joinNowButton = (Button) findViewById(R.id.main_join_now_btn);
+        loginButton = (Button) findViewById(R.id.main_login_btn);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(LoginActivity.this, AccessedMembersActivity.class);
+            public void onClick(View v) {
+
+                Intent intent = new Intent(LoginActivity.this, PaymentActivity.class);
                 startActivity(intent);
             }
         });
+
+
+        joinNowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 // Initialize Firebase Auth
@@ -177,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                           // updateUI(null,"-1");
+                            // updateUI(null,"-1");
                         }
 
                         // ...
@@ -264,48 +265,48 @@ public class LoginActivity extends AppCompatActivity {
                         StorageReference mImageRef = FirebaseStorage.getInstance().getReference().child("images/"+global.getUid());
                         final long ONE_MEGABYTE = 1024 * 1024 * 20;
                         mImageRef.getBytes(ONE_MEGABYTE)
-                            .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    global.setBitmap(bm);
+                                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        global.setBitmap(bm);
 
-                                    Intent intent = null;
-                                    if(final_Access.equals("0")) {
-                                        intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    }
-                                    else if(final_Access.equals("1")) {
-                                        intent = new Intent(getApplicationContext(),CourierActivity.class);
-                                        Toast.makeText(getApplicationContext(),"Open Courier",Toast.LENGTH_LONG).show();
-                                    }
-                                    else if(final_Access.equals("2")) {
-                                        //intent = new Intent(getApplicationContext(),Vendor.class);
-                                        Toast.makeText(getApplicationContext(),"Open Vendor",Toast.LENGTH_LONG).show();
-                                    }
-                                    else if (final_Access.equals("3")){
-                                        intent = new Intent(getApplicationContext(), Staff.class);
-                                    }
-                                    else if(final_Access.equals("4")){
-                                        intent = new Intent(getApplicationContext(),grpUser.class);
-                                    }
-                                    //intent = new Intent(getApplicationContext(),CourierActivity.class);
+                                        Intent intent = null;
+                                        if(final_Access.equals("0")) {
+                                            intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                        }
+                                        else if(final_Access.equals("1")) {
+                                            intent = new Intent(getApplicationContext(),CourierActivity.class);
+                                            Toast.makeText(getApplicationContext(),"Open Courier",Toast.LENGTH_LONG).show();
+                                        }
+                                        else if(final_Access.equals("2")) {
+                                            //intent = new Intent(getApplicationContext(),Vendor.class);
+                                            Toast.makeText(getApplicationContext(),"Open Vendor",Toast.LENGTH_LONG).show();
+                                        }
+                                        else if (final_Access.equals("3")){
+                                            intent = new Intent(getApplicationContext(), Staff.class);
+                                        }
+                                        else if(final_Access.equals("4")){
+                                            intent = new Intent(getApplicationContext(),grpUser.class);
+                                        }
+                                        //intent = new Intent(getApplicationContext(),CourierActivity.class);
 
-                                    //intent.putExtra("user", user);
-                                    startActivity(intent);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
+                                        //intent.putExtra("user", user);
+                                        startActivity(intent);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
 
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
 
-                                }
-                            });
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        new DownloadImageTask(null).execute(user.getPhotoUrl().toString());
-                    }
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                new DownloadImageTask(null).execute(user.getPhotoUrl().toString());
+            }
         });
 
 
@@ -377,4 +378,3 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 }
-

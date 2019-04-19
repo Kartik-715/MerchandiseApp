@@ -17,10 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +39,8 @@ import java.util.List;
 public class CourierActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private   String User_ID = "";
+    private   String User_Email ="";
     private RecyclerView rv;
     private DatabaseReference ProductRef;
     private List<Order> list= new ArrayList<>();
@@ -48,6 +53,13 @@ public class CourierActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courier);
+
+        final FirebaseAuth mauth = FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
+        User_ID = user.getUid();
+        User_Email = user.getEmail();
+        Prevalent.currentOnlineUser = User_ID;
+        Prevalent.currentEmail = User_Email;
 
 
        /* ProductRef = FirebaseDatabase.getInstance().getReference().child("Orders");

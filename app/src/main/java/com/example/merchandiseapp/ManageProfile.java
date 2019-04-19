@@ -51,7 +51,12 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     EditText name;
     EditText address;
     EditText contact;
-    ImageView imageView;
+    TextView email;
+    ImageView nav_imageView;
+    ImageView content_imageView;
+    ImageView profilePic;
+    ImageView bar_imageView;
+
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
 
@@ -76,13 +81,21 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         headerView = navigationView.getHeaderView(0);
 
-        name = findViewById(R.id.edit_name);
-        address = findViewById(R.id.edit_address);
-        contact = findViewById(R.id.edit_contact);
+        name = findViewById(R.id.edit_name_ui);
+        address = findViewById(R.id.edit_address_ui);
+        contact = findViewById(R.id.edit_contact_ui);
+        email = findViewById(R.id.edit_email_ui);
 
         name.setText(global.getUsername());
         address.setText(global.getAddress());
         contact.setText(global.getContact());
+        email.setText(global.getEmail());
+
+        nav_imageView = headerView.findViewById(R.id.imageView);
+        content_imageView = findViewById(R.id.profilePic_ui);
+
+        addImage(nav_imageView);
+        addImage(content_imageView);
 
         Prevalent.currentPhone = "";
         Prevalent.currentPhone = contact.getText().toString();
@@ -91,7 +104,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
 //        getInfo();
 
-        Button button = findViewById(R.id.updateBtn);
+        Button button = findViewById(R.id.updateBtn_ui);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +112,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        Button imageButton1 = findViewById(R.id.chooseBtn);
+        Button imageButton1 = findViewById(R.id.chooseBtn_ui);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +120,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        Button imageButton2 = findViewById(R.id.uploadBtn);
+        Button imageButton2 = findViewById(R.id.uploadBtn_ui);
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,14 +128,14 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateUser();
-            }
-        });
-
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                updateUser();
+//            }
+//        });
+//
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -143,7 +156,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -174,7 +187,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+   @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -202,8 +215,8 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
 
-        TextView profileUsername = findViewById(R.id.profile_name) ;
-        profileUsername.setText(global.getUsername());
+//        TextView profileUsername = findViewById(R.id.profile_name) ;
+//        profileUsername.setText(global.getUsername());
 
         TextView navemail = headerView.findViewById(R.id.emailtextView);
         navUsername.setText(global.getUsername());
@@ -211,11 +224,8 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         navemail.setText(global.getEmail());
 
-        TextView Email = findViewById(R.id.edit_email);
-        Email.setText(global.getEmail());
-
-        imageView = headerView.findViewById(R.id.imageView);
-        addImage();
+//        TextView Email = findViewById(R.id.edit_email);
+//        Email.setText(global.getEmail());
 
         //Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
     }
@@ -247,7 +257,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imageView = findViewById(R.id.profilePic);
+
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -255,7 +265,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 global.setBitmap(bitmap);
-                addImage();
+                addImage(content_imageView);
             }
             catch (IOException e)
             {
@@ -282,8 +292,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(ManageProfile.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
-                            change_images();
+                            addImage(nav_imageView);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -305,7 +314,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    public void addImage(){
+    public void addImage(ImageView imageView){
 //        StorageReference mImageRef = global.getImageRef();
 //        final long ONE_MEGABYTE = 1024 * 1024 * 20;
 //        mImageRef.getBytes(ONE_MEGABYTE)
@@ -326,15 +335,6 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 //                // Handle any errors
 //            }
 //        });
-    }
-
-    public void change_images(){
-
-        imageView = findViewById(R.id.manage_profile_image);
-        addImage();
-
-        imageView = findViewById(R.id.imageView);
-        addImage();
     }
 
 }
