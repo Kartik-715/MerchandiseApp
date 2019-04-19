@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/manage"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Manage Orders" />
+        <item
+            android:id="@+id/add_vendor"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Add Vendor" />
+        <item
+            android:id="@+id/view_vendor"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="View Vendor" />
+        <item
+            android:id="@+id/add_courier"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Add Courier" />
+        <item
+            android:id="@+id/view_courier"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="View Courier" />
+    </group>
+
+
+</menu>

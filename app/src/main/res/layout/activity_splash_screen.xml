@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/DodgerBlue"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".SplashScreen">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/house" />
+
+    <TextView
+        android:layout_below="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="@android:dimen/app_icon_size"
+        android:text="Taking you to Home Page ..."
+        android:textColor="@color/White"
+        android:textSize="16sp"/>
+
+</RelativeLayout>
