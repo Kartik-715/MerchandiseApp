@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class FragmentItem extends Fragment
     final ArrayList<Merchandise> array_merchandise = new ArrayList<>();
     private HomeActivity mHomeActivity ;
     Bundle bundle ;
+    private ProgressDialog loadingBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +51,12 @@ public class FragmentItem extends Fragment
 
     public FragmentItem()
     {
+
+    }
+
+    public FragmentItem(ProgressDialog loadingBar)
+    {
+        this.loadingBar = loadingBar;
     }
 
     private void setupRecyclerView(RecyclerView recyclerView)
@@ -122,7 +130,6 @@ public class FragmentItem extends Fragment
         FirebaseRecyclerOptions<Merchandise> options = new FirebaseRecyclerOptions.Builder<Merchandise>()
                 .setQuery(queries, Merchandise.class)
                 .build();
-
         FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder> adapter = new FirebaseRecyclerAdapter<Merchandise, MerchandiseViewHolder>(options)
         {
             @Override
@@ -135,6 +142,7 @@ public class FragmentItem extends Fragment
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.imageView);
 
+                loadingBar.dismiss();
                 holder.itemView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override

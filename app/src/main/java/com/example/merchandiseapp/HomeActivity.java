@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.Snackbar;
@@ -72,6 +74,8 @@ public class HomeActivity extends AppCompatActivity
     View headerView;
     private String flag;
     boolean doubleBackToExitPressedOnce = false;
+    private ProgressDialog loadingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,6 +88,12 @@ public class HomeActivity extends AppCompatActivity
         /* Tab Layout Setting */
         flag = getIntent().getStringExtra("flag");
         Prevalent.currentFlag = flag;
+
+        loadingBar = new ProgressDialog(this);
+        loadingBar.setTitle("Home Page");
+        loadingBar.setMessage("Please wait, while we are Loading Home Page");
+        loadingBar.setCanceledOnTouchOutside(false);
+        loadingBar.show();
 
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -104,7 +114,7 @@ public class HomeActivity extends AppCompatActivity
                 for (Object o : All_merchandise.entrySet())
                 {
                     HashMap.Entry p1 = (HashMap.Entry) o;
-                    FragmentItem fragment = new FragmentItem();
+                    FragmentItem fragment = new FragmentItem(loadingBar);
 
                     Bundle bundle = new Bundle();
                     bundle.putString("category", (String) p1.getKey());
@@ -122,14 +132,6 @@ public class HomeActivity extends AppCompatActivity
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
 
-
-        /* Tab Layout Setting */
-
-
-        //Toast.makeText(getApplicationContext(), global.getUid() + " " + global.getUsername() + " " + global.getContact(), Toast.LENGTH_LONG).show();
-
-        //Log.d("name", global.getUsername());
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
 
@@ -141,7 +143,6 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -228,13 +229,15 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
 
         if (id == R.id.action_settings)
