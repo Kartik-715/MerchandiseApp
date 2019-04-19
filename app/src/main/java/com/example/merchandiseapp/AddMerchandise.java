@@ -184,10 +184,7 @@ public class AddMerchandise extends AppCompatActivity {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View view) {
-
-
                 Spinner dropdown = findViewById(R.id.spinner1);
-                //GroupName = gpName.getText().toString();
                 Category = (String) dropdown.getSelectedItem();
                 Material = mat.getText().toString();
 
@@ -266,6 +263,8 @@ public class AddMerchandise extends AppCompatActivity {
 
 
                 }
+
+
 
             }
         });

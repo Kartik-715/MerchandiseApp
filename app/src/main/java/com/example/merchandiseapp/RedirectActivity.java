@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.common.internal.Objects;
@@ -33,12 +34,14 @@ import java.util.List;
 public class RedirectActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String UID = "2079291549";
-    EditText email;
+    TextView Welcome;
+    String email;
     RadioGroup radioGroup;
     RadioButton radioButton1;
     RadioButton radioButton2;
     Spinner areaSpinner;
-
+    Button home;
+    String selected;
 
     String user;
     JSONObject Juser;
@@ -47,12 +50,13 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redirect);
-
-        email = findViewById(R.id.redirect_email);
+        hideNav();
+        Welcome = findViewById(R.id.welcome);
 
         radioButton1 = findViewById(R.id.user);
         radioButton2 = findViewById(R.id.Group);
         areaSpinner = (Spinner) findViewById(R.id.redirect_spinner);
+        home = findViewById(R.id.home_redirect);
 
         //getting user details from json passed by outlook login................
         Bundle b = getIntent().getExtras();
@@ -61,11 +65,8 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
          //   Toast.makeText(getApplicationContext(),"JSON STRING "+ user ,Toast.LENGTH_SHORT).show();
             try{
                 Juser = new JSONObject(user);
-             //Juser is the required Json object to be used
-                //testing to find the user display name
-           //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
-                //setting the textview to mail of the logged in user
-                email.setText(Juser.getString("mail").toString());
+                Welcome.setText("Welcome    " + Juser.getString("displayName").toString());
+                email = Juser.getString("mail").toString();
             }
             catch (Exception ex)
             {
@@ -77,11 +78,9 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int temp = email.getText().toString().hashCode();
-//                UID = Integer.toString(temp);
-
-  Toast.makeText(getApplicationContext(),UID,Toast.LENGTH_SHORT).show();
-
+                int temp = email.hashCode();
+                UID = Integer.toString(temp);
+                Toast.makeText(getApplicationContext(),UID,Toast.LENGTH_SHORT).show();
                 if(radioButton2.isChecked()) redirect_group();
                 else redirect_user();
 
@@ -90,12 +89,43 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         });
 
         areaSpinner.setOnItemSelectedListener(this);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),SplashScreen.class);
+                i.putExtra("Type","groups");
+                i.putExtra("Email",email);
+                i.putExtra("Name",selected);
+                startActivity(i);
+            }
+        });
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        hideNav();
+        home.setVisibility(View.INVISIBLE);
+        areaSpinner.setAdapter(null);
+    }
+    public void hideNav(){
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(parent.getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
+        selected = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -104,30 +134,36 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     }
 
 
-    public void redirect_group(){
-
-        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child("207291549");
+    public void redirect_group()
+    {
+        Toast.makeText(getApplicationContext(),"yo yo",Toast.LENGTH_SHORT).show();
+        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Group");
 
         UserData.addValueEventListener(new ValueEventListener(){
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                int flag =0;
+                String areaname;
                 final List<String> areas = new ArrayList<String>();
-
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot areaSnapshot: dataSnapshot.child("Groups").getChildren()) {
-                        String areaName = areaSnapshot.getValue(String.class);
-                        areas.add(areaName);
-                    }
-
+                for (DataSnapshot authorizedSnapshot: dataSnapshot.getChildren()) {
+                        if (authorizedSnapshot.child("Authorized_Members").child("Email_ID").child(UID).exists()){
+                            flag++;
+                            areaname = authorizedSnapshot.child("Details").child("GroupName").getValue().toString();
+                            areas.add(areaname);
+                        }
+                }
+                if(flag!=0) {
                     areaSpinner.setVisibility(View.VISIBLE);
                     ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(RedirectActivity.this, android.R.layout.simple_spinner_item, areas);
                     areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     areaSpinner.setAdapter(areasAdapter);
+
+                    home.setVisibility(View.VISIBLE);
                 }
 
-                else{
+                if(flag == 0){
                     Toast.makeText(getApplicationContext(),"No Such User Found",Toast.LENGTH_SHORT).show();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(RedirectActivity.this);
@@ -137,14 +173,13 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getApplicationContext(),"Group Register",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
+                            intent.putExtra("user",Juser.toString());
                             startActivity(intent);
                         }
                     });
                     builder.setNegativeButton("Cancel",null).setCancelable(false);
-                    builder.setTitle("Create a new Group??");
+                    builder.setTitle("Send request for a new Group??");
                     builder.create().show();
-                    //Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
-
                 }
             }
 
@@ -156,7 +191,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     }
 
     public void redirect_user(){
-        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child("2079291549");
+        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
 
         UserData.addValueEventListener(new ValueEventListener(){
 
@@ -165,10 +200,29 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
 
                 if(dataSnapshot.exists()){
                     Toast.makeText(getApplicationContext(),"Moving to Home Activity",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(),SplashScreen.class);
+                    i.putExtra("Type","users");
+                    i.putExtra("Email",email);
+                    startActivity(i);
                 }
 
                 else{
                     Toast.makeText(getApplicationContext(),"No Such User Found",Toast.LENGTH_SHORT).show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RedirectActivity.this);
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(),"User Register",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),UserRegister.class);
+                            intent.putExtra("user",Juser.toString());
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel",null).setCancelable(false);
+                    builder.setTitle("Shall We Register You??");
+                    builder.create().show();
                 }
             }
 

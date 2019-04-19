@@ -282,7 +282,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            final StorageReference ref = storageReference.child("images/"+global.getUid());
+            final StorageReference ref = storageReference.child("images/users/"+global.getUid());
 
             Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
 

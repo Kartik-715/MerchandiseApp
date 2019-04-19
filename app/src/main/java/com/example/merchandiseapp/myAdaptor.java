@@ -22,11 +22,11 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
     private ProgressDialog loadingBar;
     private itemClickListener listener;
 
-    public myAdaptor(Context mContext, List<Merchandise>lst, ProgressDialog loadingBar) {
+    public myAdaptor(Context mContext, List<Merchandise>lst) {
 
         this.mContext = mContext;
         this.mData= lst;
-        this.loadingBar = loadingBar;
+        //this.loadingBar = loadingBar;
         System.out.println("Size of myItems: "+ mData.size());
 
     }
@@ -83,7 +83,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
             Picasso.get().load(mData.get(position).getImage().get(0)).into(holder.ImageProduct);
         }
 
-        loadingBar.dismiss();
+        //loadingBar.dismiss();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

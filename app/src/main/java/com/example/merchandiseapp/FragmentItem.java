@@ -53,10 +53,10 @@ public class FragmentItem extends Fragment
 
     }
 
-    public FragmentItem(ProgressDialog loadingBar)
+    /*public FragmentItem(ProgressDialog loadingBar)
     {
         this.loadingBar = loadingBar;
-    }
+    }*/
 
 
 
@@ -65,10 +65,10 @@ public class FragmentItem extends Fragment
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
         recyclerView.setLayoutManager(layoutManager);
-        myAdaptor adaptor = new myAdaptor(mHomeActivity, list, loadingBar);
+        myAdaptor adaptor = new myAdaptor(mHomeActivity, list);
         recyclerView.setAdapter(adaptor);
-
     }
+
 
     public void setObject(List<Merchandise> x)
     {
