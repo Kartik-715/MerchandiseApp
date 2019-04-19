@@ -154,11 +154,13 @@ public class UserSignUp extends AppCompatActivity
         }
     }
 
-    private void uploadimage() {
+    private void uploadimage()
+    {
 
         if(filePath != null)
         {
-            if(usrEmail.getText().toString().trim().equals("")){
+            if(usrEmail.getText().toString().trim().equals(""))
+            {
                 Toast.makeText(getApplicationContext(),"Enter Email First",Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -176,25 +178,31 @@ public class UserSignUp extends AppCompatActivity
             Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
 
             ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+                    {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+                        {
                             progressDialog.dismiss();
                             flag = 1;
 
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
+                    .addOnFailureListener(new OnFailureListener()
+                    {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
+                        public void onFailure(@NonNull Exception e)
+                        {
                             progressDialog.dismiss();
                             Toast.makeText(UserSignUp.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                     })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
+                    {
                         @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot)
+                        {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");

@@ -102,15 +102,18 @@ public class HomeActivity extends AppCompatActivity
         String email = getIntent().getStringExtra("email");
         String gender = getIntent().getStringExtra("gender");
         String wallet = getIntent().getStringExtra("wallet");
+        String image_url = getIntent().getStringExtra("image");
 
         Prevalent.currentOrderType = orderType;
         Prevalent.currentPhone = contact;
-        Prevalent.currentEmail = email;
+        //Prevalent.currentEmail = email;
+        Prevalent.currentEmail = "mayank@iitg.ac.in";
         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
         Prevalent.currentWalletMoney = wallet;
         Prevalent.currentGender = gender;
         Prevalent.currentName = name;
         Prevalent.currentAddress = address;
+        Prevalent.currentImage = image_url;
 
         System.out.println("Chigu " + Prevalent.currentOrderType);
         System.out.println("Chigu " + Prevalent.currentPhone);
@@ -274,8 +277,7 @@ public class HomeActivity extends AppCompatActivity
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
         //navUsername.setText(global.getUsername());
-        navemail.setText(User_Email);
-
+        navemail.setText(Prevalent.currentEmail);
         imageView = headerView.findViewById(R.id.imageView);
         //addImage();
 //        new DownloadImageTask(imageView)
@@ -442,7 +444,8 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
-    public void addImage(){
+    public void addImage()
+    {
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

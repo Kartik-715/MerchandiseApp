@@ -11,4 +11,5 @@ public class Prevalent
     public static String currentMoney;
     public static String currentGender;
     public static String currentName;
+    public static String currentImage;
 }

@@ -1,8 +1,11 @@
 package com.example.merchandiseapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -64,24 +67,36 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot)
                     {
+                        final String usrUID = Integer.toString(email.hashCode());
                         new Handler().postDelayed(new Runnable()
                         {
                             @Override
                             public void run()
                             {
-                                Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                                String imageLocation = "images/users/"+usrUID;
+                                final StorageReference ref = FirebaseStorage.getInstance().getReference().child(imageLocation);
 
-                                intent.putExtra("orderType", "1");
-                                intent.putExtra("name", dataSnapshot.child("Name").getValue().toString());
-                                intent.putExtra("address", dataSnapshot.child("Address").getValue().toString());
-                                intent.putExtra("contact", dataSnapshot.child("Contact").getValue().toString());
-                                intent.putExtra("email", dataSnapshot.child("Email_ID").getValue().toString());
-                                intent.putExtra("gender", dataSnapshot.child("Gender").getValue().toString());
-                                intent.putExtra("wallet", dataSnapshot.child("Wallet_Money").getValue().toString());
+                                ((StorageReference) ref).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                                {
+                                    @Override
+                                    public void onSuccess(Uri downloadUrl)
+                                    {
+                                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
 
+                                        intent.putExtra("orderType", "1");
+                                        intent.putExtra("name", dataSnapshot.child("Name").getValue().toString());
+                                        intent.putExtra("address", dataSnapshot.child("Address").getValue().toString());
+                                        intent.putExtra("contact", dataSnapshot.child("Contact").getValue().toString());
+                                        intent.putExtra("email", dataSnapshot.child("Email_ID").getValue().toString());
+                                        intent.putExtra("gender", dataSnapshot.child("Gender").getValue().toString());
+                                        intent.putExtra("wallet", dataSnapshot.child("Wallet_Money").getValue().toString());
+                                        intent.putExtra("image",downloadUrl);
+                                        startActivity(intent);
+                                        finish();
+                                        System.out.println(downloadUrl);
+                                    }
+                                });
 
-                                startActivity(intent);
-                                finish();
                             }
                         }, SPLASH_TIME_OUT);
 

@@ -12,6 +12,7 @@ public class Prevalent_Intent
         intent.putExtra("email", Prevalent.currentEmail);
         intent.putExtra("gender", Prevalent.currentGender);
         intent.putExtra("wallet", Prevalent.currentWalletMoney);
+        intent.putExtra("image", Prevalent.currentImage);
     }
 }
 
