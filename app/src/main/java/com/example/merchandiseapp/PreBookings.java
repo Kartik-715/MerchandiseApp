@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.merchandiseapp.Holder.PreBookingHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +29,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PreBookings extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -124,24 +127,111 @@ public class PreBookings extends AppCompatActivity {
                                     if(flag2==0) {
                                         flag2+=1;
                                         myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
 
-                                                for (int i = 0; i < toPay.size(); i++) {
 
-                                                    String money1 = dataSnapshot1.child(toPay.get(i)).child("Wallet_Money").getValue().toString();
-                                                    Long money = Long.parseLong(money1);
-                                                    System.out.println(toPay.get(i) + quantity.get(i));
-                                                    Long add = Long.parseLong(quantity.get(i)) * price;
-                                                    money += add;
-                                                    String money2 = money.toString();
 
-                                                    FirebaseDatabase.getInstance().getReference().child("Users")
-                                                            .child(toPay.get(i)).child("Wallet_Money").setValue(money2);
+                                                HashMap<String , Long> obj = new HashMap<>();
 
+                                                for(int i=0;i<toPay.size();i++)
+                                                {
+//                                                    obj.
+//                                                    String a = "0";
+                                                        Long a =0L;
+                                                    obj.put(toPay.get(i),a );
+//                                                    obj["aryan"]+=10;
                                                 }
 
+                                                for(int i=0;i<toPay.size();i++)
+                                                {
+//                                                    obj.
+
+                                                    Long mon = obj.get(toPay.get(i));
+                                                    mon = mon+ Long.parseLong( quantity.get(i));
+
+                                                    obj.put(  toPay.get(i), mon);
+//                                                    obj["aryan"]+=10;
+                                                }
+
+                                                Iterator it = obj.entrySet().iterator();
+                                                while(it.hasNext())
+                                                {
+                                                    HashMap.Entry pair = (HashMap.Entry) it.next();
+
+                                                    String money1 = dataSnapshot1.child(pair.getKey().toString()).child("Wallet_Money").getValue().toString();
+                                                    Long money = Long.parseLong(money1);
+                                                    System.out.println(pair.getKey()+" "+price.toString() +" "+ pair.getValue().toString() +" "+ money.toString());
+
+                                                    String temp1 =pair.getValue().toString();
+
+                                                    Long add = Long.parseLong( temp1) * price;
+                                                    money += add;
+                                                    String money2 = money.toString();
+                                                    myRef2 = FirebaseDatabase.getInstance().getReference().child("Users").child(pair.getKey().toString()).child("Wallet_Money");
+                                                    myRef2.setValue(money2);
+//                                                            FirebaseDatabase.getInstance().getReference().child("Users")
+//                                                                    .child(toPay.get(i)).child("Wallet_Money").
+
+
+
+                                                    it.remove();
+                                                }
+
+//                                                for (int i = 0; i < obj.size(); i++) {
+//
+//                                                    String money1 = dataSnapshot1.child(toPay.get(i)).child("Wallet_Money").getValue().toString();
+//                                                    Long money = Long.parseLong(money1);
+//                                                    System.out.println(toPay.get(i)+" "+price.toString() +" "+ quantity.get(i) +" "+ money.toString());
+//                                                    Long add = Long.parseLong(quantity.get(i)) * price;
+//                                                    money += add;
+//                                                    String money2 = money.toString();
+//                                                    myRef2 = FirebaseDatabase.getInstance().getReference().child("Users").child(toPay.get(i)).child("Wallet_Money");
+////
+////                                                            FirebaseDatabase.getInstance().getReference().child("Users")
+////                                                                    .child(toPay.get(i)).child("Wallet_Money").
+//                                                    myRef2.setValue(money2);
+//
+//                                                }
                                             }
+
+                                            //
+//                                                    myRef2.setValue(money2, new DatabaseReference().CompletionListener(){
+//                                                        void onComplete(DatabaseError error, DatabaseReference ref) {
+//                                                            System.out.println("Value was set. Error = "+error);
+//                                                        }
+//                                                        {}
+//
+//                                                        @Override
+//                                                        public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
+//                                                            if (firebaseError != null) {
+//                                                                System.out.println("Data could not be saved. " + firebaseError.getMessage());
+//                                                            } else {
+//                                                                System.out.println("Data saved successfully.");
+//                                                            }
+//                                                        }
+
+
+
+
+//                                                    );
+
+//
+//
+
+//
+//
+//                                                    final AtomicBoolean done = new AtomicBoolean(false);
+//                                                    ref.setValue(new , new Firebase.CompletionListener() {
+//                                                        @Override
+//                                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+//                                                            done.set(true);
+//                                                        }
+//                                                    });
+//                                                    while (!done.get());
+
+
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError databaseError1) {
