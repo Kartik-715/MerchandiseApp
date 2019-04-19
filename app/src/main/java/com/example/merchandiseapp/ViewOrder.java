@@ -57,7 +57,7 @@ public class ViewOrder extends AppCompatActivity {
 
         /*Here the groupname has to be extracted*/
         GroupName = getIntent().getStringExtra("GroupName");
-
+//GroupName="CSEA";
         orderid_list = new ArrayList<String>();
 
 
@@ -222,6 +222,11 @@ public class ViewOrder extends AppCompatActivity {
                 holder.AllOrderButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Intent intent = new Intent(ViewOrder.this, orderRequestDetails.class);
+                        intent.putExtra("PID", model.getPID());
+                        intent.putExtra("Category", model.getCategory());
+                        intent.putExtra("GroupName",GroupName);
+                        startActivity(intent);
 
                     }
                 });
