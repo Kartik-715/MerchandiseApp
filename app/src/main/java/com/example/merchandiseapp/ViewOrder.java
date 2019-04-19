@@ -222,7 +222,7 @@ public class ViewOrder extends AppCompatActivity {
                 holder.AllOrderButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        
+
                     }
                 });
 
