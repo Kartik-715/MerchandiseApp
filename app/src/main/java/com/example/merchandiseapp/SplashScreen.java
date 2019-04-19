@@ -30,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
     String grpName;
     String email;
     Intent i;
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 5000;
 
 
     @Override
@@ -44,15 +44,16 @@ public class SplashScreen extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if(b!=null){
+            //Toast.makeText(getApplicationContext(),"bundle non null",Toast.LENGTH_SHORT).show();
             type = (String) b.get("Type");
             email = (String) b.get("Email");
-            int temp = email.hashCode();
+            int temp = email.trim().hashCode();
             uid = Integer.toString(temp);
             global.setUid(uid);
-
+            //Toast.makeText(getApplicationContext(), (String)b.get("uid")+" " +this.uid,Toast.LENGTH_LONG).show();
 
             if(type.equals("users")){
-                DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(global.getUid());
                 UserData.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -65,7 +66,8 @@ public class SplashScreen extends AppCompatActivity {
                         global.setGender(dataSnapshot.child("Gender").getValue().toString());
                         getImage();
 
-                        i = new Intent(getApplicationContext(),HomeActivity.class);
+
+
 
                     }
 
@@ -90,7 +92,7 @@ public class SplashScreen extends AppCompatActivity {
                         global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
                         getImage();
 
-                        i = new Intent(getApplicationContext(),GroupActivity.class);
+
                     }
 
                     @Override
@@ -113,6 +115,8 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
+                if(type.equals("users")) i = new Intent(getApplicationContext(),HomeActivity.class);
+                else i = new Intent(getApplicationContext(),GroupActivity.class);
                 startActivity(i);
 
                 // close this activity

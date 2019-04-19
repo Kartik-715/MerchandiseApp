@@ -46,6 +46,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     private static final String TAG = MainActivity.class.getSimpleName();
     Button callGraphButton;
     Button LoginButton;
+    Button Join;
     FirebaseDatabase database;
     DatabaseReference ref;
     boolean flag = false;
@@ -63,8 +64,9 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         callGraphButton = (Button) findViewById(R.id.callGraph);
         LoginButton = (Button) findViewById(R.id.Login);
        // signOutButton = (Button) findViewById(R.id.clearCache);
-        email = (EditText)findViewById(R.id.Email);
+        email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
+        Join = findViewById(R.id.JoinNow);
 
         callGraphButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,6 +77,14 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         LoginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onLoginButtonClicked();
+            }
+        });
+
+        Join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OutlookLogin.this,UserSignUp.class);
+                startActivity(i);
             }
         });
 
@@ -145,43 +155,40 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
     }
 
-    private void onLoginButtonClicked(){
+    private void onLoginButtonClicked() {
         String Email = email.getText().toString().trim();
         final String Password = password.getText().toString().trim();
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Users");
-        if(TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)){
-           Toast.makeText(getApplicationContext(),"Please fill all the fields",Toast.LENGTH_LONG).show();
-           return;
+        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)) {
+            Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
+            return;
         }
         flag = false;
         int hash = Email.hashCode();
         final String hashValue = Integer.toString(hash);
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.child(hashValue).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds:dataSnapshot.getChildren()){
-                    if (ds.getValue().toString().equals(hashValue)) {
-                        if(ds.child(hashValue).child("Password").getValue().toString().equals(Password)){
-                            flag = true;
-                            Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
-                            intent.putExtra("Type","users");
-                            intent.putExtra("Email",email.getText().toString());
-                            startActivity(intent);
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
-                        }
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child("Password").getValue().toString().equals(Password)) {
+                        flag = true;
+                        Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
+                        intent.putExtra("Type", "users");
+                        intent.putExtra("Email", email.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
                     }
                 }
-                if(flag == false){
-                    Toast.makeText(getApplicationContext(), "Invalid Email or Password", Toast.LENGTH_LONG).show();
-                }
+
+                else Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Trouble sigining you in \n Please try again", Toast.LENGTH_LONG).show();
+
             }
         });
     }

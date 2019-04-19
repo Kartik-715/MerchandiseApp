@@ -25,7 +25,7 @@
         android:textColorHint="@color/Gray"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:background="@drawable/roundtextbox"/>
 
     <EditText
@@ -38,7 +38,7 @@
         android:background="@drawable/roundtextbox"
         android:hint="  Password"
         android:layout_marginTop="6dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textColorHint="@color/Gray" />
     <Button
         android:id="@+id/Login"

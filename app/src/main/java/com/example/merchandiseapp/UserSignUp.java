@@ -50,7 +50,7 @@ public class UserSignUp extends AppCompatActivity {
     EditText usrAddress;
     ImageView usrPic;
     EditText usrPassword;
-    String UID;
+    String usrUID;
 
     Button choose;
     Button upload;
@@ -62,24 +62,6 @@ public class UserSignUp extends AppCompatActivity {
     JSONObject Juser;
 
     DatabaseReference UserData;
-    FirebaseStorage storage;
-    StorageReference storageReference;
-
-    private static final String TAG = "PhoneAuth";
-
-    private EditText phoneText;
-    private EditText codeText;
-    private Button verifyButton;
-    private Button sendButton;
-    private Button resendButton;
-    private Button signoutButton;
-    private TextView statusText;
-
-    private String phoneVerificationId;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
-    private PhoneAuthProvider.ForceResendingToken resendToken;
-
-    private FirebaseAuth fbAuth;
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -100,8 +82,6 @@ public class UserSignUp extends AppCompatActivity {
         usrAddress = findViewById(R.id.user_address_signup);
         usrPassword = findViewById(R.id.user_password_signup);
 
-
-        fbAuth = FirebaseAuth.getInstance();
 
         update = findViewById(R.id.user_update_signup);
         choose = findViewById(R.id.user_chooseBtn_signup);
@@ -171,12 +151,19 @@ public class UserSignUp extends AppCompatActivity {
 
         if(filePath != null)
         {
+            if(usrEmail.getText().toString().trim().equals("")){
+                Toast.makeText(getApplicationContext(),"Enter Email First",Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int temp = usrEmail.getText().toString().trim().hashCode();
+            usrUID = Integer.toString(temp);
 
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            imageLocation = "images/users/"+UID;
+            imageLocation = "images/users/"+usrUID;
             final StorageReference ref = FirebaseStorage.getInstance().getReference().child(imageLocation);
 
             Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
@@ -251,20 +238,19 @@ public class UserSignUp extends AppCompatActivity {
 
     public void update_info(){
 
-        int temp = usrEmail.getText().hashCode();
-        UID = Integer.toString(temp);
+        Toast.makeText(getApplicationContext(),usrEmail.getText().toString().trim() +" " +this.usrUID,Toast.LENGTH_LONG).show();
 
         UserNode userInfo = new UserNode(usrName.getText().toString().trim(),
                 usrAddress.getText().toString().trim(),
                 usrGender.getText().toString().trim(),
                 usrPhone.getText().toString().trim(),
                 usrEmail.getText().toString().trim(),
-                UID);
+                usrUID);
 
         UserData = FirebaseDatabase.getInstance().getReference().child("Users");
-        UserData.child(UID).setValue(userInfo);
-        UserData.child(UID).child("Password").setValue(usrPassword.getText().toString().trim());
-        UserData.child(UID).child("Wallet_Money").setValue("0");
+        UserData.child(usrUID).setValue(userInfo);
+        UserData.child(usrUID).child("Password").setValue(usrPassword.getText().toString().trim());
+        UserData.child(usrUID).child("Wallet_Money").setValue("0");
 
         Intent i = new Intent(getApplicationContext(),SplashScreen.class);
         i.putExtra("Type","users");
