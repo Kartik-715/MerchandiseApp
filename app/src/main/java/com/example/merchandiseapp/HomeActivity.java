@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.Snackbar;
@@ -51,6 +52,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -66,8 +69,6 @@ public class HomeActivity extends AppCompatActivity
 
     public ImageView imageView;
     G_var global;
-    private RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     View headerView;
@@ -76,13 +77,24 @@ public class HomeActivity extends AppCompatActivity
     private ProgressDialog loadingBar;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //global = (G_var) getApplicationContext();
+        // Setting up current User //
+
+            String User_Email = "mayank@iitg.ac.in";
+            int temp = User_Email.hashCode();
+            final String hashcode = Integer.toString(temp);
+
+            Prevalent.currentOnlineUser = hashcode;
+            Prevalent.currentEmail = User_Email;
+
+        // Setting up current User //
+
 
         /* Tab Layout Setting */
         orderType = getIntent().getStringExtra("orderType");
@@ -98,80 +110,85 @@ public class HomeActivity extends AppCompatActivity
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
-//        DatabaseReference allGroups;
-//        allGroups = FirebaseDatabase.getInstance().getReference().child("Group") ;
-//        final List<String> accessibleGroups = new ArrayList<>();
-//        accessibleGroups.add("CSEA") ;
-//        allGroups.addValueEventListener(new ValueEventListener()
-//        {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-//            {
-//                HashMap<String, Object> All_Groups = (HashMap<String, Object>) dataSnapshot.getValue();
-//
-//                Set<String> AllCategories = new HashSet<>();
-//
-//                for(String o: accessibleGroups)
-//                {
-//                    HashMap<String,Object> group = (HashMap<String, Object>) All_Groups.get(o) ;
-//                    HashMap<String,Object> groupMerch = (HashMap<String, Object>) group.get("Merchandise") ;
-//
-//                    //System.out.println("Group Details: " + group );
-//                    //System.out.println("Group Merchandise: " + groupMerch );
-//
-//                    for(Map.Entry<String, Object> category : groupMerch.entrySet())
-//                    {
-//                        AllCategories.add(category.getKey()) ;
-//                    }
-//
-//                }
-//
-//                System.out.println("Different Categories are: " + AllCategories);
-//
-//                for (String category : AllCategories)
-//                {
-//                    FragmentItem fragment = new FragmentItem();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("category", category);
-//                    fragment.setArguments(bundle);
-//                    adaptor.AddFragment(fragment, category);
-//                }
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.w("ErrMerchandise", "Couldn't Read All Merchandise");
-//            }
-//        });
-        DatabaseReference allMerchandise = FirebaseDatabase.getInstance().getReference().child("Merchandise");
 
-        allMerchandise.addValueEventListener(new ValueEventListener() {
+
+        String uid = Prevalent.currentOnlineUser;
+
+        DatabaseReference userGroups = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Groups");
+        userGroups.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                HashMap<String,Object> All_merchandise = (HashMap<String, Object>) dataSnapshot.getValue() ;
-                System.out.println(All_merchandise) ;
-                adaptor.clearFragments() ;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                final List<String> accessibleGroups = (List<String>) dataSnapshot.getValue();
+                System.out.println(accessibleGroups);
+
+                final String orderType = Prevalent.currentOrderType; // Selecting Order Type //
+
+                FirebaseDatabase.getInstance().getReference().child("Merchandise").addListenerForSingleValueEvent(new ValueEventListener()
+                {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        //adaptor.clearFragments();
+                        Log.w("DataChanged","Data is Changed") ;
+
+                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
+                        {
+                            List<Merchandise> list = new ArrayList<>();
+                            for(DataSnapshot merchandise: postdatasnapshot.getChildren())
+                            {
+                                //System.out.println(merchandise) ;
+                                Merchandise mr = merchandise.getValue(Merchandise.class);
+                                Set<String> s = new HashSet<>(accessibleGroups);
+                                if (mr.getAccessGroup() != null)
+                                {
+                                    Set<String> u = new HashSet<>(mr.getAccessGroup());
+                                    s.retainAll(u);
+                                    if (s.size() != 0 && mr.getOrderType().equals(orderType))
+                                    {
+                                        list.add(mr);
+                                    }
+                                }
+                            }
+
+                            if(list.size() != 0)
+                            {
+                                FragmentItem fragment = new FragmentItem() ;
+                                Bundle bundle = new Bundle() ; // Incase you want to pass some arguments into Fragment //
+                                fragment.setObject(list);
+                                fragment.setArguments(bundle);
+                                System.out.println("Added a fragment!");
+                                adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey() );
+
+                            }
+
+                        }
+
+                        // I have the list now! //
 
 
-                for (Object o : All_merchandise.entrySet()) {
-                    HashMap.Entry p1 = (HashMap.Entry) o;
-                    FragmentItem fragment = new FragmentItem() ;
-                    Bundle bundle = new Bundle() ;
-                    bundle.putString("category", (String) p1.getKey() );
-                    fragment.setArguments(bundle);
-                    adaptor.AddFragment(fragment, (String) p1.getKey());
-                }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError)
+                    {
+                        Log.d("Error", "Couldn't read this Merchandise");
+                    }
+                });
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("ErrMerchandise", "Couldn't Read All Merchandise") ;
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
             }
-        }) ;
+        });
+
+
+
 
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
@@ -211,17 +228,17 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-        String User_ID, User_Email;
+        //String User_ID, User_Email;
         //User_Email = user.getEmail();
         //User_ID = user.getUid();
-        User_Email = "mayank@iitg.ac.in";
-
-        String temp_email = User_Email;
-        int temp = User_Email.hashCode();
-        final String hashcode = Integer.toString(temp);
-
-        Prevalent.currentOnlineUser = hashcode;
-        Prevalent.currentEmail = temp_email;
+//        User_Email = "mayank@iitg.ac.in";
+//
+//        String temp_email = User_Email;
+//        int temp = User_Email.hashCode();
+//        final String hashcode = Integer.toString(temp);
+//
+//        Prevalent.currentOnlineUser = hashcode;
+//        Prevalent.currentEmail = temp_email;
 
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
@@ -372,5 +389,10 @@ public class HomeActivity extends AppCompatActivity
         //Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
         //imageView.setImageBitmap(global.getBitmap());
     }
+
+
+
+
+
 }
 
