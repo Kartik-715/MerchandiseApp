@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -161,6 +162,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             public void onComplete(@NonNull Task<Void> task)
             {
                 Intent intent = new Intent(TakeRequestDetailsActivity.this, HomeActivity.class);
+                Prevalent_Intent.setIntent(intent);
                 intent.putExtra("orderType", Prevalent.currentOrderType);
                 startActivity(intent);
             }

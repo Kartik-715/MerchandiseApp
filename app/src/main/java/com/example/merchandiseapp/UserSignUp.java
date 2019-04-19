@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,7 +42,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class UserSignUp extends AppCompatActivity {
+public class UserSignUp extends AppCompatActivity
+{
 
     EditText usrEmail;
     EditText usrName;
@@ -102,11 +104,12 @@ public class UserSignUp extends AppCompatActivity {
             }
         });
 
-        update.setOnClickListener(new View.OnClickListener() {
+        update.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v){
-                if(validate_entries()){
-//                    sendCode();
+                if(validate_entries())
+                {
                     update_info();
                 }
             }
@@ -121,21 +124,25 @@ public class UserSignUp extends AppCompatActivity {
         hideNav();
     }
 
-    private void chooseimage(){
+    private void chooseimage()
+    {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-            try {
+            try
+            {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 // global.setBitmap(bitmap);
                 usrPic.setImageBitmap(bitmap);
@@ -196,7 +203,8 @@ public class UserSignUp extends AppCompatActivity {
         }
     }
 
-    public boolean validate_entries(){
+    public boolean validate_entries()
+    {
 
         String Gender = usrGender.getText().toString().trim();
 
@@ -236,9 +244,16 @@ public class UserSignUp extends AppCompatActivity {
         return true;
     }
 
-    public void update_info(){
+    public void update_info()
+    {
+        Prevalent.currentEmail = usrEmail.getText().toString().trim();
+        Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
+        Prevalent.currentPhone = usrPhone.getText().toString().trim();
+        Prevalent.currentWalletMoney = "0";
+        Prevalent.currentAddress = usrAddress.getText().toString().trim();
+        Prevalent.currentMoney = "0";
 
-        Toast.makeText(getApplicationContext(),usrEmail.getText().toString().trim() +" " +this.usrUID,Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),usrEmail.getText().toString().trim() + " " + this.usrUID,Toast.LENGTH_LONG).show();
 
         UserNode userInfo = new UserNode(usrName.getText().toString().trim(),
                 usrAddress.getText().toString().trim(),
@@ -258,7 +273,8 @@ public class UserSignUp extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void hideNav(){
+    public void hideNav()
+    {
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

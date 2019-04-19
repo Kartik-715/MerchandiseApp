@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -151,6 +152,7 @@ public class RequestDetailActivity extends AppCompatActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(RequestDetailActivity.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
         intent.putExtra("orderType", Prevalent.currentOrderType);
         startActivity(intent);
     }

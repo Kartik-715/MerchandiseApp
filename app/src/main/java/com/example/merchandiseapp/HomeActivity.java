@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -84,7 +85,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
 
         // Setting up current User //
-
             String User_Email = "mayank@iitg.ac.in";
             int temp = User_Email.hashCode();
             final String hashcode = Integer.toString(temp);
@@ -95,9 +95,33 @@ public class HomeActivity extends AppCompatActivity
         // Setting up current User //
 
 
-        /* Tab Layout Setting */
         orderType = getIntent().getStringExtra("orderType");
+        String name = getIntent().getStringExtra("name");
+        String address = getIntent().getStringExtra("address");
+        String contact = getIntent().getStringExtra("contact");
+        String email = getIntent().getStringExtra("email");
+        String gender = getIntent().getStringExtra("gender");
+        String wallet = getIntent().getStringExtra("wallet");
+
         Prevalent.currentOrderType = orderType;
+        Prevalent.currentPhone = contact;
+        Prevalent.currentEmail = email;
+        Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
+        Prevalent.currentWalletMoney = wallet;
+        Prevalent.currentGender = gender;
+        Prevalent.currentName = name;
+        Prevalent.currentAddress = address;
+
+        System.out.println("Chigu " + Prevalent.currentOrderType);
+        System.out.println("Chigu " + Prevalent.currentPhone);
+        System.out.println("Chigu " + Prevalent.currentEmail);
+        System.out.println("Chigu " + Prevalent.currentOnlineUser);
+        System.out.println("Chigu " + Prevalent.currentWalletMoney);
+        System.out.println("Chigu " + Prevalent.currentGender);
+        System.out.println("Chigu " + Prevalent.currentName);
+        System.out.println("Chigu " + Prevalent.currentAddress);
+
+
 
         /*loadingBar = new ProgressDialog(this);
         loadingBar.setTitle("Home Page");
@@ -105,6 +129,7 @@ public class HomeActivity extends AppCompatActivity
         loadingBar.setCanceledOnTouchOutside(false);
         loadingBar.show();*/
 
+        /* Tab Layout Setting */
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager_id);
@@ -138,16 +163,18 @@ public class HomeActivity extends AppCompatActivity
                             List<Merchandise> list = new ArrayList<>();
                             for(DataSnapshot merchandise: postdatasnapshot.getChildren())
                             {
-                                //System.out.println(merchandise) ;
                                 Merchandise mr = merchandise.getValue(Merchandise.class);
-                                Set<String> s = new HashSet<>(accessibleGroups);
-                                if (mr.getAccessGroup() != null)
+                                if(accessibleGroups != null)
                                 {
-                                    Set<String> u = new HashSet<>(mr.getAccessGroup());
-                                    s.retainAll(u);
-                                    if (s.size() != 0 && mr.getOrderType().equals(orderType))
+                                    Set<String> s = new HashSet<>(accessibleGroups);
+                                    if (mr.getAccessGroup() != null)
                                     {
-                                        list.add(mr);
+                                        Set<String> u = new HashSet<>(mr.getAccessGroup());
+                                        s.retainAll(u);
+                                        if (s.size() != 0 && mr.getOrderType().equals(orderType))
+                                        {
+                                            list.add(mr);
+                                        }
                                     }
                                 }
                             }
@@ -398,6 +425,7 @@ public class HomeActivity extends AppCompatActivity
         {
             Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
             intent.putExtra("orderType", "1");
+            Prevalent_Intent.setIntent(intent);
             startActivity(intent);
         }
 

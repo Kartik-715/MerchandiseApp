@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -131,6 +132,7 @@ public class CartActivity extends AppCompatActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
         intent.putExtra("orderType", Prevalent.currentOrderType);
         startActivity(intent);
     }
@@ -150,6 +152,7 @@ public class CartActivity extends AppCompatActivity
             {
                 Intent intent = new Intent(CartActivity.this, HomeActivity.class);
                 intent.putExtra("orderType", Prevalent.currentOrderType);
+                Prevalent_Intent.setIntent(intent);
                 startActivity(intent);
             }
         });

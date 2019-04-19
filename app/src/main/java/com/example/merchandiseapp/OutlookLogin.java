@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,15 +76,19 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             }
         });
 
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        LoginButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
                 onLoginButtonClicked();
             }
         });
 
-        Join.setOnClickListener(new View.OnClickListener() {
+        Join.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent i = new Intent(OutlookLogin.this,UserSignUp.class);
                 startActivity(i);
             }
@@ -156,35 +161,49 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
     }
 
-    private void onLoginButtonClicked() {
+    private void onLoginButtonClicked()
+    {
         String Email = email.getText().toString().trim();
         final String Password = password.getText().toString().trim();
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Users");
-        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)) {
+
+        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password))
+        {
             Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
             return;
         }
+
         flag = false;
         int hash = Email.hashCode();
+
         final String hashValue = Integer.toString(hash);
-        ref.child(hashValue).addValueEventListener(new ValueEventListener() {
+
+        ref.child(hashValue).addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("Password").getValue().toString().equals(Password)) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    if (dataSnapshot.child("Password").getValue().toString().equals(Password))
+                    {
                         flag = true;
                         Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
                         intent.putExtra("Type", "users");
-                        intent.putExtra("Email", email.getText().toString());
+                        intent.putExtra("Email", email.getText().toString() );
+                        Prevalent.currentEmail = email.getText().toString();
+                        Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
                         startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
                     }
+
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
                 }
 
-                else Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
             }
 
             @Override

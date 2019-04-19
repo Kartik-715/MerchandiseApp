@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -479,6 +480,7 @@ public class productDetailActivity extends AppCompatActivity
                                                 Toast.makeText(productDetailActivity.this, "Added to Cart List.", Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
+                                                Prevalent_Intent.setIntent(intent);
                                                 intent.putExtra("orderType", Prevalent.currentOrderType);
                                                 startActivity(intent);
 
@@ -599,6 +601,7 @@ public class productDetailActivity extends AppCompatActivity
     {
         Intent intent = new Intent(productDetailActivity.this, HomeActivity.class);
         intent.putExtra("orderType", Prevalent.currentOrderType);
+        Prevalent_Intent.setIntent(intent);
         startActivity(intent);
     }
 
