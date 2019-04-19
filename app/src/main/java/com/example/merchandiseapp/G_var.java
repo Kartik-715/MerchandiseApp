@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.microsoft.identity.client.PublicClientApplication;
 
 public class G_var extends Application {
 
@@ -24,10 +25,19 @@ public class G_var extends Application {
     private Bitmap bitmap;
     private String UPI;
     private String ImageLocation;
+    private PublicClientApplication sampleApp;
 
 
 
     public G_var() {
+    }
+
+    public PublicClientApplication getSampleApp() {
+        return sampleApp;
+    }
+
+    public void setSampleApp(PublicClientApplication sampleApp) {
+        this.sampleApp = sampleApp;
     }
 
     public String getUsername() {

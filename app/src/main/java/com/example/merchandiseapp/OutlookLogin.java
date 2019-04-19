@@ -30,7 +30,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     /* Azure AD v2 Configs */
     final static String SCOPES [] = {"https://graph.microsoft.com/User.Read"};
     final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-
+    G_var global;
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
     Button callGraphButton;
@@ -44,19 +44,13 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outlook_login);
-
+        hideNav();
         callGraphButton = (Button) findViewById(R.id.callGraph);
-        signOutButton = (Button) findViewById(R.id.clearCache);
+       // signOutButton = (Button) findViewById(R.id.clearCache);
 
         callGraphButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onCallGraphClicked();
-            }
-        });
-
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onSignOutClicked();
             }
         });
 
@@ -66,6 +60,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             sampleApp = new PublicClientApplication(
                     this.getApplicationContext(),
                     R.raw.auth_config);
+         //  if(sampleApp != null) global.setSampleApp(sampleApp);
         }
 
         /* Attempt to get a user and acquireTokenSilent
@@ -87,6 +82,21 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             Log.d(TAG, "Account at this position does not exist: " + e.toString());
         }
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        hideNav();
+    }
+    public void hideNav(){
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     //
@@ -114,26 +124,27 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     /* Clears an account's tokens from the cache.
      * Logically similar to "sign out" but only signs out of this app.
      */
-    private void onSignOutClicked() {
+    /*private void onSignOutClicked() {
 
-        /* Attempt to get a account and remove their cookies from cache */
+        // Attempt to get a account and remove their cookies from cache
+
         List<IAccount> accounts = null;
 
         try {
             accounts = sampleApp.getAccounts();
 
             if (accounts == null) {
-                /* We have no accounts */
+                // We have no accounts
 
             } else if (accounts.size() == 1) {
-                /* We have 1 account */
-                /* Remove from token cache */
+                // We have 1 account
+                // Remove from token cache
                 sampleApp.removeAccount(accounts.get(0));
-                updateSignedOutUI();
+              //  updateSignedOutUI();
 
             }
             else {
-                /* We have multiple accounts */
+                // We have multiple accounts
                 for (int i = 0; i < accounts.size(); i++) {
                     sampleApp.removeAccount(accounts.get(i));
                 }
@@ -146,7 +157,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             Log.d(TAG, "User at this position does not exist: " + e.toString());
         }
     }
-
+*/
     /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
     private void callGraphAPI() {
         Log.d(TAG, "Starting volley request to graph");
@@ -262,23 +273,23 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     }
 
     /* Set the UI for successful token acquisition data */
-    private void updateSuccessUI() {
+ /*   private void updateSuccessUI() {
         callGraphButton.setVisibility(View.INVISIBLE);
         signOutButton.setVisibility(View.VISIBLE);
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.welcome)).setText("Welcome, " +
                 authResult.getAccount().getUsername());
-        findViewById(R.id.graphData).setVisibility(View.VISIBLE);
-    }
+      //  findViewById(R.id.graphData).setVisibility(View.VISIBLE);
+    }*/
 
     /* Set the UI for signed out account */
-    private void updateSignedOutUI() {
+   /* private void updateSignedOutUI() {
         callGraphButton.setVisibility(View.VISIBLE);
         signOutButton.setVisibility(View.INVISIBLE);
         findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
-        ((TextView) findViewById(R.id.graphData)).setText("No Data");
-    }
+      //  findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
+        //((TextView) findViewById(R.id.graphData)).setText("No Data");
+    }*/
 
     //
     // App callbacks for MSAL
@@ -310,7 +321,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-                updateSuccessUI();
+              //  updateSuccessUI();
             }
 
             @Override
@@ -353,7 +364,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-                updateSuccessUI();
+                //updateSuccessUI();
             }
 
             @Override

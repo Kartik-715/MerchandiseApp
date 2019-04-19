@@ -32,6 +32,7 @@
         </activity>
         <activity android:name=".GroupRegister" />
         <activity android:name=".RedirectActivity" />
+        <activity android:name=".Order_History" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".GroupActivity"

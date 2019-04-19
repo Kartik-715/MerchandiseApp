@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/grad"
     tools:context=".RedirectActivity">
 
     <RelativeLayout
@@ -15,33 +16,46 @@
             android:id="@+id/welcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp" />
+            android:layout_marginTop="15dp"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/part1"
-        android:layout_below="@+id/part2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/part2"
+        android:layout_marginTop="216dp">
+
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <RadioButton
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/user"
-                android:text="User"
-                android:layout_margin="15dp"/>
+                android:layout_marginRight="25dp"
+                android:text="Login As"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
 
             <RadioButton
+                android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="User" />
+
+            <RadioButton
                 android:id="@+id/Group"
-                android:text="Group"
-                android:layout_margin="15dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Group" />
         </RadioGroup>
 
     </RelativeLayout>
@@ -58,6 +72,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Submit"
+            android:background="@drawable/roundbutton"
+            android:textColor="@color/white"
             android:id="@+id/submitBtn"/>
 
     </RelativeLayout>
