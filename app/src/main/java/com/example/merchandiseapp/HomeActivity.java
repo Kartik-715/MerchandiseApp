@@ -46,11 +46,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.microsoft.identity.client.IAccount;
+import com.microsoft.identity.client.PublicClientApplication;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
@@ -246,13 +249,41 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_logout) {
-            mGoogleSignInClient.revokeAccess()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // ...
+            PublicClientApplication sampleApp = new PublicClientApplication(
+                    this.getApplicationContext(),
+                    R.raw.auth_config);
+                /* Attempt to get a account and remove their cookies from cache */
+                List<IAccount> accounts = null;
+
+                try {
+                    accounts = sampleApp.getAccounts();
+
+                    if (accounts == null) {
+                        /* We have no accounts */
+
+                    } else if (accounts.size() == 1) {
+                        /* We have 1 account */
+                        /* Remove from token cache */
+                        sampleApp.removeAccount(accounts.get(0));
+                        //  updateSignedOutUI();
+
+                    }
+                    else {
+                        /* We have multiple accounts */
+                        for (int i = 0; i < accounts.size(); i++) {
+                            sampleApp.removeAccount(accounts.get(i));
                         }
-                    });
+                    }
+
+                    Toast.makeText(getBaseContext(), "Signed Out!", Toast.LENGTH_SHORT)
+                            .show();
+
+                } catch (IndexOutOfBoundsException e) {
+                    Log.d(TAG, "User at this position does not exist: " + e.toString());
+                }
+            Intent intent = new Intent(HomeActivity.this, OutlookLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

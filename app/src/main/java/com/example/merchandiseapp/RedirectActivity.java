@@ -50,7 +50,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redirect);
-
+        hideNav();
         Welcome = findViewById(R.id.welcome);
 
         radioButton1 = findViewById(R.id.user);
@@ -69,7 +69,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                 //testing to find the user display name
            //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
                 //setting the textview to mail of the logged in user
-                Welcome.setText("Welcome" + Juser.getString("displayName").toString());
+                Welcome.setText("Welcome    " + Juser.getString("displayName").toString());
                 email = Juser.getString("mail").toString();
             }
             catch (Exception ex)
@@ -109,9 +109,22 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onResume(){
         super.onResume();
+        hideNav();
         home.setVisibility(View.INVISIBLE);
         areaSpinner.setAdapter(null);
     }
+    public void hideNav(){
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+
+
 
 
     @Override
