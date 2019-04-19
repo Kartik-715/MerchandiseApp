@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class SecondFragment extends Fragment {
     DatabaseReference ref;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
+    DatabaseReference myRef ;
 
     String Category;
     String PID;
@@ -55,7 +57,7 @@ public class SecondFragment extends Fragment {
     private   ArrayList<String> Size ;
     private   ArrayList<String> UserName ;
     private   ArrayList<String> UserID ;
-
+    private Button mbutton;
     // Store instance variables
     private String title;
     private int page;
@@ -77,7 +79,6 @@ public class SecondFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-
 //        System.out.println(getArguments().getString("category"));
 
         super.onCreate(savedInstanceState);
@@ -89,8 +90,6 @@ public class SecondFragment extends Fragment {
         Category = args.getString("category");
         GroupName = args.getString("group_name");
         PID = args.getString("productID");
-
-
 
 
 
@@ -126,6 +125,8 @@ public class SecondFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mbutton = view.findViewById(R.id.sendNotification);
 
 
         database = FirebaseDatabase.getInstance();
@@ -172,7 +173,24 @@ public class SecondFragment extends Fragment {
 
                     if(ctr  == count)
                     {
+                        mbutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
 
+                                for(int i=0;i<UserName.size();i++) {
+                                    myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(UserID.get(i));
+
+                                    String notiList;
+                                    notiList = "Your order has been declined.Fuck OFF!!mu me lele";
+
+                                    HashMap<String, Object> childUpdates = new HashMap<>();
+                                    childUpdates.put(  "notiList",notiList           );
+                                    myRef.updateChildren(childUpdates);
+                                    System.out.println("Hello + " + UserID.get(i));
+                                }
+                            }
+                        });
                         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
                         System.out.println(UserID);
                         System.out.println(Contact);
@@ -241,4 +259,6 @@ public class SecondFragment extends Fragment {
 
 
     }
+
+
 }

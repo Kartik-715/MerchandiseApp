@@ -79,7 +79,9 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
             public void onClick(View v) {
 //                int temp = email.getText().toString().hashCode();
 //                UID = Integer.toString(temp);
-//                Toast.makeText(getApplicationContext(),UID,Toast.LENGTH_SHORT).show();
+
+  Toast.makeText(getApplicationContext(),UID,Toast.LENGTH_SHORT).show();
+
                 if(radioButton2.isChecked()) redirect_group();
                 else redirect_user();
 
