@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,14 +27,10 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -44,12 +39,11 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
-public class UserRegister extends AppCompatActivity {
+public class UserSignUp extends AppCompatActivity {
 
-    TextView usrEmail;
+    EditText usrEmail;
     EditText usrName;
     EditText usrPhone;
     EditText usrGender;
@@ -94,45 +88,24 @@ public class UserRegister extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_register);
+        setContentView(R.layout.activity_user_sign_up);
 
         hideNav();
 
-        usrEmail = findViewById(R.id.user_email);
-        usrName = findViewById(R.id.user_name);
-        usrPhone = findViewById(R.id.user_contact);
-        usrGender = findViewById(R.id.user_gender);
-        usrPic = findViewById(R.id.userPic);
-        usrAddress = findViewById(R.id.user_address);
-        usrPassword = findViewById(R.id.user_password);
+        usrEmail = findViewById(R.id.user_email_signup);
+        usrName = findViewById(R.id.user_name_signup);
+        usrPhone = findViewById(R.id.user_contact_signup);
+        usrGender = findViewById(R.id.user_gender_signup);
+        usrPic = findViewById(R.id.userPic_signup);
+        usrAddress = findViewById(R.id.user_address_signup);
+        usrPassword = findViewById(R.id.user_password_signup);
+
 
         fbAuth = FirebaseAuth.getInstance();
 
-        Bundle b = getIntent().getExtras();
-        if(b!=null){
-            String user = (String) b.get("user");
-            //   Toast.makeText(getApplicationContext(),"JSON STRING "+ user ,Toast.LENGTH_SHORT).show();
-            try{
-                Juser = new JSONObject(user);
-                //Juser is the required Json object to be used
-                //testing to find the user display name
-                //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
-                //setting the textview to mail of the logged in user
-                usrEmail.setText(Juser.getString("mail"));
-                usrName.setText(Juser.getString("displayName"));
-            }
-
-            catch (Exception ex)
-            {
-                Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        int temp = usrEmail.getText().hashCode();
-        UID = Integer.toString(temp);
-        update = findViewById(R.id.user_update);
-        choose = findViewById(R.id.user_chooseBtn);
-        upload = findViewById(R.id.user_uploadBtn);
+        update = findViewById(R.id.user_update_signup);
+        choose = findViewById(R.id.user_chooseBtn_signup);
+        upload = findViewById(R.id.user_uploadBtn_signup);
 
 
         choose.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +194,7 @@ public class UserRegister extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(UserRegister.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserSignUp.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                     })
@@ -239,6 +212,11 @@ public class UserRegister extends AppCompatActivity {
     public boolean validate_entries(){
 
         String Gender = usrGender.getText().toString().trim();
+
+        if(usrEmail.getText().toString().trim().equals("")){
+            Toast.makeText(getApplicationContext(),"Please enter the email",Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if(usrName.getText().toString().trim().equals("")){
             Toast.makeText(getApplicationContext(),"Please enter the name of the usr",Toast.LENGTH_SHORT).show();
@@ -264,11 +242,18 @@ public class UserRegister extends AppCompatActivity {
             return false;
         }
 
-
+        if(usrPassword.getText().toString().trim().length() < 5){
+            Toast.makeText(getApplicationContext(),"Check if Password entered is more than 4 chars",Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
     public void update_info(){
+
+        int temp = usrEmail.getText().hashCode();
+        UID = Integer.toString(temp);
+
         UserNode userInfo = new UserNode(usrName.getText().toString().trim(),
                 usrAddress.getText().toString().trim(),
                 usrGender.getText().toString().trim(),
@@ -392,7 +377,7 @@ public class UserRegister extends AppCompatActivity {
 //    public void callAlertDialog(){
 //
 //        final View view = getLayoutInflater().inflate(R.layout.otp_dialog, null);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(UserRegister.this);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(UserSignUp.this);
 //        builder.setTitle("OTP Verification");
 //        builder.setCancelable(false);
 //
