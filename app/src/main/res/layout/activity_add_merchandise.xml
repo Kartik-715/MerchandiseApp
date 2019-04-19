@@ -116,12 +116,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextView_accessGroups"
-        android:layout_marginTop="31dp"
-        android:ems="10"
-        android:hint="Group Name"
         android:layout_marginStart="220dp"
         android:layout_marginLeft="320dp"
+        android:layout_marginTop="31dp"
         android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Group Name"
         android:inputType="textPersonName"
         android:text="" />
 
@@ -232,6 +232,9 @@
     </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
+
+
 </RelativeLayout>
+
 
 </ScrollView>

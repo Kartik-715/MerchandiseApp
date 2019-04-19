@@ -133,13 +133,16 @@ public class AddMerchandise extends AppCompatActivity {
         add_accessgroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(access_editText.getText().toString()=="")
+                if(access_editText.getText().toString().equals(""))
                 {
-                    return;
                 }
-                AccessGroups.add(access_editText.getText().toString());
-                adapter.notifyDataSetChanged();
-                access_editText.setText("");
+                else
+                {
+                    AccessGroups.add(access_editText.getText().toString());
+                    adapter.notifyDataSetChanged();
+                    access_editText.setText("");
+
+                }
 
             }
         });
