@@ -347,7 +347,22 @@ public class AddMerchandise extends AppCompatActivity {
 //                            Image.add(fileUri.toString());
 //                            System.out.println("I am 1st" + Image);
 
-                            Image.add(FirebaseStorage.getInstance().getReference().child("Merchandise").child(fileName).toString());
+                            StorageReference a =FirebaseStorage.getInstance().getReference().child("Merchandise").child(fileName);
+
+                                    ((StorageReference) a).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                                {
+                                @Override
+                                public void onSuccess(Uri downloadUrl)
+                                {
+
+                                    System.out.println(downloadUrl);
+                                    Image.add(downloadUrl.toString());
+                                    //do something with downloadurl
+                                }
+                            });
+
+
+
 
                         }
 
@@ -372,8 +387,6 @@ public class AddMerchandise extends AppCompatActivity {
         }
 
     }
-
-
 
 
 
