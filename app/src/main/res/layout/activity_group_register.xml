@@ -178,7 +178,7 @@
                              android:layout_height="wrap_content"
                              android:background="@android:color/transparent"
                              android:fontFamily="sans-serif-light"
-                             android:inputType="text"
+                             android:inputType="phone"
                              android:textColor="#000000"
                              android:textSize="18sp" />
 

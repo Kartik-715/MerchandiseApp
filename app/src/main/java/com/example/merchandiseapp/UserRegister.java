@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.PatternMatcher;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class UserRegister extends AppCompatActivity {
 
@@ -244,6 +246,20 @@ public class UserRegister extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Please enter the contact no. of the usr",Toast.LENGTH_SHORT).show();
             return false;
         }
+        String temp=usrPhone.getText().toString();
+
+        /*if(usrPhone.getText().toString().length()!=13){
+            Toast.makeText(getApplicationContext(),"Please Enter Correct Phone Number",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(temp.charAt(0)!='+'){
+            Toast.makeText(getApplicationContext(),"First Three Characters Are Country Code ",Toast.LENGTH_SHORT).show();
+            return false;
+        }*/
+        if(!Pattern.matches("[+][0-9]{12}",temp)){
+            Toast.makeText(getApplicationContext(),"Please Enter Correct Phone Number",Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if(Gender.equals("")){
             Toast.makeText(getApplicationContext(),"Please enter the gender for the usr",Toast.LENGTH_SHORT).show();
@@ -255,7 +271,7 @@ public class UserRegister extends AppCompatActivity {
             return false;
         }
 
-        if(!(Gender.equals("male") || Gender.equals("female") || Gender.equals("other"))){
+        if(!(Gender.equals("male") || Gender.equals("female") || Gender.equals("others"))){
             Toast.makeText(getApplicationContext(),"Check your Gender",Toast.LENGTH_SHORT).show();
             return false;
         }
