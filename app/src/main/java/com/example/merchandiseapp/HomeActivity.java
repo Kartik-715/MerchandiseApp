@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity
 
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name", user.getDisplayName());
+        Log.d("name", global.getUsername());
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -156,7 +156,7 @@ public class HomeActivity extends AppCompatActivity
 
 
         String User_ID, User_Email;
-        User_Email = user.getEmail();
+        User_Email = global.getEmail();
         /*User_ID = "";
 
         for (int i = 0; i < User_Email.length(); i++){
@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity
             }
         }*/
 
-        User_ID = user.getUid();
+        User_ID = global.getUid();
 
         Prevalent.currentOnlineUser = User_ID;
         Prevalent.currentEmail = User_Email;

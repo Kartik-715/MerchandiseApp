@@ -30,25 +30,28 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.acl.Group;
+import java.net.URI;
 
-public class GroupRegister extends AppCompatActivity {
+public class UserRegister extends AppCompatActivity {
 
-    EditText grpName;
-    EditText grpContact;
-    EditText upi;
-    TextView grpEmail;
-    ImageView grpProfile;
-    Button update;
+    TextView usrEmail;
+    EditText usrName;
+    EditText usrPhone;
+    EditText usrGender;
+    EditText usrAddress;
+    ImageView usrPic;
+    String UID;
+
     Button choose;
     Button upload;
+    Button update;
+
     int flag = 0;
-    int flag1 = 0;
 
     String imageLocation;
     JSONObject Juser;
 
-    DatabaseReference GroupData;
+    DatabaseReference UserData;
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -59,23 +62,16 @@ public class GroupRegister extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_register);
+        setContentView(R.layout.activity_user_register);
 
-        grpName = findViewById(R.id.Grp_name);
-        grpContact = findViewById(R.id.admin_contact);
-        upi = findViewById(R.id.grp_upi);
-        grpEmail = findViewById(R.id.admin_email);
+        hideNav();
 
-
-        //grpEmail.setText("aayus170101034@iitg.ac.in");
-
-        grpProfile = findViewById(R.id.groupPic);
-        update = findViewById(R.id.Grp_update);
-        choose = findViewById(R.id.Grp_chooseBtn);
-        upload = findViewById(R.id.Grp_uploadBtn);
-
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        usrEmail = findViewById(R.id.user_email);
+        usrName = findViewById(R.id.user_name);
+        usrPhone = findViewById(R.id.user_contact);
+        usrGender = findViewById(R.id.user_gender);
+        usrPic = findViewById(R.id.userPic);
+        usrAddress = findViewById(R.id.user_address);
 
         Bundle b = getIntent().getExtras();
         if(b!=null){
@@ -87,14 +83,22 @@ public class GroupRegister extends AppCompatActivity {
                 //testing to find the user display name
                 //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
                 //setting the textview to mail of the logged in user
-
-                grpEmail.setText(Juser.getString("mail").toString());
+                usrEmail.setText(Juser.getString("mail"));
+                usrName.setText(Juser.getString("displayName"));
             }
+
             catch (Exception ex)
             {
                 Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
             }
         }
+
+        int temp = usrEmail.getText().hashCode();
+        UID = Integer.toString(temp);
+        update = findViewById(R.id.user_update);
+        choose = findViewById(R.id.user_chooseBtn);
+        upload = findViewById(R.id.user_uploadBtn);
+
 
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +124,12 @@ public class GroupRegister extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        hideNav();
+    }
+
     private void chooseimage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -136,8 +146,8 @@ public class GroupRegister extends AppCompatActivity {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-               // global.setBitmap(bitmap);
-                grpProfile.setImageBitmap(bitmap);
+                // global.setBitmap(bitmap);
+                usrPic.setImageBitmap(bitmap);
             }
             catch (IOException e)
             {
@@ -150,17 +160,13 @@ public class GroupRegister extends AppCompatActivity {
 
         if(filePath != null)
         {
-            if(grpName.getText().toString().trim().equals("")){
-                Toast.makeText(getApplicationContext(),"First Enter Group Name",Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            imageLocation = "images/groups/"+grpName.getText().toString().trim();
-            final StorageReference ref = storageReference.child(imageLocation);
+            imageLocation = "images/users/"+UID;
+            final StorageReference ref = FirebaseStorage.getInstance().getReference().child(imageLocation);
 
             Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
 
@@ -177,7 +183,7 @@ public class GroupRegister extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(GroupRegister.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserRegister.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                     })
@@ -194,64 +200,19 @@ public class GroupRegister extends AppCompatActivity {
 
     public boolean validate_entries(){
 
-        if(grpName.getText().toString().trim().equals("")){
-            Toast.makeText(getApplicationContext(),"Please enter the name of the group",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(grpContact.getText().toString().trim().equals("")){
-            Toast.makeText(getApplicationContext(),"Please enter the contact no. of the admin",Toast.LENGTH_SHORT).show();
-            return false;
-        }
+        String Gender = usrGender.getText().toString().trim();
 
-        if(upi.getText().toString().trim().equals("")){
-            Toast.makeText(getApplicationContext(),"Please enter the upi for the grp",Toast.LENGTH_SHORT).show();
+        if(usrName.getText().toString().trim().equals("")){
+            Toast.makeText(getApplicationContext(),"Please enter the name of the usr",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(usrPhone.getText().toString().trim().equals("")){
+            Toast.makeText(getApplicationContext(),"Please enter the contact no. of the usr",Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        GroupData = FirebaseDatabase.getInstance().getReference().child("Admin").child(grpName.getText().toString().trim());
-        GroupData.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    if(flag1 == 0)Toast.makeText(getApplicationContext(),"Group Requested",Toast.LENGTH_SHORT).show();
-                    flag1=2;
-                }
-
-                else {
-                    flag=1;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        if (flag1 == 2){
-            return false;
-        }
-
-        GroupData = FirebaseDatabase.getInstance().getReference().child("Groups").child(grpName.getText().toString().trim());
-        GroupData.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    if(flag1 == 0) Toast.makeText(getApplicationContext(),"Group With Same Name Already Registered",Toast.LENGTH_SHORT).show();
-                    flag1=2;
-                }
-                else {
-                    flag=1;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        if (flag1 == 2){
+        if(Gender.equals("")){
+            Toast.makeText(getApplicationContext(),"Please enter the gender for the usr",Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -260,24 +221,39 @@ public class GroupRegister extends AppCompatActivity {
             return false;
         }
 
+        if(!(Gender.equals("male") || Gender.equals("female") || Gender.equals("other"))){
+            Toast.makeText(getApplicationContext(),"Check your Gender",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
         return true;
     }
 
     public void update_info(){
-        GroupNode groupInfo = new GroupNode(grpName.getText().toString().trim(),
-                                            grpContact.getText().toString().trim(),
-                                            grpEmail.getText().toString().trim(),
-                                            upi.getText().toString().trim());
+        UserNode userInfo = new UserNode(usrName.getText().toString().trim(),
+                usrAddress.getText().toString().trim(),
+                usrGender.getText().toString().trim(),
+                usrPhone.getText().toString().trim(),
+                usrEmail.getText().toString().trim(),
+                UID);
 
-        GroupData = FirebaseDatabase.getInstance().getReference().child("Admin");
-        GroupData.child(grpName.getText().toString().trim()).setValue(groupInfo);
+        UserData = FirebaseDatabase.getInstance().getReference().child("Users");
+        UserData.child(UID).setValue(userInfo);
 
-        GroupData = GroupData.child(grpName.getText().toString().trim());
-        GroupData.child("UID").setValue(grpEmail.getText().toString().hashCode());
-        GroupData.child("Image Location").setValue(imageLocation);
-        GroupData.child("isApproved").setValue("No");
+        Intent i = new Intent(getApplicationContext(),SplashScreen.class);
+        i.putExtra("Type","users");
+        i.putExtra("Email",usrEmail.getText().toString());
+        startActivity(i);
+    }
 
-        Toast.makeText(getApplicationContext(),"Group Created",Toast.LENGTH_SHORT).show();
-        onBackPressed();
+    public void hideNav(){
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 }

@@ -7,14 +7,14 @@
     tools:context=".ManageProfile">
 
     <RelativeLayout
-        android:id="@+id/rellay1"
+        android:id="@+id/reLLay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/grad"
         android:paddingBottom="10dp">
 
         <RelativeLayout
-            android:id="@+id/imgUser"
+            android:id="@+id/imgGrp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -22,7 +22,7 @@
             android:background="@drawable/rectangle_border">
 
             <ImageView
-                android:id="@+id/profilePic_ui"
+                android:id="@+id/grpPic"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="9dp"
@@ -33,16 +33,15 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/edit_email_ui"
+            android:id="@+id/grpName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imgUser"
+            android:layout_below="@+id/imgGrp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15sp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:text="aayushmakharia1999@gmail.com"/>
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="40dp"
@@ -57,10 +56,10 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/linlay1"
+        android:id="@+id/LinLay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rellay1"
+        android:layout_below="@id/reLLay1"
         android:layout_marginTop="-5dp"
         android:orientation="horizontal">
 
@@ -80,7 +79,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/chooseBtn_ui"
+                    android:id="@+id/chooseBtn_grp"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -110,7 +109,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/uploadBtn_ui"
+                    android:id="@+id/uploadBtn_grp"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -129,7 +128,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linlay1">
+        android:layout_below="@+id/LinLay1"
+        android:layout_marginTop="-1dp">
 
 
         <LinearLayout
@@ -149,12 +149,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
+                    android:text="UPI"
                     android:textColor="#3797CF"
                     android:textSize="13sp" />
 
                 <EditText
-                    android:id="@+id/edit_name_ui"
+                    android:id="@+id/edit_upi_grp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -180,19 +180,37 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Phone"
+                    android:text="Locations"
                     android:textColor="#3797CF"
                     android:textSize="13sp" />
 
-                <EditText
-                    android:id="@+id/edit_contact_ui"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
-                    android:inputType="text"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <EditText
+                        android:id="@+id/add_loacation_grp"
+                        android:layout_width="132dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-light"
+                        android:inputType="text"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/addBtn_grp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_weight="2"
+                        android:text="Add Location"
+                        android:background="@drawable/grad"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -201,7 +219,6 @@
                     android:background="@color/Gray" />
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -209,15 +226,15 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Address"
+                    android:text="My Locations"
                     android:textColor="#3797CF"
                     android:textSize="13sp" />
 
-                <EditText
-                    android:id="@+id/edit_address_ui"
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/spinner_loc"
+                    android:layout_width="132dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif-light"
@@ -234,7 +251,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/updateBtn_ui"
+                android:id="@+id/updateBtn_grp"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -245,6 +262,8 @@
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
+
+
 
     </RelativeLayout>
 

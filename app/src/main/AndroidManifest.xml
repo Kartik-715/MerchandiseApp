@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".GroupManageProfile"></activity>
+        <activity android:name=".SplashScreen" />
+        <activity android:name=".UserRegister" />
         <activity android:name=".OutlookLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,11 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GroupRegister"></activity>
-        <activity android:name=".RedirectActivity">
-
-        </activity>
-
+        <activity android:name=".GroupRegister" />
+        <activity android:name=".RedirectActivity" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".GroupActivity"
@@ -52,7 +51,6 @@
             android:label="Staff"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".myWallet" />
-        <activity android:name=".Order_History" />
         <activity android:name=".StartProfileUser" />
         <activity
             android:name=".ManageProfile"
@@ -77,24 +75,21 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".AddMerchandise"
-            android:label="@string/app_name">
-
-        </activity>
-        <!--Intent filter to capture System Browser calling back to our app after sign-in-->
-        <!--Intent filter to capture System Browser calling back to our app after Sign In-->
-        <activity
-            android:name="com.microsoft.identity.client.BrowserTabActivity">
+            android:label="@string/app_name" /> <!-- Intent filter to capture System Browser calling back to our app after sign-in -->
+        <!-- Intent filter to capture System Browser calling back to our app after Sign In -->
+        <activity android:name="com.microsoft.identity.client.BrowserTabActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!--Add in your scheme/host from registered redirect URI-->
-                <data android:scheme="msal49325855-8489-4362-86da-71ef3125a401"
-                    android:host="auth" />
+                <!-- Add in your scheme/host from registered redirect URI -->
+                <data
+                    android:host="auth"
+                    android:scheme="msal49325855-8489-4362-86da-71ef3125a401" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

@@ -22,7 +22,8 @@ public class G_var extends Application {
     private String gender;
     private StorageReference imageRef;
     private Bitmap bitmap;
-
+    private String UPI;
+    private String ImageLocation;
 
 
 
@@ -91,5 +92,21 @@ public class G_var extends Application {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public String getUPI() {
+        return UPI;
+    }
+
+    public void setUPI(String UPI) {
+        this.UPI = UPI;
+    }
+
+    public String getImageLocation() {
+        return ImageLocation;
+    }
+
+    public void setImageLocation(String imageLocation) {
+        ImageLocation = imageLocation;
     }
 }
