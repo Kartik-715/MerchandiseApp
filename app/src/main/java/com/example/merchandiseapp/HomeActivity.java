@@ -230,9 +230,9 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.manage_profile) {
             Intent intent = new Intent(this, ManageProfile.class);
             startActivity(intent);
-        } else if (id == R.id.wallet) {
-            Intent intent = new Intent(this, myWallet.class);
-            startActivity(intent);
+//        } else if (id == R.id.wallet) {
+//            Intent intent = new Intent(this, myWallet.class);
+//            startActivity(intent);
         }else if (id == R.id.orders) {
             Intent intent = new Intent(this,Order_History.class);
             startActivity(intent);

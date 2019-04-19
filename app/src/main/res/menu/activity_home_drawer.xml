@@ -9,10 +9,6 @@
             android:icon="@drawable/user_nav"
             android:title="Manage Profile" />
         <item
-            android:id="@+id/wallet"
-            android:icon="@drawable/wallet_nav"
-            android:title="My Wallet" />
-        <item
             android:id="@+id/cart"
             android:icon="@drawable/cart_nav"
             android:title="Cart" />

@@ -54,6 +54,7 @@ public class GroupManageProfile extends AppCompatActivity {
 
     int flag = 0;
     int flag1 = 0;
+    int flag_locationCheck;
 
     String imageLocation;
     JSONObject Juser;
@@ -242,11 +243,57 @@ public class GroupManageProfile extends AppCompatActivity {
         }
 
         DatabaseReference GroupData = FirebaseDatabase.getInstance().getReference().child("Group").child(name.getText().toString()).child("Details").child("Locations");
+
+        if(location_exists(location.getText().toString()))
+        {
+            Toast.makeText(getApplicationContext(),"Location already exists",Toast.LENGTH_SHORT).show();
+            return;
+        }
         String g = Integer.toString(flag);
         GroupData.child(g).setValue(location.getText().toString());
 
         location.setText("");
     }
+
+   public boolean location_exists(final String location)
+   {
+
+       final DatabaseReference location_check = FirebaseDatabase.getInstance().getReference().child("Group").child(name.getText().toString()).child("Details").child("Locations");
+
+       location_check.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               flag_locationCheck = 0;
+
+               String areaname;
+               for (DataSnapshot Snapshot : dataSnapshot.getChildren()){
+                   areaname = Snapshot.getValue().toString();
+                   if(areaname.equals(location)) {
+                       flag_locationCheck = 1;
+
+                   }
+
+               }
+
+           }
+
+
+
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+           }
+       });
+
+       if(flag_locationCheck == 1) {
+
+           Toast.makeText(getApplicationContext(),Integer.toString(flag_locationCheck),Toast.LENGTH_SHORT).show();
+           flag_locationCheck = 0;
+           return true;
+       }
+         else return false;
+   }
     public void hideNav(){
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
