@@ -69,7 +69,7 @@ public class PaymentActivity extends AppCompatActivity
             {
                 walletMoney -= currentMoney;
                 System.out.println("First : " + Prevalent.currentWalletMoney);
-                String Wallet_Money = Integer.toString(walletMoney);
+                final String Wallet_Money = Integer.toString(walletMoney);
                 Prevalent.currentWalletMoney = Wallet_Money;
                 System.out.println("First : " + Prevalent.currentWalletMoney);
 
@@ -82,12 +82,23 @@ public class PaymentActivity extends AppCompatActivity
                     {
                         if(dataSnapshot.child("Wallet_Money").exists())
                         {
+                            HashMap<String, Object> userdataMap = new HashMap<>();
+                            userdataMap.put("Wallet_Money", Wallet_Money);
+
+                            userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task)
+                                {
+
+                                }
+                            });
                         }
 
                         else //Just add the Money as "0" in the data
                         {
                             HashMap<String, Object> userdataMap = new HashMap<>();
-                            userdataMap.put("Wallet_Money", Wallet_Money);
+                            userdataMap.put("Wallet_Money", "0");
 
                             userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
                             {
