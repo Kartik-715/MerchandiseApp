@@ -3,21 +3,26 @@ package com.example.merchandiseapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class multiple_images extends AppCompatActivity {
+public class MultipleImages extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE1 = 1;
     private Button SelectedButton;
@@ -26,11 +31,12 @@ public class multiple_images extends AppCompatActivity {
     private List<String> fileNameList;
     private List<String> fileDoneList;
     private UplaodListAdapter uplaodListAdapter;
-
+    private StorageReference mStorage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multiple_images);
+        setContentView(R.layout.activity_multiple_images2);
+        mStorage = FirebaseStorage.getInstance().getReference();
 
         SelectedButton = (Button) findViewById(R.id.addImg);
         UploadList = (RecyclerView) findViewById( R.id.recyclerview);
@@ -56,11 +62,15 @@ public class multiple_images extends AppCompatActivity {
             }
         });
 
+
+
+
     }
 
-    public void OnActivityResult(int requestCode , int resultCode , Intent data)
-    {
-        super.onActivityResult(requestCode,resultCode,data);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RESULT_LOAD_IMAGE1 && resultCode == RESULT_OK){
 
@@ -69,6 +79,8 @@ public class multiple_images extends AppCompatActivity {
                 System.out.println("select more images");
 
                 int totalItemSelected =data.getClipData().getItemCount();
+                System.out.println(totalItemSelected);
+
 
                 for(int i=0 ;i <totalItemSelected;i++)
                 {
@@ -76,7 +88,20 @@ public class multiple_images extends AppCompatActivity {
                     String fileName = getFileName(fileUri);
 
                     fileNameList.add(fileName);
+                    fileDoneList.add("Uploading");
+                    System.out.println(fileNameList);
+
                     uplaodListAdapter.notifyDataSetChanged();
+
+                    StorageReference fileToUpload = mStorage.child("Merchandise").child(fileName);
+                    fileToUpload.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            System.out.println("image uplaoded");
+                            Toast.makeText(MultipleImages.this,"Done",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
             }
 
@@ -90,10 +115,12 @@ public class multiple_images extends AppCompatActivity {
 
         }
 
-
     }
 
-public String getFileName(Uri uri){
+
+
+
+    public String getFileName(Uri uri){
 
         String result = null;
 
@@ -130,6 +157,11 @@ public String getFileName(Uri uri){
         }
 
         return result;
-}
+    }
+
+
+
+
+
 
 }
