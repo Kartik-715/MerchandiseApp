@@ -1,9 +1,17 @@
 package com.example.merchandiseapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,16 +21,21 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -48,6 +61,14 @@ public class AddMerchandise extends AppCompatActivity {
 
     private ListView accessGroupListView;
     private ListView sizeQtyListView;
+    private static final int RESULT_LOAD_IMAGE1 = 1;
+    private Button SelectedButton;
+    private RecyclerView UploadList;
+
+    private List<String> fileNameList;
+    private List<String> fileDoneList;
+    private UplaodListAdapter uplaodListAdapter;
+    private StorageReference mStorage;
 
 
     private String GroupName ;
@@ -69,6 +90,7 @@ public class AddMerchandise extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_merchandise);
 
+        Image = new ArrayList<String>();
         Spinner dropdown = findViewById(R.id.spinner1);
         String[] items = new String[]{"Footwear"
                 , "T-Shirt", "Lowers" , "Hoodie","Others"};
@@ -148,10 +170,11 @@ public class AddMerchandise extends AppCompatActivity {
             public void onClick(View view) {
                 Spinner dropdown = findViewById(R.id.spinner1);
                 Category = (String) dropdown.getSelectedItem();
-                Image = new ArrayList<>();
                 Material = mat.getText().toString();
                 PID = prod_Id.getText().toString();
                 Price = price_edt.getText().toString();
+
+
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
 
                 if(listSQ.size()==0)
@@ -185,6 +208,8 @@ public class AddMerchandise extends AppCompatActivity {
 
                             } else {
                                     //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
+
+                                System.out.println("I am 2nd" + Image);
                                 Merchandise merchandise = new Merchandise(GroupName, Category, Image, Material, PID, Price, qty, size, AccessGroups, OrderType, "true");
                                 HashMap<String, Object> merchandiseValues = merchandise.toMap();
 
@@ -220,6 +245,45 @@ public class AddMerchandise extends AppCompatActivity {
 
             }
         });
+
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+
+        SelectedButton = (Button) findViewById(R.id.addImg);
+        UploadList = (RecyclerView) findViewById( R.id.recyclerview);
+
+        fileNameList = new ArrayList<>();
+        fileDoneList = new ArrayList<>();
+
+        uplaodListAdapter = new UplaodListAdapter(fileNameList , fileDoneList );
+        UploadList.setLayoutManager(new LinearLayoutManager(this));
+//        UploadList.hasFixedSize("true");
+        UploadList.setAdapter(uplaodListAdapter);
+
+        SelectedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE , true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent , "Select Picture"), RESULT_LOAD_IMAGE1 );
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
     }
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
@@ -237,5 +301,135 @@ public class AddMerchandise extends AppCompatActivity {
                 break;
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == RESULT_LOAD_IMAGE1 && resultCode == RESULT_OK){
+
+            if(data.getClipData() != null)
+            {
+                System.out.println("select more images");
+
+                int totalItemSelected =data.getClipData().getItemCount();
+                System.out.println(totalItemSelected);
+
+
+                for(int i=0 ;i <totalItemSelected;i++)
+                {
+                    final Uri fileUri = data.getClipData().getItemAt(i).getUri();
+                    final String fileName = getFileName(fileUri);
+
+                    fileNameList.add(fileName);
+                    fileDoneList.add("uploading");
+                    System.out.println(fileNameList);
+
+                    uplaodListAdapter.notifyDataSetChanged();
+
+                    final int finalI=i;
+                    StorageReference fileToUpload = mStorage.child("Merchandise").child(fileName);
+                    System.out.println(fileUri+"!!!!!\n");
+
+
+
+                    fileToUpload.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            System.out.println("image uplaoded");
+                            fileDoneList.remove(finalI);
+                            Toast.makeText(AddMerchandise.this,"Done",Toast.LENGTH_SHORT).show();
+                            fileDoneList.add(finalI,"Done");
+                            uplaodListAdapter.notifyDataSetChanged();
+//                            Image.add(fileUri.toString());
+//                            System.out.println(fileUri.toString());
+//                            Image.add(fileUri.toString());
+//                            System.out.println("I am 1st" + Image);
+
+                            StorageReference a =FirebaseStorage.getInstance().getReference().child("Merchandise").child(fileName);
+
+                                    ((StorageReference) a).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                                {
+                                @Override
+                                public void onSuccess(Uri downloadUrl)
+                                {
+
+                                    System.out.println(downloadUrl);
+                                    Image.add(downloadUrl.toString());
+                                    //do something with downloadurl
+                                }
+                            });
+
+
+
+
+                        }
+
+                    });
+
+                }
+            }
+
+            else if (data.getData() != null)
+            {
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Warning");
+                alert.setMessage("Please Select at least two images...");
+                System.out.println("yo baby");
+                AlertDialog alertBox = alert.create();
+                alertBox.show();
+            }
+
+
+
+        }
+
+    }
+
+
+
+    public String getFileName(Uri uri){
+
+        String result = null;
+
+        if(uri.getScheme().equals("content")){
+
+            Cursor cursor= getContentResolver().query(uri,null,null,null,null);
+            try{
+
+                if (cursor!=null && cursor.moveToFirst())
+                {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+
+                }
+            }
+
+            finally {
+                cursor.close();
+            }
+
+
+
+        }
+
+        if(result==null)
+        {
+            result=uri.getPath();
+            int cut = result.lastIndexOf('/');
+
+            if(cut != -1){
+
+                result = result.substring(cut+1);
+
+            }
+        }
+
+        return result;
+    }
+
+
+
 
 }
