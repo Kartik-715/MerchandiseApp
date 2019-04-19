@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,6 +71,7 @@ public class productDetailActivity extends AppCompatActivity
     private ArrayList<String> arraySpinner;
     private int flag;
     private String selectedSpinneritem;
+
 
     public interface MyCallback
     {
