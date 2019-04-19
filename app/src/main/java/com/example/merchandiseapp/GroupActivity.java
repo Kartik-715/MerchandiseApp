@@ -13,14 +13,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class GroupActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class GroupActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    G_var global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor);
+
+        global = (G_var) getApplicationContext();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -41,6 +47,14 @@ public class GroupActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView email = headerView.findViewById(R.id.grp_textView);
+        email.setText(global.getEmail());
+
+        ImageView imageView = headerView.findViewById(R.id.grp_imageView);
+        imageView.setImageBitmap(global.getBitmap());
     }
 
     @Override
@@ -82,6 +96,9 @@ public class GroupActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
+            Intent intent = new Intent(GroupActivity.this,GroupManageProfile.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_stock) {
 
         } else if (id == R.id.nav_request) {
             Intent intent = new Intent(GroupActivity.this,PreBookings.class);

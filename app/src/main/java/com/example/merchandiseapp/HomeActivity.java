@@ -46,11 +46,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.microsoft.identity.client.IAccount;
+import com.microsoft.identity.client.PublicClientApplication;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
@@ -68,6 +71,7 @@ public class HomeActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    View headerView;
 
 
     @Override
@@ -137,7 +141,7 @@ public class HomeActivity extends AppCompatActivity
 
         final FirebaseAuth mauth = FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
-        Log.d("name", user.getDisplayName());
+        Log.d("name", global.getUsername());
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -150,12 +154,12 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
 
 
 
         String User_ID, User_Email;
-        User_Email = user.getEmail();
+        User_Email = global.getEmail();
         /*User_ID = "";
 
         for (int i = 0; i < User_Email.length(); i++){
@@ -168,7 +172,7 @@ public class HomeActivity extends AppCompatActivity
             }
         }*/
 
-        User_ID = user.getUid();
+        User_ID = global.getUid();
 
         Prevalent.currentOnlineUser = User_ID;
         Prevalent.currentEmail = User_Email;
@@ -182,6 +186,15 @@ public class HomeActivity extends AppCompatActivity
         addImage();
 //        new DownloadImageTask(imageView)
 //                .execute(user.getPhotoUrl().toString());
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        imageView = headerView.findViewById(R.id.imageView);
+        addImage();
+
     }
 
     @Override
@@ -220,12 +233,14 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.manage_profile) {
             Intent intent = new Intent(this, ManageProfile.class);
             startActivity(intent);
-        } else if (id == R.id.wallet) {
-            Intent intent = new Intent(this, myWallet.class);
+//        } else if (id == R.id.wallet) {
+//            Intent intent = new Intent(this, myWallet.class);
+//            startActivity(intent);
+        }else if (id == R.id.orders) {
+            Intent intent = new Intent(this,Order_History.class);
             startActivity(intent);
-        }/* else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+        }/* else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
@@ -234,13 +249,41 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_logout) {
-            mGoogleSignInClient.revokeAccess()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // ...
+            PublicClientApplication sampleApp = new PublicClientApplication(
+                    this.getApplicationContext(),
+                    R.raw.auth_config);
+                /* Attempt to get a account and remove their cookies from cache */
+                List<IAccount> accounts = null;
+
+                try {
+                    accounts = sampleApp.getAccounts();
+
+                    if (accounts == null) {
+                        /* We have no accounts */
+
+                    } else if (accounts.size() == 1) {
+                        /* We have 1 account */
+                        /* Remove from token cache */
+                        sampleApp.removeAccount(accounts.get(0));
+                        //  updateSignedOutUI();
+
+                    }
+                    else {
+                        /* We have multiple accounts */
+                        for (int i = 0; i < accounts.size(); i++) {
+                            sampleApp.removeAccount(accounts.get(i));
                         }
-                    });
+                    }
+
+                    Toast.makeText(getBaseContext(), "Signed Out!", Toast.LENGTH_SHORT)
+                            .show();
+
+                } catch (IndexOutOfBoundsException e) {
+                    Log.d(TAG, "User at this position does not exist: " + e.toString());
+                }
+            Intent intent = new Intent(HomeActivity.this, OutlookLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

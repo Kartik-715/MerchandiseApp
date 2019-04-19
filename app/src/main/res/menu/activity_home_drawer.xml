@@ -13,13 +13,14 @@
             android:icon="@drawable/cart_nav"
             android:title="Cart" />
         <item
+            android:id="@+id/orders"
+            android:icon="@drawable/orders"
+            android:title="Orders History" />
+        <item
             android:id="@+id/settings"
             android:icon="@drawable/settings_nav"
             android:title="Settings" />
-        <item
-            android:id="@+id/wallet"
-            android:icon="@drawable/wallet_nav"
-            android:title="My Wallet" />
+
 
         <item
             android:title="FAQs"
