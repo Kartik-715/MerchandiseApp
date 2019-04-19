@@ -50,6 +50,8 @@ public class DetailsActivity extends AppCompatActivity
         Address.setText(Prevalent.currentAddress);
         PhoneNumber.setText(Prevalent.currentPhone);
 
+        Prevalent.currentMoney = "0";
+
         Payment.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -117,21 +119,24 @@ public class DetailsActivity extends AppCompatActivity
 
                         }
                     });
-            Prevalent.currentMoney = "0";
             cartListRef.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
                     String price = dataSnapshot.child("Price").getValue().toString();
+                    System.out.println("Price: " + price);
                     int price_amount = Integer.parseInt(price);
 
                     String global_price = Prevalent.currentMoney;
                     int global_amount = Integer.parseInt(global_price);
+                    System.out.println("Global Price : " + price);
 
                     global_amount += price_amount;
                     String global_price2 = Integer.toString(global_amount);
                     Prevalent.currentMoney = global_price2;
+
+                    System.out.println("Global_Price_Adding : " + Prevalent.currentMoney);
                 }
 
                 @Override

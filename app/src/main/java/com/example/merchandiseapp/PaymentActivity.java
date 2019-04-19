@@ -75,6 +75,12 @@ public class PaymentActivity extends AppCompatActivity
         {
             processPaytm();
         }
+
+        if(radioButton.getText().toString().equals("UPI"))
+        {
+            Intent intent = new Intent(this, UPIActivity.class);
+            startActivity(intent);
+        }
         if(radioButton.getText().toString().equals("Wallet Money"))
         {
 
