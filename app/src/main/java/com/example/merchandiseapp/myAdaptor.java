@@ -102,6 +102,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
                 intent.putExtra( "category", mData.get(position).getCategory()  );
                 intent.putExtra( "groupName", mData.get(position).getGroupName()  );
                 intent.putExtra( "size_list",  mData.get(position).getSize());
+                intent.putExtra("quantity_list2", mData.get(position).getQuantity());
                 mContext.startActivity(intent);
 
             }

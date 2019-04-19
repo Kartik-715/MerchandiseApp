@@ -114,7 +114,6 @@ public class UPIActivity extends AppCompatActivity
         if (isConnectionAvailable(UPIActivity.this))
         {
             String str = data.get(0);
-            //Log.d("UPIPAY", "upiPaymentDataOperation: "+str);
             String paymentCancel = "";
             if(str == null) str = "discard";
             String status = "";
@@ -139,8 +138,8 @@ public class UPIActivity extends AppCompatActivity
             if (status.equals("success"))
             {
                 Toast.makeText(UPIActivity.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
-                //Log.d("UPI", "responseStr: "+approvalRefNo);
             }
+
             else if("Payment cancelled by user.".equals(paymentCancel))
                 Toast.makeText(UPIActivity.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
 

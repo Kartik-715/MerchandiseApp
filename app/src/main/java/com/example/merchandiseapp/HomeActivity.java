@@ -152,7 +152,7 @@ public class HomeActivity extends AppCompatActivity
 
                             if(list.size() != 0)
                             {
-                                FragmentItem fragment = new FragmentItem() ;
+                                FragmentItem fragment = new FragmentItem(loadingBar) ;
                                 Bundle bundle = new Bundle() ; // Incase you want to pass some arguments into Fragment //
                                 fragment.setObject(list);
                                 fragment.setArguments(bundle);
