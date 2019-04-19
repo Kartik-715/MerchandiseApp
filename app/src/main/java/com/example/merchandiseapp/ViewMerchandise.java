@@ -3,11 +3,14 @@ package com.example.merchandiseapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Holder.viewMerchandiseHolder;
+import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +32,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class ViewMerchandise extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -38,6 +45,8 @@ public class ViewMerchandise extends AppCompatActivity {
     private DatabaseReference myRef1;
     private DatabaseReference myRef2;
     private String GroupName;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     private int countCards;
     private HashMap<String, Object> All_orders = new HashMap<String, Object>();
     private String PID;
@@ -48,19 +57,51 @@ public class ViewMerchandise extends AppCompatActivity {
         setContentView(R.layout.activity_view_merchandise);
 
 
+        GroupName = "CSEA" ; // TO DO PREVALENT CURRENT GROUP NAME //
+        tabLayout = findViewById(R.id.tabLayout2);
+        viewPager = findViewById(R.id.viewPager_id2);
+        final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());
+
+        DatabaseReference merch = FirebaseDatabase.getInstance().getReference().child("Group").child(GroupName).child("Merchandise");
+        merch.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //adaptor.clearFragments();
+
+                for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren()) {
+                    List<Merchandise> list = new ArrayList<>();
+                    for (DataSnapshot merchandise : postdatasnapshot.getChildren()) {
+                        //System.out.println(merchandise) ;
+                        Merchandise mr = merchandise.getValue(Merchandise.class);
+                        list.add(mr);
+
+                    }
+
+                    if (list.size() != 0) {
+                        FragmentItemViewMerch fragment = new FragmentItemViewMerch();
+                        Bundle bundle = new Bundle(); // Incase you want to pass some arguments into Fragment //
+                        fragment.setObject(list);
+                        fragment.setArguments(bundle);
+                        System.out.println("Added a fragment!");
+                        adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey());
+
+                    }
+
+                }
 
 
-        /*Here the groupname and category has to be extracted*/
-        GroupName = "CSEA";
-        Category = "Footwear";
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        viewPager.setAdapter(adaptor);
+        tabLayout.setupWithViewPager(viewPager);
 
 
-
-        recyclerView = findViewById(R.id.viewMerchandise_list);
-        System.out.println(recyclerView);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void deleteMerchandise(View view,final String PID,final String Category){
@@ -156,45 +197,6 @@ public class ViewMerchandise extends AppCompatActivity {
         alertDialog.show();
     }
 
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
-        preOederListRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category);
-        final Query queries = preOederListRef.orderByKey();
-
-        queries.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                countCards = (int) dataSnapshot.getChildrenCount();
-                All_orders= (HashMap<String, Object>) dataSnapshot.getValue();
-                System.out.println("*******watch out for this***********"+All_orders);
-
-                if(All_orders != null) {
-
-
-                    if (dataSnapshot.exists()) {
-                        //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
-                        DataExists(queries);
-                    } else {
-                        //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
-                        NoDataExists();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
-
-            }
-        });
-    }
 
     private void NoDataExists()
     {

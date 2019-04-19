@@ -8,24 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.merchandiseapp.Prevalent.Prevalent;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class FragmentItem extends Fragment
+public class FragmentItemViewMerch extends Fragment
 {
     private Context mHomeActivity;
     Bundle bundle;
@@ -49,7 +38,7 @@ public class FragmentItem extends Fragment
         return rv;
     }
 
-    public FragmentItem()
+    public FragmentItemViewMerch()
     {
 
     }
@@ -66,7 +55,7 @@ public class FragmentItem extends Fragment
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mHomeActivity);
         recyclerView.setLayoutManager(layoutManager);
-        myAdaptor adaptor = new myAdaptor(mHomeActivity, list);
+        viewMerchAdaptor adaptor = new viewMerchAdaptor(mHomeActivity, list);
         recyclerView.setAdapter(adaptor);
     }
 
