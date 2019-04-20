@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ReviewDisplayActivity extends AppCompatActivity {
+public class ReviewDisplayActivityGroup extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -36,9 +36,10 @@ public class ReviewDisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_display);
-        pidTxt = getIntent().getStringExtra("pid");
-        categoryTxt = getIntent().getStringExtra("category");
-        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+" "+pidTxt,Toast.LENGTH_LONG).show();
+
+
+        pidTxt = getIntent().getStringExtra("PID");
+        categoryTxt = getIntent().getStringExtra("Category");
         uid_list = new ArrayList<String>();
         select = getIntent().getStringExtra("select");
         recyclerView = findViewById(R.id.recyclerReview);
@@ -55,10 +56,10 @@ public class ReviewDisplayActivity extends AppCompatActivity {
                 if (select.equals("Yes")) {
                     select = (String) dataSnapshot.child("GroupName").getValue();
 
-                    //Toast.makeText(ReviewDisplayActivity.this,select,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ReviewDisplayActivityGroup.this,select,Toast.LENGTH_LONG).show();
                 }
                 display();
-                //Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+                //Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -66,7 +67,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 
             }
         });
-       // Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" "+select,Toast.LENGTH_LONG).show();
+       // Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" "+select,Toast.LENGTH_LONG).show();
 //        if (select == "Yes") {
 //            select = some;
 //        }
@@ -76,9 +77,9 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 
     //@Override
     protected void display() {
-        //Toast.makeText(ReviewDisplayActivity.this," "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+        //Toast.makeText(ReviewDisplayActivityGroup.this," "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
         super.onStart();
-        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+"********************** "+pidTxt,Toast.LENGTH_LONG).show();
+        //Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+categoryTxt+"********************** "+pidTxt,Toast.LENGTH_LONG).show();
         final DatabaseReference reviewListRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(categoryTxt).child(pidTxt).child("Rating");
 
         if (select.equals("No")) {
@@ -94,7 +95,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
                     holder.lstars.setText(model.getStars());
                     holder.luser.setText(model.getUID());
                     uid_list.add(model.getUID());
-                    //Toast.makeText(ReviewDisplayActivity.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ReviewDisplayActivityGroup.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
                 }
 
                 @NonNull
@@ -111,7 +112,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 
 
         } else {
-            //Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+            //Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
             FirebaseRecyclerOptions<Rating> options = new FirebaseRecyclerOptions.Builder<Rating>()
                     .setQuery(reviewListRef.orderByChild("Group").equalTo(select), Rating.class)
                     .build();
@@ -124,7 +125,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
                     holder.lstars.setText(model.getStars());
                     holder.luser.setText(model.getUID());
                     uid_list.add(model.getUID());
-                    //Toast.makeText(ReviewDisplayActivity.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ReviewDisplayActivityGroup.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
                 }
 
                 @NonNull
@@ -153,7 +154,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 //                holder.lstars.setText( model.getStars() );
 //                holder.luser.setText(model.getUID());
 //                uid_list.add(model.getUID());
-//                Toast.makeText(ReviewDisplayActivity.this,"hey "+model.getComment()+" "+model.getStars()+" "+model.getUID(),Toast.LENGTH_LONG).show();
+//                Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+model.getComment()+" "+model.getStars()+" "+model.getUID(),Toast.LENGTH_LONG).show();
 //            }
 //
 //            @NonNull

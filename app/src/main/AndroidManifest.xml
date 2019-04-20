@@ -20,12 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ReviewDisplayActivity"></activity>
+        <activity android:name=".ReviewDisplayActivityGroup"></activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".orderRequestDetails"></activity>
         <activity android:name=".UPIActivity" />
         <activity android:name=".PaymentActivity" />
-        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity2" />
         <activity android:name=".RedirectActivity" />
         <activity android:name=".ViewMerchandise" /> <!-- <service -->
@@ -69,7 +68,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddMerchandise" />
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
