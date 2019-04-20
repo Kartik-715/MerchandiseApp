@@ -130,9 +130,26 @@ String PID;
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String text = dropdown.getSelectedItem().toString();
 //TO DO
                 System.out.println(OrderID.get(i));
+
+                String noti;
+                noti = "We are happy to inform you that your order ";
+                if (text.toLowerCase().equals("packed")) {
+                    noti += "is packed.";
+                } else if (text.toLowerCase().equals("can collect")) {
+                    noti += "is now ready with an executive. You can collect it from him.";
+                } else if (text.toLowerCase().equals("delivered")) {
+                    noti += "has been delivered";
+                }
+
+                System.out.println(UserID+"DS");
+                FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child(UserID.get(i)).child("notiList").setValue(noti);
+
+
                 FirebaseDatabase.getInstance().getReference().child("Group")
                         .child("CSEA").child("Orders").child(PID).child("Orders").child(OrderID.get(i)).child("Status").setValue(text)
 
@@ -144,6 +161,9 @@ String PID;
 
                             }
                         });
+
+
+
 
                 FirebaseDatabase.getInstance().getReference()
                         .child("Users").child(UserID.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -157,8 +177,6 @@ String PID;
 
                     }
                 });
-            }
-        });
 
         rec= Email.get(i);
         System.out.println(rec + " )))");
@@ -195,6 +213,9 @@ String PID;
 
         RetrieveFeedTask task = new RetrieveFeedTask();
         task.execute();
+            }
+        });
+
         return view;
     }
 
