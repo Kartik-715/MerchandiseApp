@@ -7,16 +7,18 @@ public class Notifications {
     private String isApproved;
     private String UID;
     private String UPI;
+    private String Image_Location ;
 
     public Notifications() {
     }
 
-    public Notifications(String contact, String email, String groupName, String isApproved, String uid) {
+    public Notifications(String contact, String email, String groupName, String isApproved, String uid, String image_location) {
         Contact = contact;
         EmailID = email;
         GroupName = groupName;
         this.isApproved = isApproved;
         UID = uid;
+        Image_Location = image_location;
     }
 
     public String getContact() {
@@ -66,5 +68,13 @@ public class Notifications {
 
     public void setEmailID(String emailID) {
         EmailID = emailID;
+    }
+
+    public String getImage_Location() {
+        return Image_Location;
+    }
+
+    public void setImage_Location(String image_Location) {
+        Image_Location = image_Location;
     }
 }
