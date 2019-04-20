@@ -122,7 +122,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
         requestMap.put("Email",Email_ID.getText().toString());
-        requestMap.put("IsPaid", "true");
+        //requestMap.put("IsPaid", "true");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -192,7 +192,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
         requestMap.put("Email",Email_ID.getText().toString());
-        requestMap.put("IsPaid", "true");
+        //requestMap.put("IsPaid", "true");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {

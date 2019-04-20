@@ -46,6 +46,7 @@ public class ViewRequestsActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        Prevalent.currentOrderType = "2";
     }
 
     @Override

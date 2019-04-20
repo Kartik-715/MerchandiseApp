@@ -268,10 +268,10 @@ public class PaymentActivity extends AppCompatActivity
 
     private void processWallet()
     {
-        int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
+        //int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
         int currentMoney = Integer.parseInt(Prevalent.currentMoney);
 
-        //walletMoney = 10000;
+        int walletMoney = 10000;
         System.out.println("Chirag" + walletMoney + " " + currentMoney);
 
         if(currentMoney <= walletMoney)
@@ -365,13 +365,31 @@ public class PaymentActivity extends AppCompatActivity
             String group_name = group_list.get(i);
             String product_name = product_list.get(i);
 
-            final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
-            final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
+            final DatabaseReference cartListRef;
+            final DatabaseReference cartListRef2;
 
-            cartListRef.child("IsPlaced").setValue("true");
-            cartListRef2.child("IsPlaced").setValue("true");
-            //cartListRef.child("Status").setValue("")
-            //cartListRef2.child("Status").setValue("")
+            if(Prevalent.currentOrderType.equals("1"))
+            {
+                cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+                cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
+
+                cartListRef.child("IsPlaced").setValue("true");
+                cartListRef2.child("IsPlaced").setValue("true");
+                //cartListRef.child("Status").setValue("");
+                //cartListRef2.child("Status").setValue("");
+            }
+
+            else
+            {
+                cartListRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+                cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(product_name).child("Requests").child(orderid);
+
+                cartListRef.child("IsPaid").setValue("true");
+                cartListRef2.child("IsPaid").setValue("true");
+                //cartListRef.child("Status").setValue("");
+                //cartListRef2.child("Status").setValue("");
+            }
+
 
             /*final HashMap<String, Object> cartMap = new HashMap<>();
             cartMap.put("IsPlaced", PhoneNumber.getText().toString());
