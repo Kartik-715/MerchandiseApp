@@ -89,7 +89,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
         }
         holder.txtProductQuantity.setText("Total Quantity = " + String.valueOf(totalquantity));
         holder.txtProductPrice.setText("Price: " + model.getPrice());
-        holder.txtProductName.setText(model.getCategory());
+        holder.txtProductName.setText(model.getCategory()+" : "+model.getPID());
         if(img!=null) {
             Picasso.get().load(img.get(0)).into(holder.CartImage);
         }

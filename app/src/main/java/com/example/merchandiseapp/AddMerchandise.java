@@ -195,7 +195,7 @@ public class AddMerchandise extends AppCompatActivity {
 
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
 
-                if(listSQ.size()==0)
+                if(listSQ.size()==0 && OrderType.equals("1"))
                 {
                     Toast.makeText(getApplicationContext(),"Enter Valid Quantity and Size",Toast.LENGTH_LONG).show();
                 }
