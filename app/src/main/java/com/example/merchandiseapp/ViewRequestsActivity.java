@@ -53,17 +53,7 @@ public class ViewRequestsActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        String User_ID, User_Email;
-        //User_Email = user.getEmail();
-        //User_ID = user.getUid();
-        User_Email = "mayank@iitg.ac.in";
 
-        String temp_email = User_Email;
-        int temp = User_Email.hashCode();
-        final String hashcode = Integer.toString(temp);
-
-        Prevalent.currentOnlineUser = hashcode;
-        Prevalent.currentEmail = temp_email;
 
         requestListRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp")
                             .child(Prevalent.currentOnlineUser);

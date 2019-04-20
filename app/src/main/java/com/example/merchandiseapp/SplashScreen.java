@@ -25,7 +25,7 @@ import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONObject;
 
-public class SplashScreen extends AppCompatActivity {
+public class  SplashScreen extends AppCompatActivity {
 
     G_var global;
     String type;
@@ -68,6 +68,14 @@ public class SplashScreen extends AppCompatActivity {
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot)
                     {
                         final String usrUID = Integer.toString(email.hashCode());
+
+                        global.setUsername(dataSnapshot.child("Name").getValue().toString());
+                        global.setAddress(dataSnapshot.child("Address").getValue().toString());
+                        global.setContact(dataSnapshot.child("Contact").getValue().toString());
+                        global.setEmail(dataSnapshot.child("Email_ID").getValue().toString());
+                        global.setGender(dataSnapshot.child("Gender").getValue().toString());
+                        getImage();
+
                         new Handler().postDelayed(new Runnable()
                         {
                             @Override
@@ -100,12 +108,7 @@ public class SplashScreen extends AppCompatActivity {
                             }
                         }, SPLASH_TIME_OUT);
 
-                        global.setUsername(dataSnapshot.child("Name").getValue().toString());
-                        global.setAddress(dataSnapshot.child("Address").getValue().toString());
-                        global.setContact(dataSnapshot.child("Contact").getValue().toString());
-                        global.setEmail(dataSnapshot.child("Email_ID").getValue().toString());
-                        global.setGender(dataSnapshot.child("Gender").getValue().toString());
-                        getImage();
+
                     }
 
                     @Override
@@ -128,18 +131,22 @@ public class SplashScreen extends AppCompatActivity {
 
 
                         global.setUsername(grpName);
-
-                        if(dataSnapshot.child("Image Location").getValue() == null)
-                            global.setImageLocation("/");
-
-                        else
-                        {
-                            global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
-                            getImage();
-                        }
+                        global.setImageLocation(dataSnapshot.child("Image_Location").getValue().toString());
                         global.setEmail(dataSnapshot.child("EmailID").getValue().toString());
                         global.setContact(dataSnapshot.child("Contact").getValue().toString());
                         global.setUPI(dataSnapshot.child("UPI").getValue().toString());
+                        global.setImageLocation(dataSnapshot.child("Image_Location").getValue().toString());
+                        getImage();
+
+                        new Handler().postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(getApplicationContext(),GroupActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }, SPLASH_TIME_OUT);
                     }
 
                     @Override
@@ -149,29 +156,6 @@ public class SplashScreen extends AppCompatActivity {
                 });
             }
         }
-
-        new Handler().postDelayed(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-                if(type.equals("users"))
-                {
-                    intent = new Intent(getApplicationContext(),HomeActivity.class);
-                    intent.putExtra("orderType", "1");
-                    intent = new Intent(getApplicationContext(),HomeActivity.class);
-                    intent.putExtra("orderType", "2");
-                }
-
-                else
-                {
-                    intent = new Intent(getApplicationContext(),GroupActivity.class);
-                }
-                startActivity(intent);
-                finish();
-            }
-        }, SPLASH_TIME_OUT);
     }
 
 

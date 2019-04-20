@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +30,7 @@ public class ViewMerchandise extends AppCompatActivity {
         setContentView(R.layout.activity_view_merchandise);
 
 
-        GroupName = "CSEA" ; /***** TO DO PREVALENT CURRENT GROUP NAME ******/
+        GroupName = Prevalent_Groups.currentGroupName; /***** TO DO PREVALENT CURRENT GROUP NAME ******/
         tabLayout = findViewById(R.id.tabLayout2);
         viewPager = findViewById(R.id.viewPager_id2);
         final ViewPagerAdaptor adaptor = new ViewPagerAdaptor(getSupportFragmentManager());

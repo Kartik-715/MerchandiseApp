@@ -85,20 +85,6 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-
-
-        // Setting up current User //
-
-            String User_Email = "mayank@iitg.ac.in";
-            int temp = User_Email.hashCode();
-            final String hashcode = Integer.toString(temp);
-
-            Prevalent.currentOnlineUser = hashcode;
-            Prevalent.currentEmail = User_Email;
-
-        // Setting up current User //
-
-
         //*****************FOR NOTIFICATION***********************//
 
         String uidNoti = Prevalent.currentOnlineUser;
@@ -151,8 +137,9 @@ public class HomeActivity extends AppCompatActivity
 
         Prevalent.currentOrderType = orderType;
         Prevalent.currentPhone = contact;
-        Prevalent.currentEmail = "mayank@iitg.ac.in";
-        //Prevalent.currentEmail = email;
+        //Prevalent.currentEmail = "mayank@iitg.ac.in";
+        email = global.getEmail() ;
+        Prevalent.currentEmail = email;
         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
         Prevalent.currentWalletMoney = wallet;
         Prevalent.currentGender = gender;
@@ -190,7 +177,12 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                final List<String> accessibleGroups = (List<String>) dataSnapshot.getValue();
+                System.out.println(dataSnapshot.getValue());
+                final List<String> accessibleGroups = new ArrayList<>() ;
+                for(DataSnapshot x: dataSnapshot.getChildren())
+                {
+                    accessibleGroups.add(x.getKey()) ;
+                }
                 System.out.println(accessibleGroups);
 
                 final String orderType = Prevalent.currentOrderType; // Selecting Order Type //
@@ -199,7 +191,14 @@ public class HomeActivity extends AppCompatActivity
                merch.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                       //adaptor.clearFragments();
+
+                       int posn = viewPager.getCurrentItem() ;
+                       if(adaptor.getCount() > 0)
+                       {
+                           adaptor.clearFragments(getSupportFragmentManager());
+                       }
+
+
                        Log.w("DataChanged","Data is Changed") ;
 
                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
@@ -235,6 +234,12 @@ public class HomeActivity extends AppCompatActivity
 
                            }
                        }
+
+                       //viewPager.setCurrentItem(posn);
+
+
+
+
                    }
 
                    @Override
@@ -289,7 +294,7 @@ public class HomeActivity extends AppCompatActivity
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
         navUsername.setText("Hello " + global.getUsername());
-        navemail.setText(Prevalent.currentEmail);
+        navemail.setText(global.getEmail());
         imageView = headerView.findViewById(R.id.imageView);
         addImage();
     }

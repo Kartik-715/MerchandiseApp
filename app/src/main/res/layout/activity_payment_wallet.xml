@@ -4,35 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/grad"
     tools:context=".PaymentWalletActivity">
+    <ImageView
+        android:id="@+id/wal_pay"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/wallet_pay" />
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/wal_pay"
         android:id="@+id/radiogroup"
         android:layout_width="match_parent"
+        android:layout_margin="40dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:textAlignment="gravity">
 
 
         <RadioButton android:id="@+id/radio_paytem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Paytm"
+            android:textColor="@color/White"
+            android:textSize="40sp"
             />
 
         <RadioButton android:id="@+id/radio_upi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UPI"
+            android:textColor="@color/White"
+            android:textSize="40sp"
             />
     </RadioGroup>
-
-    <Button
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/radiogroup"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:textAllCaps="false"
-        android:text="Proceed to Payment"
-        android:id="@+id/Btn_Payment"
-        />
+        android:layout_margin="15dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/Btn_Payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:background="@color/followingBg"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Proceed to Payment"
+            android:textAllCaps="false"
+            android:textColor="@color/White"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

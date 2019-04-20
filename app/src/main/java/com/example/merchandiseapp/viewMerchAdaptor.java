@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.merchandiseapp.Interface.ItemClickListner;
+import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -128,7 +129,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
 
                 Intent intent = new Intent(mContext,EditMerchandise.class);
                 intent.putExtra("PID",model.getPID());
-                intent.putExtra("GroupName","CSEA");
+                intent.putExtra("GroupName", Prevalent_Groups.currentGroupName);
                 intent.putExtra("Category",model.getCategory());
                 mContext.startActivity(intent);
 
@@ -199,7 +200,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
             public void onClick(DialogInterface arg0, int arg1) {
 
 
-                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child("CSEA").child("Merchandise").child(Category);
+                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(Prevalent_Groups.currentGroupName).child("Merchandise").child(Category);
                 myRef1.child(PID).child("IsOpen").setValue("false");
 
                 DatabaseReference myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category);
@@ -247,7 +248,7 @@ public class viewMerchAdaptor extends RecyclerView.Adapter<viewMerchAdaptor.MyVi
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
 
-                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child("CSEA").child("Merchandise").child(Category);
+                DatabaseReference myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(Prevalent_Groups.currentGroupName).child("Merchandise").child(Category);
                 myRef1.child(PID).child("IsOpen").setValue("true");
 
                 DatabaseReference myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category);
