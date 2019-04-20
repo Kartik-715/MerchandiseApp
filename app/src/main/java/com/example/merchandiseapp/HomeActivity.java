@@ -234,7 +234,7 @@ public class HomeActivity extends AppCompatActivity
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
         navUsername.setText("Hello " + global.getUsername());
-        navemail.setText(Prevalent.currentEmail);
+        navemail.setText(global.getEmail());
         imageView = headerView.findViewById(R.id.imageView);
         addImage();
     }

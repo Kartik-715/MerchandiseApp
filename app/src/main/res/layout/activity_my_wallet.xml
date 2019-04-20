@@ -2,19 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/grad"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".wallet"
+    tools:context=".myWallet"
     >
-
+    <ImageView
+        android:id="@+id/im"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:src="@drawable/wallet1"/>
     <TextView
+        android:layout_below="@+id/im"
         android:id="@+id/cur_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_margin="40dp"
         android:text="Current Balance"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         />
 
@@ -24,7 +31,7 @@
         android:orientation="horizontal"
         android:id="@+id/linear_layout_show"
         android:layout_below="@+id/cur_balance"
-        android:layout_marginTop="10dp"
+        android:layout_margin="20dp"
         android:layout_centerHorizontal="true">
 
         <EditText
@@ -56,7 +63,7 @@
        android:layout_height="wrap_content"
        android:orientation="horizontal"
        android:layout_below="@+id/linear_layout_show"
-       android:layout_marginTop="10dp"
+       android:layout_margin="15dp"
        android:textAlignment="center"
        >
 
@@ -66,6 +73,8 @@
            android:layout_height="wrap_content"
            android:layout_marginRight="2dp"
            android:layout_marginLeft="30dp"
+           android:background="@drawable/grad_nav"
+           android:textColor="@color/White"
            android:text="Rs 100"
            android:padding="5dp"
            android:onClick="onClick"
@@ -77,6 +86,8 @@
            android:layout_height="wrap_content"
            android:layout_marginRight="2dp"
            android:layout_marginLeft="30dp"
+           android:background="@drawable/grad_nav"
+           android:textColor="@color/White"
            android:text="Rs 500"
            android:padding="5dp"
            android:onClick="onClick"
@@ -88,6 +99,8 @@
            android:layout_height="wrap_content"
            android:layout_marginRight="2dp"
            android:layout_marginLeft="30dp"
+           android:background="@drawable/grad_nav"
+           android:textColor="@color/White"
            android:text="Rs 1000"
            android:padding="5dp"
            android:onClick="onClick"

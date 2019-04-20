@@ -40,9 +40,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15sp"
             android:fontFamily="sans-serif-light"
+            android:text="aayushmakharia1999@gmail.com"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:text="aayushmakharia1999@gmail.com"/>
+            android:textSize="16sp" />
 
         <!--<ImageView
             android:layout_width="40dp"
