@@ -2,6 +2,7 @@ package com.example.merchandiseapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -55,7 +56,7 @@ public class DetailsActivity extends AppCompatActivity
         Address.setText(Prevalent.currentAddress);
         PhoneNumber.setText(Prevalent.currentPhone);
 
-        System.out.println("Disha10 : " + Prevalent.currentMoney);
+        updateWallet();
 
         Payment.setOnClickListener(new View.OnClickListener()
         {
@@ -163,6 +164,44 @@ public class DetailsActivity extends AppCompatActivity
     {
         Intent intent = new Intent(DetailsActivity.this, CartActivity.class);
         startActivity(intent);
+    }
+
+    public void updateWallet()
+    {
+        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+        UserData.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.child("Wallet_Money").exists())
+                {
+                    Prevalent.currentWalletMoney = dataSnapshot.child("Wallet_Money").getValue().toString();
+                }
+
+                else
+                {
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("Wallet_Money", "0");
+                    Prevalent.currentWalletMoney = "0";
+
+                    UserData.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
     }
 
 }

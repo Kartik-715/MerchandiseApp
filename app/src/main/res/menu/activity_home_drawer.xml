@@ -46,6 +46,10 @@
             android:title="FAQs"
             android:id="@+id/faq"
             android:icon="@drawable/faq_nav"/>
+        <item
+            android:title="Order Status"
+            android:id="@+id/order_status"
+            android:icon="@drawable/orders"/>
 
     </group>
 
@@ -57,8 +61,9 @@
                 android:title="Share" />-->
 
             <item
+                android:icon="@drawable/log"
                 android:id="@+id/nav_logout"
-                android:title="logout" />
+                android:title="Logout" />
         </menu>
     </item>
 

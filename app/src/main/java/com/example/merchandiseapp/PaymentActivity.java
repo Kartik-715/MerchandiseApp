@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.firebase.ui.auth.data.model.PhoneNumber;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -272,10 +273,10 @@ public class PaymentActivity extends AppCompatActivity
 
     private void processWallet()
     {
-        //int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
+        int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
         int currentMoney = Integer.parseInt(Prevalent.currentMoney);
 
-        int walletMoney = 10000;
+        //int walletMoney = 10000;
         System.out.println("Chirag" + walletMoney + " " + currentMoney);
 
         if(currentMoney <= walletMoney)
@@ -294,49 +295,10 @@ public class PaymentActivity extends AppCompatActivity
             updateFirebase();
             Toast.makeText(this, "Congratulations, your order has been placed", Toast.LENGTH_SHORT).show();
 
-
-            /*userRef.addValueEventListener(new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    if(dataSnapshot.child("Wallet_Money").exists())
-                    {
-                        HashMap<String, Object> userdataMap = new HashMap<>();
-                        userdataMap.put("Wallet_Money", Wallet_Money);
-
-                        userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
-                        {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task)
-                            {
-
-                            }
-                        });
-                    }
-
-                    else //Just add the Money as "0" in the data
-                    {
-                        HashMap<String, Object> userdataMap = new HashMap<>();
-                        userdataMap.put("Wallet_Money", "0");
-
-                        userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
-                        {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task)
-                            {
-
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
-
-                }
-            });*/
+            Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
+            intent.putExtra("orderType", Prevalent.currentOrderType);
+            Prevalent_Intent.setIntent(intent);
+            startActivity(intent);
         }
 
         else

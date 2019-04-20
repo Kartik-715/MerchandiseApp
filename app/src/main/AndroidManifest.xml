@@ -20,13 +20,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ReviewDisplayActivity"></activity>
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".PaymentWalletActivity"></activity>
         <activity android:name=".UPIActivity" />
         <activity android:name=".orderRequestDetails"></activity>
-        <activity android:name=".UPIActivity" />
+
+        <activity android:name=".OrderStatusActivity" />
         <activity android:name=".PaymentActivity" />
-        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity2" />
+        <activity android:name=".OutlookLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+           </activity>
+        <activity android:name=".GroupRegister" />
         <activity android:name=".RedirectActivity" />
         <activity android:name=".ViewMerchandise" /> <!-- <service -->
         <activity android:name=".EditMerchandise" />
@@ -59,14 +69,8 @@
         <activity android:name=".GroupManageProfile" />
         <activity android:name=".SplashScreen" />
         <activity android:name=".UserRegister" />
-        <activity android:name=".OutlookLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".GroupRequestDetails" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".GroupRegister" />
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
@@ -80,7 +84,6 @@
         <activity android:name=".MultipleImages" />
         <!--<activity android:name=".CustomAdapter" />-->
         <activity android:name=".ListView" />
-        <activity android:name=".GroupRequestDetails" />
         <activity android:name=".grp_manage_profile" />
         <activity
             android:name=".grpUser"

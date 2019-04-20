@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
     RadioGroup radioGroup;
     RadioButton radioButton1;
     RadioButton radioButton2;
+    RelativeLayout rel;
     Spinner areaSpinner;
     Button home;
     String selected;
@@ -54,7 +56,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_redirect);
         hideNav();
         Welcome = findViewById(R.id.welcome);
-
+        rel = findViewById(R.id.part4);
         radioButton1 = findViewById(R.id.user);
         radioButton2 = findViewById(R.id.Group);
         areaSpinner = (Spinner) findViewById(R.id.redirect_spinner);
@@ -124,6 +126,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         super.onResume();
         hideNav();
         home.setVisibility(View.INVISIBLE);
+        rel.setVisibility(View.INVISIBLE);
         areaSpinner.setAdapter(null);
     }
     public void hideNav(){
@@ -176,7 +179,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                     ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(RedirectActivity.this, android.R.layout.simple_spinner_item, areas);
                     areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     areaSpinner.setAdapter(areasAdapter);
-
+                    rel.setVisibility(View.VISIBLE);
                     home.setVisibility(View.VISIBLE);
                 }
 
