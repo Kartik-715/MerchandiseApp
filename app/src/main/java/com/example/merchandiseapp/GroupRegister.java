@@ -304,7 +304,7 @@ public class GroupRegister extends AppCompatActivity {
 
         GroupData = GroupData.child(grpName.getText().toString().trim());
         int temp = grpEmail.getText().toString().hashCode();
-        GroupData.child("UID").setValue(Integer.toString(temp));
+        GroupData.child("UID").setValue(temp);
         GroupData.child("Image_Location").setValue(imageLocation);
         GroupData.child("isApproved").setValue("No");
 
