@@ -2,20 +2,21 @@ package com.example.merchandiseapp;
 
 public class Notifications {
     private String Contact;
-    private String Email;
+    private String EmailID;
     private String GroupName;
-    private String  isApproved;
-    private String Uid;
+    private String isApproved;
+    private String UID;
+    private String UPI;
 
     public Notifications() {
     }
 
     public Notifications(String contact, String email, String groupName, String isApproved, String uid) {
         Contact = contact;
-        Email = email;
+        EmailID = email;
         GroupName = groupName;
         this.isApproved = isApproved;
-        Uid = uid;
+        UID = uid;
     }
 
     public String getContact() {
@@ -26,13 +27,6 @@ public class Notifications {
         Contact = contact;
     }
 
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
 
     public String getGroupName() {
         return GroupName;
@@ -50,11 +44,27 @@ public class Notifications {
         this.isApproved = isApproved;
     }
 
-    public String getUid() {
-        return Uid;
+    public String getUPI() {
+        return UPI;
     }
 
-    public void setUid(String uid) {
-        Uid = uid;
+    public void setUPI(String UPI) {
+        this.UPI = UPI;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    public String getEmailID() {
+        return EmailID;
+    }
+
+    public void setEmailID(String emailID) {
+        EmailID = emailID;
     }
 }
