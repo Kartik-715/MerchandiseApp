@@ -399,7 +399,7 @@ public class HomeActivity extends AppCompatActivity
 
         else if(id == R.id.reviews)
         {
-            Intent intent = new Intent(HomeActivity.this, PrivateReviewDisplayActivity.class);
+            Intent intent = new Intent(HomeActivity.this, AdminNotificationDisplayActivity.class);
             startActivity(intent);
         }
 
@@ -408,7 +408,6 @@ public class HomeActivity extends AppCompatActivity
             PublicClientApplication sampleApp = new PublicClientApplication(
                     this.getApplicationContext(),
                     R.raw.auth_config);
-                /* Attempt to get a account and remove their cookies from cache */
                 List<IAccount> accounts = null;
 
                 try {
