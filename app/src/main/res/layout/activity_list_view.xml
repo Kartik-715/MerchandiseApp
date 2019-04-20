@@ -21,7 +21,7 @@
             android:id="@+id/icon"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:orientation="vertical"
             android:scaleType="centerCrop"
@@ -29,10 +29,11 @@
 
         <TextView
             android:id="@+id/userName"
-            android:layout_width="186dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="17dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/icon"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="UserName"
@@ -41,54 +42,58 @@
 
         <TextView
             android:id="@+id/Contact"
-            android:layout_width="186dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/userName"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="6dp"
             android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/icon"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="Contact"
             android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/Email"
-        android:layout_width="186dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="Email"
-        android:layout_below="@id/Contact"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/Email"
+            android:layout_width="316dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Contact"
+            android:layout_gravity="center"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/icon"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="Email"
+            android:textColor="@color/black" />
 
 
-    <TextView
-        android:id="@+id/Quantity"
-        android:layout_width="186dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="Quantity"
-        android:layout_below="@id/Email"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/Quantity"
+            android:layout_width="316dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Email"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/icon"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:paddingRight="10dp"
+            android:text="Quantity"
+            android:textColor="@color/black" />
 
 
-    <TextView
-        android:id="@+id/Size"
-        android:layout_width="186dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="Size"
-        android:layout_below="@id/Quantity"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/Size"
+            android:layout_width="315dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Quantity"
+            android:layout_gravity="center"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/icon"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="Size"
+            android:textColor="@color/black" />
 
 
 </RelativeLayout>
