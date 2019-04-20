@@ -13,7 +13,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
@@ -47,11 +49,11 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
 
     private static final String TAG = MainActivity.class.getSimpleName();
     Button callGraphButton;
+    CheckBox Admincheck;
     Button LoginButton;
     Button Join;
     FirebaseDatabase database;
     DatabaseReference ref;
-    boolean flag = false;
     EditText email,password;
 
     /* Azure AD Variables */
@@ -70,9 +72,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
         Join = findViewById(R.id.JoinNow);
-
-        email.setText("hey@gmail.com");
-        password.setText("F");
+        Admincheck = findViewById(R.id.admin);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         callGraphButton.setOnClickListener(new View.OnClickListener()
         {
@@ -86,7 +87,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         {
             public void onClick(View v)
             {
-                onLoginButtonClicked();
+                if(!Admincheck.isChecked()) onLoginButtonClicked();
+                else adminClicked();
             }
         });
 
@@ -135,6 +137,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     @Override
     public void onResume(){
         super.onResume();
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         hideNav();
     }
     public void hideNav(){
@@ -171,6 +174,51 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
     }
 
+    private void adminClicked()
+    {
+        String Email = email.getText().toString().trim();
+        final String Password = password.getText().toString().trim();
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("Admin");
+
+        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password))
+        {
+            Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        int hash = Email.hashCode();
+
+        final String hashValue = Integer.toString(hash);
+
+        ref.child("Details").addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.child(hashValue).exists())
+                {
+                    if (dataSnapshot.child("Password").getValue().toString().equals(Password))
+                    {
+                        Toast.makeText(getApplicationContext(),"Admin Activity",Toast.LENGTH_LONG).show();
+                    }
+
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
+                }
+
+                else
+                    Toast.makeText(getApplicationContext(), "You are not a Admin", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void onLoginButtonClicked()
     {
         String Email = email.getText().toString().trim();
@@ -185,7 +233,6 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             return;
         }
 
-        flag = false;
         int hash = Email.hashCode();
 
         final String hashValue = Integer.toString(hash);
@@ -199,7 +246,6 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 {
                     if (dataSnapshot.child("Password").getValue().toString().equals(Password))
                     {
-                        flag = true;
                         Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
                         intent.putExtra("Type", "users");
                         intent.putExtra("Email", email.getText().toString() );
