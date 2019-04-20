@@ -144,7 +144,14 @@ public class HomeActivity extends AppCompatActivity
                merch.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                       //adaptor.clearFragments();
+
+                       int posn = viewPager.getCurrentItem() ;
+                       if(adaptor.getCount() > 0)
+                       {
+                           adaptor.clearFragments(getSupportFragmentManager());
+                       }
+
+
                        Log.w("DataChanged","Data is Changed") ;
 
                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
@@ -180,6 +187,12 @@ public class HomeActivity extends AppCompatActivity
 
                            }
                        }
+
+                       //viewPager.setCurrentItem(posn);
+
+
+
+
                    }
 
                    @Override
