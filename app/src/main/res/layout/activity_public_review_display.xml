@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerReview"
+        android:id="@+id/recyclerReview_public"
         android:layout_width="395dp"
         android:layout_height="715dp"
         tools:layout_editor_absoluteX="8dp"

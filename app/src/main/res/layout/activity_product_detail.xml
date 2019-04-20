@@ -145,17 +145,6 @@
                 android:text="Public Reviews"
                 android:textColor="@color/FloralWhite" />
 
-            <Button
-                android:id="@+id/privateReviews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/numberBtn"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="4dp"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Private Reviews"
-                android:textColor="@color/FloralWhite" />
-
             <!--<android.support.v7.widget.RecyclerView-->
                 <!--android:id="@+id/recyclerReview"-->
                 <!--android:layout_below="@+id/share_button"-->

@@ -50,6 +50,10 @@
             android:title="Order Status"
             android:id="@+id/order_status"
             android:icon="@drawable/orders"/>
+        <item
+            android:title="Order Status"
+            android:id="@+id/reviews"
+            android:icon="@drawable/orders"/>
 
     </group>
 

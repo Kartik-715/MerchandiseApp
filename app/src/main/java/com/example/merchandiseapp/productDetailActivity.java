@@ -79,7 +79,6 @@ public class productDetailActivity extends AppCompatActivity
     private int flag;
     private String selectedSpinneritem;
     private Button btnReviews;
-    private Button btnPrivateReviews;
     private RecyclerView recycle;
     private ArrayList<String> size_list;
     private ArrayList<String> quantity_list;
@@ -121,7 +120,6 @@ public class productDetailActivity extends AppCompatActivity
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
         group_list = new ArrayList<>();
-        btnPrivateReviews=findViewById(R.id.privateReviews);
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         buyNowButton = findViewById(R.id.buy_now_Button);
         numberButton = findViewById(R.id.numberBtn);
@@ -137,29 +135,18 @@ public class productDetailActivity extends AppCompatActivity
         ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image);
         ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
         viewPager.setAdapter(adapter);
+
+
         btnReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
-                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
-                intent.putExtra("category",category);
-                intent.putExtra("pid",productID);
-                intent.putExtra("select","No");
-                startActivity(intent);
-                    //select="No";
+                Intent intent = new Intent(productDetailActivity.this,PublicReviewDisplayActivity.class);
+                intent.putExtra("category", category);
+                intent.putExtra("pid", productID);
+                intent.putExtra("groupName", group_name);
 
-            }
-        });
-        btnPrivateReviews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
-                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
-                intent.putExtra("category",category);
-                intent.putExtra("pid",productID);
-                intent.putExtra("select","Yes");
                 startActivity(intent);
-                //select="Yes";
+
             }
         });
         viewPager.setOnClickListener(new View.OnClickListener()

@@ -342,6 +342,12 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
+        else if(id == R.id.reviews)
+        {
+            Intent intent = new Intent(HomeActivity.this, PrivateReviewDisplayActivity.class);
+            startActivity(intent);
+        }
+
         else if (id == R.id.nav_logout)
         {
             PublicClientApplication sampleApp = new PublicClientApplication(

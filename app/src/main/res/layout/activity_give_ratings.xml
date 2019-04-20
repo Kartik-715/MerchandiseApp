@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_height="match_parent"
+    tools:context=".GiveRatingsActivity">
+
+    <RatingBar
+        android:id="@+id/reviewsBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <EditText
+        android:id="@+id/reviews"
+        android:layout_width="329dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="28dp"
+        android:hint="Commments"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/reviewsBar"
+        tools:layout_editor_absoluteX="41dp" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radiogroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/reviews"
+        android:layout_centerHorizontal="true"
+        >
+        <RadioButton android:id="@+id/radio_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Public Review"
+            />
+
+        <RadioButton android:id="@+id/radio_private"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private Review"
+            />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/reviewClick"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radiogroup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Give Review"
+        tools:layout_editor_absoluteX="135dp" />
+
+</RelativeLayout>

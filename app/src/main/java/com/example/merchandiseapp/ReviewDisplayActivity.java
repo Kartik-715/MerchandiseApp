@@ -37,9 +37,9 @@ public class ReviewDisplayActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_display);
+
         pidTxt = getIntent().getStringExtra("pid");
         categoryTxt = getIntent().getStringExtra("category");
-        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+" "+pidTxt,Toast.LENGTH_LONG).show();
         uid_list = new ArrayList<String>();
         select = getIntent().getStringExtra("select");
         recyclerView = findViewById(R.id.recyclerReview);
