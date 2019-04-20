@@ -20,17 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ReviewDisplayActivityGroup"></activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ReviewDisplayActivity"></activity>
-        <activity android:name=".RegisterActivity" />
         <activity android:name=".PaymentWalletActivity"></activity>
         <activity android:name=".UPIActivity" />
         <activity android:name=".orderRequestDetails"></activity>
-        <activity android:name=".UPIActivity" />
         <activity android:name=".OrderStatusActivity" />
         <activity android:name=".PaymentActivity" />
-        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity2" />
         <activity android:name=".RedirectActivity" />
         <activity android:name=".ViewMerchandise" /> <!-- <service -->
@@ -57,7 +53,6 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".ViewOrder"></activity>
-        <activity android:name=".ViewOrder" />
         <activity android:name=".ManageMembersActivity">
 
         </activity>
@@ -69,24 +64,21 @@
         <activity android:name=".SplashScreen" />
         <activity android:name=".UserRegister" />
         <activity android:name=".OutlookLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".GroupRegister" />
         <activity android:name=".myNotifications">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
 
         </activity>

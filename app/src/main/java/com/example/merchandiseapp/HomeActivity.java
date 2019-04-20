@@ -85,13 +85,23 @@ public class HomeActivity extends AppCompatActivity
 
 
 
+
+
+        // Setting up current User //
+
+            String User_Email = "mayank@iitg.ac.in";
+            int temp = User_Email.hashCode();
+            final String hashcode = Integer.toString(temp);
+
+            Prevalent.currentOnlineUser = hashcode;
+            Prevalent.currentEmail = User_Email;
+
+        // Setting up current User //
+
+
         //*****************FOR NOTIFICATION***********************//
 
-        //TODO: email to be updated
-        String emailForNoti = "gupta170101019@iitg.ac.in";
-        int hash = emailForNoti.trim().hashCode();
-        final String hashValue = Integer.toString(hash);
-        String uidNoti = hashValue;
+        String uidNoti = Prevalent.currentOnlineUser;
         notificationRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uidNoti);
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -113,8 +123,7 @@ public class HomeActivity extends AppCompatActivity
                         .setContentTitle("Merchandise App:Delivery Status")
                         .setContentText(notiId)
                         .setAutoCancel(true);
-                //TODO: change Homeactivity.class to Order_Status.class activity
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), OrderStatusActivity.class);
                 PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(pi);
                 mNotificationManager.notify(0, mBuilder.build());
@@ -126,18 +135,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        //********************************************************//
-
-        // Setting up current User //
-
-            String User_Email = "mayank@iitg.ac.in";
-            int temp = User_Email.hashCode();
-            final String hashcode = Integer.toString(temp);
-
-            Prevalent.currentOnlineUser = hashcode;
-            Prevalent.currentEmail = User_Email;
-
-        // Setting up current User //
+        //*************************************************************************************//
 
         global = (G_var) getApplicationContext();
         System.out.println("Hey : " + global.getUsername());
