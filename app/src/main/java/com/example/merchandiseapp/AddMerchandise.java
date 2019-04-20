@@ -75,7 +75,7 @@ public class AddMerchandise extends AppCompatActivity {
     private List<String> fileDoneList;
     private UplaodListAdapter uplaodListAdapter;
     private StorageReference mStorage;
-    Spinner dropdown;
+
 
     private String GroupName ;
     private String Category ;
@@ -99,7 +99,7 @@ public class AddMerchandise extends AppCompatActivity {
         setContentView(R.layout.activity_add_merchandise);
 
         Image = new ArrayList<String>();
-         dropdown = findViewById(R.id.spinner1);
+        Spinner dropdown = findViewById(R.id.spinner1);
         String[] items = new String[]{"Footwear"
                 , "T-Shirt", "Lowers" , "Hoodie","Others"};
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -369,8 +369,7 @@ public class AddMerchandise extends AppCompatActivity {
 //                            Image.add(fileUri.toString());
 //                            System.out.println("I am 1st" + Image);
 
-                            StorageReference a =FirebaseStorage.getInstance().getReference().child("Merchandise").child(fileName)
-                                   .child(dropdown.getSelectedItem().toString()) ;
+                            StorageReference a =FirebaseStorage.getInstance().getReference().child("Merchandise").child(fileName);
 
                                     ((StorageReference) a).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
                                 {
