@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -89,8 +90,6 @@ public class myWallet extends AppCompatActivity {
             }
         });
 
-        //Current_Amount.setText("Current Balance : " + Prevalent.currentWalletMoney);
-
         Btn_Add.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -136,83 +135,12 @@ public class myWallet extends AppCompatActivity {
         });
     }
 
-    //function to handle transactions by making a paytm api call
-    public  void transact()
+    @Override
+    public void onBackPressed()
     {
-
-        PaytmPGService Service = PaytmPGService.getStagingService();
-        HashMap<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put( "MID" , "vyZEyu61387796366188");
-// Key in your staging and production MID available in your dashboard
-        paramMap.put( "ORDER_ID" , "order1");
-        paramMap.put( "CUST_ID" , "cust123");
-        paramMap.put( "MOBILE_NO" , "7541818508");
-        paramMap.put( "EMAIL" , "sparsh5008@gmail.com");
-        paramMap.put( "CHANNEL_ID" , "WAP");
-        paramMap.put( "TXN_AMOUNT" , "1");
-        paramMap.put( "WEBSITE" , "WEBSTAGING");
-// This is the staging value. Production value is available in your dashboard
-        paramMap.put( "INDUSTRY_TYPE_ID" , "Retail");
-// This is the staging value. Production value is available in your dashboard
-        paramMap.put( "CALLBACK_URL", "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=order1");
-        paramMap.put( "CHECKSUMHASH" , "w2QDRMgp1234567JEAPCIOmNgQvsi+BhpqijfM9KvFfRiPmGSt3Ddzw+oTaGCLneJwxFFq5mqTMwJXdQE2EzK4px2xruDqKZjHupz9yXev4=");
-        PaytmOrder Order = new PaytmOrder(paramMap);
-
-
-
-        Service.initialize(Order, null);
-
-        Service.startPaymentTransaction(this, true, true, new PaytmPaymentTransactionCallback() {
-            /*Call Backs*/
-            public void someUIErrorOccurred(String inErrorMessage) { Toast.makeText(getApplicationContext(), "Some UI error Occured" , Toast.LENGTH_LONG).show();}
-            public void onTransactionResponse(Bundle inResponse) {Toast.makeText(getApplicationContext(), "transaction succeeded"+ inResponse.toString() , Toast.LENGTH_LONG).show();}
-            public void networkNotAvailable() {Toast.makeText(getApplicationContext(), "network not available " , Toast.LENGTH_LONG).show();}
-            public void clientAuthenticationFailed(String inErrorMessage) {Toast.makeText(getApplicationContext(), "authentication failure " , Toast.LENGTH_LONG).show();}
-            public void onErrorLoadingWebPage(int iniErrorCode, String inErrorMessage, String inFailingUrl) {Toast.makeText(getApplicationContext(), "Payment Transaction response " , Toast.LENGTH_LONG).show();}
-            public void onBackPressedCancelTransaction() {Toast.makeText(getApplicationContext(), " back pressed " , Toast.LENGTH_LONG).show();}
-            public void onTransactionCancel(String inErrorMessage, Bundle inResponse) {Toast.makeText(getApplicationContext(), "Cancelled transaction " , Toast.LENGTH_LONG).show();}
-        });
+        Intent intent = new Intent(myWallet.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
+        intent.putExtra("orderType", Prevalent.currentOrderType);
+        startActivity(intent);
     }
-
-
-    /*public void getInfo()
-    {
-        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
-
-        UserData.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                if(dataSnapshot.child("Wallet_Money").exists())
-                {
-                    Current_Amount.setText("Current Balance : " + dataSnapshot.child("Wallet_Money").getValue().toString());
-                }
-
-                else //Just add the Money as "0" in the data
-                {
-                    HashMap<String, Object> userdataMap = new HashMap<>();
-                    userdataMap.put("Wallet_Money", "0");
-
-                    UserData.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
-                    {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task)
-                        {
-                            Current_Amount.setText("Current Balance : 0");
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
-
-            }
-        });
-
-        return;
-
-    }*/
 }
