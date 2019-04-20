@@ -48,6 +48,9 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".ViewOrder" />
+        <activity android:name=".ManageMembersActivity">
+
+        </activity>
         <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
         <activity android:name=".PreBookings" />
@@ -61,6 +64,7 @@
             android:name=".GroupActivity"
             android:label="GroupActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
