@@ -51,8 +51,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         group_list = new ArrayList<>();
         product_list = new ArrayList<>();
 
-        Toast.makeText(this, Prevalent.currentMoney, Toast.LENGTH_SHORT).show();
-
+        updateWallet();
         final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderID);
 
         requestRef.addListenerForSingleValueEvent(new ValueEventListener()
@@ -222,6 +221,44 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    public void updateWallet()
+    {
+        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+        UserData.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.child("Wallet_Money").exists())
+                {
+                    Prevalent.currentWalletMoney = dataSnapshot.child("Wallet_Money").getValue().toString();
+                }
+
+                else
+                {
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("Wallet_Money", "0");
+                    Prevalent.currentWalletMoney = "0";
+
+                    UserData.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
     }
 
 }

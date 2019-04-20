@@ -20,10 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ReviewDisplayActivity"></activity>
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".PaymentWalletActivity"></activity>
         <activity android:name=".UPIActivity" />
         <activity android:name=".orderRequestDetails"></activity>
         <activity android:name=".UPIActivity" />
+        <activity android:name=".OrderStatusActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity2" />

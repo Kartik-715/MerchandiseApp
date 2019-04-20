@@ -46,6 +46,10 @@
             android:title="FAQs"
             android:id="@+id/faq"
             android:icon="@drawable/faq_nav"/>
+        <item
+            android:title="Order Status"
+            android:id="@+id/order_status"
+            android:icon="@drawable/orders"/>
 
     </group>
 
