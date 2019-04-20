@@ -108,14 +108,10 @@ public class AccessedMembersActivity extends AppCompatActivity
                     ArrayList<String> groups = new ArrayList<>();
                     groups.add(hashcode);
 
-
-
                     for(String group:groups)
                     {
-                        //userRef.child(hashcode).child("Groups")
-                        //userRef.child(hashcode).child("Authorized_Groups").push(group);
-                        //userRef.child(hashcode).child("Authorized_Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
-                        //userRef.child(hashcode).child("Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
+                        userRef.child(hashcode).child("Authorized_Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
+                        userRef.child(hashcode).child("Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
                     }
                 }
 

@@ -235,10 +235,13 @@ public class ViewOrder extends AppCompatActivity {
 
                 holder.ReviewButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-
-
-
+                    public void onClick(View view)
+                    {
+                        Intent intent = new Intent(ViewOrder.this, PrivateReviewDisplayActivity.class);
+                        intent.putExtra("category", model.getCategory());
+                        intent.putExtra("pid", model.getPID());
+                        intent.putExtra("groupName", GroupName);
+                        startActivity(intent);
                     }
                 });
 

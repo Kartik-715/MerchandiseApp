@@ -28,6 +28,7 @@ public class PrivateReviewDisplayActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     private String productID;
     private String Category;
+    private String GroupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,15 +36,15 @@ public class PrivateReviewDisplayActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_review_display);
 
-        Category = "Footwear";
-        productID = "F03";
+        Category = getIntent().getStringExtra("category");
+        productID = getIntent().getStringExtra("pid");
+        GroupName = getIntent().getStringExtra("groupName");
+
+
         recyclerView = findViewById(R.id.recyclerReview_private);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        String GroupName = Prevalent_Groups.currentGroupName;
-        GroupName = "CSEA";
 
         final DatabaseReference displayRef = FirebaseDatabase.getInstance().getReference().child("Group").child(GroupName).child("Merchandise").child(Category).child(productID).child("Rating");
         final Query queries = displayRef.orderByChild("Category").equalTo(Category);

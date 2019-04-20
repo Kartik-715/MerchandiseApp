@@ -34,14 +34,18 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
     private TextView notificationEmpty;
     private int countCards;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_notification_display);
         groupNameList = new ArrayList<String>();
+
         recyclerView = findViewById(R.id.notificationList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+
         notificationEmpty = findViewById(R.id.notiInfo);
         notificationRef = FirebaseDatabase.getInstance().getReference().child("Admin");
         final Query queries = notificationRef.orderByChild("isApproved").equalTo("No");
@@ -59,7 +63,6 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                 {
 
                     DataExists(queries);
-
                 }
                 else
                 {
@@ -96,9 +99,9 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull AdminNotificationViewHolder holder, int position, @NonNull final Notifications model)
             {
 
-                holder.txtGroupName.setText( model.getGroupName());
-                holder.txtEmail.setText(model.getEmailID() );
-                holder.txtContact.setText(model.getContact());
+                holder.txtGroupName.setText( "GroupName : " + model.getGroupName());
+                holder.txtEmail.setText("Email ID : " + model.getEmailID() );
+                holder.txtContact.setText("Contact Details : " + model.getContact());
                 groupNameList.add(model.getGroupName());
                 holder.removeButton.setOnClickListener(new View.OnClickListener()
                 {
@@ -145,9 +148,7 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                         HashMap<String,String> a = new HashMap<>() ;
                         a.put(model.getUID(), model.getEmailID()) ;
 
-//
-                        newNode.child("Authorized_Members").child("Email_ID").setValue(a) ; // Set the Value of Authorized Members //
-
+                        //newNode.child("Authorized_Members").child("Email_ID").setValue(a) ;
                         // Setting the Details //
                         newNode.child("Details").child("Contact").setValue(model.getContact()) ;
                         newNode.child("Details").child("EmailID").setValue(model.getEmailID()) ;
@@ -155,12 +156,49 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                         newNode.child("Details").child("UPI").setValue(model.getUPI()) ;
                         newNode.child("Details").child("Image_Location").setValue(model.getImage_Location()) ;
 
+                        final DatabaseReference GroupAdd = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName()).child("Details");
 
-                        // Setting the Members by default the creator //
-                        newNode.child("Members").child("Email_ID").setValue(a) ; // Set the Value of Members //
+                        final HashMap<String,Object> productIDMap = new HashMap<>();
+                        productIDMap.put("Contact", model.getContact());
+                        productIDMap.put("EmailID", model.getEmailID());
+                        productIDMap.put("GroupName", model.getGroupName());
+                        productIDMap.put("UPI", model.getUPI());
 
+                        GroupAdd.updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
 
+                            }
+                        });
 
+                        final DatabaseReference GroupAdd2 = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName()).child("Authorized_Members").child("EmailID");
+                        final HashMap<String,Object> productIDMap2 = new HashMap<>();
+                        productIDMap2.put(  Integer.toString(model.getEmailID().hashCode()), model.getEmailID());
+
+                        GroupAdd2.updateChildren(productIDMap2).addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+
+                            }
+                        });
+
+                        final DatabaseReference GroupAdd3 = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName()).child("Members").child("EmailID");
+
+                        final HashMap<String,Object> productIDMap3 = new HashMap<>();
+                        productIDMap3.put(  Integer.toString(model.getEmailID().hashCode()), model.getEmailID());
+
+                        GroupAdd3.updateChildren(productIDMap3).addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+
+                            }
+                        });
 
 
                     }
