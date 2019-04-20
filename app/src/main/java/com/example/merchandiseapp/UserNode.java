@@ -5,7 +5,7 @@ public class UserNode {
     public String Address;
     public String Gender;
     public String Contact;
-    public String Email_ID;
+    public String EmailID;
     public String UID;
 
     public UserNode(String name, String address, String gender, String contact, String emailID, String uid) {
@@ -13,7 +13,7 @@ public class UserNode {
         Address = address;
         Gender = gender;
         Contact = contact;
-        Email_ID = emailID;
+        EmailID = emailID;
         this.UID = uid;
     }
 }

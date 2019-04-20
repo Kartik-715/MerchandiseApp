@@ -72,7 +72,7 @@ public class  SplashScreen extends AppCompatActivity {
                         global.setUsername(dataSnapshot.child("Name").getValue().toString());
                         global.setAddress(dataSnapshot.child("Address").getValue().toString());
                         global.setContact(dataSnapshot.child("Contact").getValue().toString());
-                        global.setEmail(dataSnapshot.child("Email_ID").getValue().toString());
+                        global.setEmail(dataSnapshot.child("EmailID").getValue().toString());
                         global.setGender(dataSnapshot.child("Gender").getValue().toString());
                         getImage();
 
@@ -95,7 +95,7 @@ public class  SplashScreen extends AppCompatActivity {
                                         intent.putExtra("name", dataSnapshot.child("Name").getValue().toString());
                                         intent.putExtra("address", dataSnapshot.child("Address").getValue().toString());
                                         intent.putExtra("contact", dataSnapshot.child("Contact").getValue().toString());
-                                        intent.putExtra("email", dataSnapshot.child("Email_ID").getValue().toString());
+                                        intent.putExtra("email", dataSnapshot.child("EmailID").getValue().toString());
                                         intent.putExtra("gender", dataSnapshot.child("Gender").getValue().toString());
                                         intent.putExtra("wallet", dataSnapshot.child("Wallet_Money").getValue().toString());
                                         intent.putExtra("image",downloadUrl);

@@ -63,7 +63,6 @@ public class ManageMembersActivity extends AppCompatActivity {
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("EmailID");
 
-
         MembersEmail = new ArrayList<>();
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,MembersEmail);
         memberListView.setAdapter(adapter);
@@ -204,7 +203,7 @@ public class ManageMembersActivity extends AppCompatActivity {
 
 
 
-                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("Email_ID");
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("EmailID");
                 final Query queries = ref;
 
                 queries.addListenerForSingleValueEvent(new ValueEventListener()
@@ -318,7 +317,7 @@ public class ManageMembersActivity extends AppCompatActivity {
     }
 
     private void RemoveMember(final String email,final Object o) {
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("EmailID");
         int hash = email.trim().hashCode();
         final String hashValue = Integer.toString(hash);
         ref.child(hashValue).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
@@ -341,8 +340,8 @@ public class ManageMembersActivity extends AppCompatActivity {
 
     private void RemoveAuthorizedMember(final String email,final Object o) {
 
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("Email_ID");
-        final DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("EmailID");
+        final DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("EmailID");
 
         int hash = email.trim().hashCode();
         final String hashValue = Integer.toString(hash);

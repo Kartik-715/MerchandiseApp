@@ -93,8 +93,8 @@ public class AccessedMembersActivity extends AppCompatActivity
 
         for(String member:members)
         {
-            memberRef.child("Email_ID").child(member).setValue(inputText);
-            memberRef2.child("Email_ID").child(member).setValue(inputText);
+            memberRef.child("EmailID").child(member).setValue(inputText);
+            memberRef2.child("EmailID").child(member).setValue(inputText);
         }
 
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");

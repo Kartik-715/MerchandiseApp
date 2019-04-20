@@ -360,7 +360,7 @@ public class PaymentActivity extends AppCompatActivity
             /*final HashMap<String, Object> cartMap = new HashMap<>();
             cartMap.put("IsPlaced", PhoneNumber.getText().toString());
             cartMap.put("Address", Address.getText().toString());
-            cartMap.put("Email",Email_ID.getText().toString());
+            cartMap.put("Email",EmailID.getText().toString());
 
             cartListRef.updateChildren(cartMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>()

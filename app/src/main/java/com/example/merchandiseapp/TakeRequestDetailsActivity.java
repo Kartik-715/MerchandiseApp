@@ -27,7 +27,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
     private ArrayList<String> orderid_list;
     private ArrayList<String> group_list;
     private ArrayList<String> product_list;
-    private EditText PhoneNumber, Address, Email_ID;
+    private EditText PhoneNumber, Address, EmailID;
     private Button Pay_Now, Pay_Later;
     private String orderID, groupName, productID;
 
@@ -39,7 +39,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
 
         PhoneNumber = (EditText) findViewById(R.id.Request_Phone_Number);
         Address = (EditText) findViewById(R.id.Request_Address);
-        Email_ID = (EditText) findViewById(R.id.Request_Email);
+        EmailID = (EditText) findViewById(R.id.Request_Email);
         Pay_Now = (Button) findViewById(R.id.Btn_Pay_Now);
         Pay_Later = (Button) findViewById(R.id.Btn_Pay_Later);
 
@@ -60,7 +60,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 Requests requests =  dataSnapshot.getValue(Requests.class);
-                Email_ID.setText(requests.getEmail());
+                EmailID.setText(requests.getEmail());
                 Address.setText(requests.getAddress());
                 PhoneNumber.setText(requests.getContact());
             }
@@ -109,7 +109,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             return;
         }
 
-        if(Email_ID.getText().toString().trim().length() == 0)
+        if(EmailID.getText().toString().trim().length() == 0)
         {
             Toast.makeText(TakeRequestDetailsActivity.this, "Please Enter Valid Email Address", Toast.LENGTH_SHORT).show();
             return;
@@ -120,7 +120,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         final HashMap<String, Object> requestMap = new HashMap<>();
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
-        requestMap.put("Email",Email_ID.getText().toString());
+        requestMap.put("Email",EmailID.getText().toString());
         //requestMap.put("IsPaid", "true");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
@@ -156,7 +156,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             return;
         }
 
-        if(Email_ID.getText().toString().trim().length() == 0)
+        if(EmailID.getText().toString().trim().length() == 0)
         {
             Toast.makeText(TakeRequestDetailsActivity.this, "Please Enter Valid Email Address", Toast.LENGTH_SHORT).show();
             return;
@@ -167,7 +167,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         final HashMap<String, Object> requestMap = new HashMap<>();
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
-        requestMap.put("Email",Email_ID.getText().toString());
+        requestMap.put("Email",EmailID.getText().toString());
         requestMap.put("IsPaid", "false");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
@@ -190,7 +190,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         final HashMap<String, Object> requestMap = new HashMap<>();
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
-        requestMap.put("Email",Email_ID.getText().toString());
+        requestMap.put("Email",EmailID.getText().toString());
         //requestMap.put("IsPaid", "true");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
@@ -209,7 +209,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         final HashMap<String, Object> requestMap = new HashMap<>();
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
-        requestMap.put("Email",Email_ID.getText().toString());
+        requestMap.put("Email",EmailID.getText().toString());
         requestMap.put("IsPaid", "false");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()

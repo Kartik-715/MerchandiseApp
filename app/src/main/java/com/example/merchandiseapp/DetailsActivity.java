@@ -30,7 +30,7 @@ public class DetailsActivity extends AppCompatActivity
 {
     private ArrayList<String> orderid_list;
     private ArrayList<String> group_list, product_list;
-    private EditText PhoneNumber, Address, Email_ID;
+    private EditText PhoneNumber, Address, EmailID;
     private Button Payment;
     private TextView Txt_Total_Price;
 
@@ -47,12 +47,12 @@ public class DetailsActivity extends AppCompatActivity
 
         PhoneNumber = (EditText) findViewById(R.id.Booking_Phone_Number);
         Address = (EditText) findViewById(R.id.Booking_Address);
-        Email_ID = (EditText) findViewById(R.id.Booking_Email);
+        EmailID = (EditText) findViewById(R.id.Booking_Email);
         Payment = (Button) findViewById(R.id.Btn_Payment);
         Txt_Total_Price = findViewById(R.id.Txt_Total_Price);
 
         Txt_Total_Price.setText("Total Price : Rs" + Prevalent.currentMoney);
-        Email_ID.setText(Prevalent.currentEmail);
+        EmailID.setText(Prevalent.currentEmail);
         Address.setText(Prevalent.currentAddress);
         PhoneNumber.setText(Prevalent.currentPhone);
 
@@ -87,7 +87,7 @@ public class DetailsActivity extends AppCompatActivity
             return;
         }
 
-        if(Email_ID.getText().toString().trim().length() == 0)
+        if(EmailID.getText().toString().trim().length() == 0)
         {
             Toast.makeText(DetailsActivity.this, "Please Enter Valid Email Address", Toast.LENGTH_SHORT).show();
             return;
@@ -104,16 +104,16 @@ public class DetailsActivity extends AppCompatActivity
 
             cartListRef.child("Contact").setValue(PhoneNumber.getText().toString());
             cartListRef.child("Address").setValue(Address.getText().toString());
-            cartListRef.child("Email").setValue(Email_ID.getText().toString());
+            cartListRef.child("Email").setValue(EmailID.getText().toString());
 
             cartListRef2.child("Contact").setValue(PhoneNumber.getText().toString());
             cartListRef2.child("Address").setValue(Address.getText().toString());
-            cartListRef2.child("Email").setValue(Email_ID.getText().toString());
+            cartListRef2.child("Email").setValue(EmailID.getText().toString());
 
             /*final HashMap<String, Object> cartMap = new HashMap<>();
             cartMap.put("Contact", PhoneNumber.getText().toString());
             cartMap.put("Address", Address.getText().toString());
-            cartMap.put("Email",Email_ID.getText().toString());
+            cartMap.put("Email",EmailID.getText().toString());
 
             cartListRef.updateChildren(cartMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>()

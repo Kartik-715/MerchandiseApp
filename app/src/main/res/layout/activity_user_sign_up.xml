@@ -308,15 +308,16 @@
 
 
                 <Button
+                    android:id="@+id/user_update_signup"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/grp_grad"
                     android:fontFamily="sans-serif-light"
+                    android:onClick="update_info"
                     android:text="Update Profile"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/user_update_signup"/>
+                    android:textColor="@android:color/black" />
 
             </LinearLayout>
 

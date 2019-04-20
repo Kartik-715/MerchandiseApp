@@ -115,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity
                     userdataMap.put("Address", "");
                     userdataMap.put("Password", password);
                     userdataMap.put("Name", name);
-                    userdataMap.put("Email_ID", email);
+                    userdataMap.put("EmailID", email);
                     userdataMap.put("UID", hashcode);
 
                     userRef.child(hashcode).updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()

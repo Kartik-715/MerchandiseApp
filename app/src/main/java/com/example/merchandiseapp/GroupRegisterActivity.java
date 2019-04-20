@@ -33,7 +33,7 @@ public class GroupRegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_group_register);
 
         /*GroupName = findViewById(R.id.Register_Group_Name);
-        EmailID = findViewById(R.id.Register_Email_ID);
+        EmailID = findViewById(R.id.Register_EmailID);
         Contact = findViewById(R.id.Register_Contact);
         Register = findViewById(R.id.Btn_Group_Request);
 

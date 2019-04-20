@@ -113,20 +113,6 @@ public class UserSignUp extends AppCompatActivity
             }
         });
 
-        update.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v){
-//                if(validate_entries())
-//                {
-//                    sendCode();
-//                }
-
-                update_info();
-            }
-        });
-
-
     }
 
     @Override
@@ -263,7 +249,7 @@ public class UserSignUp extends AppCompatActivity
         return true;
     }
 
-    public void update_info()
+    public void update_info(View v)
     {
         Prevalent.currentEmail = usrEmail.getText().toString().trim();
         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
@@ -370,7 +356,7 @@ public class UserSignUp extends AppCompatActivity
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(UserSignUp.this,"Login Successful",Toast.LENGTH_SHORT).show();
-                            update_info();
+                            //update_info();
                         } else {
                             if (task.getException() instanceof
                                     FirebaseAuthInvalidCredentialsException) {
