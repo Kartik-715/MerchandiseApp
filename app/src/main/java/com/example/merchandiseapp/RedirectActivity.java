@@ -156,7 +156,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
 
     public void redirect_group()
     {
-        Toast.makeText(getApplicationContext(),"yo yo",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),"yo yo",Toast.LENGTH_SHORT).show();
         final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Group");
 
         UserData.addValueEventListener(new ValueEventListener(){
@@ -168,7 +168,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                 String areaname;
                 final List<String> areas = new ArrayList<String>();
                 for (DataSnapshot authorizedSnapshot: dataSnapshot.getChildren()) {
-                        if (authorizedSnapshot.child("Authorized_Members").child("Email_ID").child(UID).exists()){
+                        if (authorizedSnapshot.child("Authorized_Members").child("EmailID").child(UID).exists()){
                             flag++;
                             areaname = authorizedSnapshot.child("Details").child("GroupName").getValue().toString();
                             areas.add(areaname);

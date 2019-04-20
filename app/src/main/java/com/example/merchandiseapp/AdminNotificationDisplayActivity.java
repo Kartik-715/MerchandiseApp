@@ -142,6 +142,10 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                         notificationRef.child(model.getGroupName()).child("isApproved").setValue("Yes");
                         uidReference = FirebaseDatabase.getInstance().getReference().child("Users").child(model.getUID());
                         uidReference.child("notiList").setValue("1");
+                        uidReference.child("Groups").child(model.getGroupName()).setValue("true") ;
+                        uidReference.child("Authorized_Groups").child(model.getGroupName()).setValue("true") ;
+
+
                         Toast.makeText(AdminNotificationDisplayActivity.this, "Request Approved Successfully", Toast.LENGTH_SHORT).show();
                         /* Adding new Group Now */
                         DatabaseReference newNode = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName()) ;
