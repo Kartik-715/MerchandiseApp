@@ -55,8 +55,41 @@ public class myWallet extends AppCompatActivity {
         Btn_500 = findViewById(R.id.Btn_500);
         Btn_1000 = findViewById(R.id.Btn_1000);
 
+        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+        UserData.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange (@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.child("Wallet_Money").exists())
+                {
+                    Current_Amount.setText("Current Balance : " + dataSnapshot.child("Wallet_Money").getValue().toString());
+                    Prevalent.currentWalletMoney = dataSnapshot.child("Wallet_Money").getValue().toString();
+                }
+                else //Just add the Money as "0" in the data
+                {
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("Wallet_Money", "0");
 
-        Current_Amount.setText("Current Balance : " + Prevalent.currentWalletMoney);
+                    UserData.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+                            Current_Amount.setText("Current Balance : 0");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+
+        //Current_Amount.setText("Current Balance : " + Prevalent.currentWalletMoney);
 
         Btn_Add.setOnClickListener(new View.OnClickListener()
         {

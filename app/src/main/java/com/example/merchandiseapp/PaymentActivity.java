@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+
 import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.auth.data.model.PhoneNumber;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -86,6 +87,7 @@ public class PaymentActivity extends AppCompatActivity
             intent.putExtra("orderid_list", orderid_list);
             intent.putExtra("group_list", group_list);
             intent.putExtra("product_list", product_list);
+            intent.putExtra("mode", "Order/Requests");
             startActivity(intent);
         }
         if(radioButton.getText().toString().equals("Wallet Money"))
@@ -131,7 +133,6 @@ public class PaymentActivity extends AppCompatActivity
         });
     }
 
-
     private void processPaytm()
     {
 
@@ -163,7 +164,6 @@ public class PaymentActivity extends AppCompatActivity
                 {
                     processToPay(response.body().getChecksumHash(),paytm);
                 }
-
             }
 
             @Override
@@ -223,7 +223,9 @@ public class PaymentActivity extends AppCompatActivity
 
             public void onTransactionResponse(Bundle inResponse)
             {
-                Toast.makeText(PaymentActivity.this, inResponse.toString(), Toast.LENGTH_SHORT).show();
+                updateFirebase();
+                Toast.makeText(PaymentActivity.this, "Transaction Successful", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PaymentActivity.this, inResponse.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -241,6 +243,7 @@ public class PaymentActivity extends AppCompatActivity
 
             public void onErrorLoadingWebPage(int inErrorCode, String inErrorMessage, String inFailingUrl)
             {
+
                 Toast.makeText(getApplicationContext(), "Unable to load webpage " + inErrorMessage.toString(), Toast.LENGTH_LONG).show();
 
             }
@@ -253,6 +256,7 @@ public class PaymentActivity extends AppCompatActivity
 
             public void onTransactionCancel(String inErrorMessage, Bundle inResponse)
             {
+
                 Toast.makeText(getApplicationContext(), "Transaction Cancelled" + inResponse.toString(), Toast.LENGTH_LONG).show();
 
             }
@@ -375,8 +379,8 @@ public class PaymentActivity extends AppCompatActivity
 
                 cartListRef.child("IsPlaced").setValue("true");
                 cartListRef2.child("IsPlaced").setValue("true");
-                //cartListRef.child("Status").setValue("");
-                //cartListRef2.child("Status").setValue("");
+                cartListRef.child("Status").setValue("packed");
+                cartListRef2.child("Status").setValue("packed");
             }
 
             else
