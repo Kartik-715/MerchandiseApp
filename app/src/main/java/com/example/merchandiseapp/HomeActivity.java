@@ -107,8 +107,10 @@ public class HomeActivity extends AppCompatActivity
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("Merchandise App:Delivery Status")
-                        .setContentText(notiId)
-                        .setAutoCancel(true);
+                        .setContentText("Important Notice")
+                        .setAutoCancel(true)
+                        .setStyle( new NotificationCompat.BigTextStyle().bigText(notiId));
+
                 Intent intent = new Intent(getApplicationContext(), OrderStatusActivity.class);
                 PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(pi);
