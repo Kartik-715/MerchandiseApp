@@ -176,10 +176,10 @@ public class CartActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull final Order model)
             {
-                System.out.println("okkkies");
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
-                holder.txtProductName.setText(model.getGroupName());
+                holder.txtProductPrice.setText("Price: Rs" + model.getPrice() );
+                holder.txtProductName.setText("Delivered By :" + model.getGroupName());
+
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.CartImage);
 
@@ -189,10 +189,6 @@ public class CartActivity extends AppCompatActivity
 
                 int oneTypeProductPrice = ( Integer.valueOf(model.getPrice()) ) * ( Integer.valueOf(model.getQuantity()) ) ;
                 overTotalPrice = overTotalPrice +  oneTypeProductPrice;
-
-                System.out.println("Disha2 : " + overTotalPrice);
-                System.out.println("Disha3 : " + oneTypeProductPrice);
-                System.out.println("Disha4 : " + overTotalPrice);
 
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
