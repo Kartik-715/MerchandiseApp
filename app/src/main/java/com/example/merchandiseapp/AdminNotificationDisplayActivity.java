@@ -153,9 +153,13 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                         newNode.child("Details").child("EmailID").setValue(model.getEmailID()) ;
                         newNode.child("Details").child("GroupName").setValue(model.getGroupName()) ;
                         newNode.child("Details").child("UPI").setValue(model.getUPI()) ;
+                        newNode.child("Details").child("Image_Location").setValue(model.getImage_Location()) ;
+
 
                         // Setting the Members by default the creator //
                         newNode.child("Members").child("Email_ID").setValue(a) ; // Set the Value of Members //
+
+
 
 
 
