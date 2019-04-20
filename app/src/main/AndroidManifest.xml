@@ -60,6 +60,14 @@
         <activity android:name=".UserRegister" />
         <activity android:name=".OutlookLogin"></activity>
         <activity android:name=".GroupRegister" />
+        <activity android:name=".myNotifications">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddMerchandise" />
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
@@ -88,6 +96,9 @@
             android:label="Staff"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".myWallet" />
+        <activity android:name=".AdminNotificationDisplayActivity">
+
+        </activity>
         <activity android:name=".Order_History" />
         <activity android:name=".StartProfileUser" />
         <activity
@@ -108,12 +119,6 @@
             android:label="@string/title_activity_courier"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".productDetailActivity" />
-        <!--
-<activity
-            android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
-        -->
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
@@ -148,6 +153,8 @@
                     android:host="auth"
                     android:scheme="msal49325855-8489-4362-86da-71ef3125a401" />
             </intent-filter>
+            android:name=".LoginActivity"
+            android:label="@string/app_name">
         </activity>
     </application>
 
