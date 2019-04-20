@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.facebook.common.internal.Objects;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +46,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
 
     String user;
     JSONObject Juser;
+    Bundle b ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +61,33 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
         home = findViewById(R.id.home_redirect);
 
         //getting user details from json passed by outlook login................
-        Bundle b = getIntent().getExtras();
-        if(b!=null){
-            user = (String) b.get("user");
-         //   Toast.makeText(getApplicationContext(),"JSON STRING "+ user ,Toast.LENGTH_SHORT).show();
-            try{
-                Juser = new JSONObject(user);
-                Welcome.setText("Welcome    " + Juser.getString("displayName").toString());
-                email = Juser.getString("mail").toString();
-            }
-            catch (Exception ex)
+        b = getIntent().getExtras();
+        if(b != null)
+        {
+            if(b.getString("email", null) != null)
             {
-                Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
+                email = b.getString("email");
+                Welcome.setText("Welcome " + email);
+                System.out.println("Email is: " + email);
             }
+            else
+            {
+
+                user = (String) b.get("user");
+                //   Toast.makeText(getApplicationContext(),"JSON STRING "+ user ,Toast.LENGTH_SHORT).show();
+                try{
+                    Juser = new JSONObject(user);
+                    Welcome.setText("Welcome    " + Juser.getString("displayName").toString());
+                    email = Juser.getString("mail").toString();
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+
         }
 
         Button button = findViewById(R.id.submitBtn);
@@ -97,6 +113,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                 i.putExtra("Type","groups");
                 i.putExtra("Email",email);
                 i.putExtra("Name",selected);
+                Prevalent_Groups.currentGroupName = selected ;
                 startActivity(i);
             }
         });
@@ -173,7 +190,15 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getApplicationContext(),"Group Register",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
-                            intent.putExtra("user",Juser.toString());
+                            if(b.getString("email", null) != null)
+                            {
+                                email = b.getString("email");
+                                intent.putExtra("email",email) ;
+                            }
+                            else
+                            {
+                                intent.putExtra("user",Juser.toString());
+                            }
                             startActivity(intent);
                         }
                     });

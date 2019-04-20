@@ -71,7 +71,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         password = (EditText)findViewById(R.id.password);
         Join = findViewById(R.id.JoinNow);
 
-        email.setText("hey@gmail.com");
+        email.setText("hey@gmail.com"); // HARD CODED FOR CONVENIENCE //
         password.setText("F");
 
         callGraphButton.setOnClickListener(new View.OnClickListener()
@@ -173,7 +173,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
 
     private void onLoginButtonClicked()
     {
-        String Email = email.getText().toString().trim();
+        final String Email = email.getText().toString().trim();
         final String Password = password.getText().toString().trim();
 
         database = FirebaseDatabase.getInstance();
@@ -200,9 +200,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                     if (dataSnapshot.child("Password").getValue().toString().equals(Password))
                     {
                         flag = true;
-                        Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
-                        intent.putExtra("Type", "users");
-                        intent.putExtra("Email", email.getText().toString() );
+                        Intent intent = new Intent(OutlookLogin.this, RedirectActivity.class);
+                        intent.putExtra("email", Email);
                         Prevalent.currentEmail = email.getText().toString();
                         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
                         startActivity(intent);

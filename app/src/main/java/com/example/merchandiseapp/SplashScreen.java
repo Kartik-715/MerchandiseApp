@@ -25,7 +25,7 @@ import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONObject;
 
-public class SplashScreen extends AppCompatActivity {
+public class  SplashScreen extends AppCompatActivity {
 
     G_var global;
     String type;

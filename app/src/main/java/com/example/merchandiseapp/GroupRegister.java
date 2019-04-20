@@ -81,19 +81,30 @@ public class GroupRegister extends AppCompatActivity {
         if(b!=null){
             String user = (String) b.get("user");
             //   Toast.makeText(getApplicationContext(),"JSON STRING "+ user ,Toast.LENGTH_SHORT).show();
-            try{
-                Juser = new JSONObject(user);
-                //Juser is the required Json object to be used
-                //testing to find the user display name
-                //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
-                //setting the textview to mail of the logged in user
 
-                grpEmail.setText(Juser.getString("mail").toString());
-            }
-            catch (Exception ex)
+            if(b.getString("email",null) != null)
             {
-                Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
+                grpEmail.setText(b.getString("email",null));
             }
+            else
+            {
+                try{
+                    Juser = new JSONObject(user);
+                    //Juser is the required Json object to be used
+                    //testing to find the user display name
+                    //     Toast.makeText(getApplicationContext(),Juser.getString("displayName").toString(),Toast.LENGTH_SHORT).show();
+                    //setting the textview to mail of the logged in user
+
+                    grpEmail.setText(Juser.getString("mail").toString());
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(getApplicationContext(),"invalid json ",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+
         }
 
         choose.setOnClickListener(new View.OnClickListener() {
