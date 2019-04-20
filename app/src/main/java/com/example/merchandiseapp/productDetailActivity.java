@@ -17,8 +17,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +35,8 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -72,10 +78,20 @@ public class productDetailActivity extends AppCompatActivity
     private ArrayList<String> arraySpinner;
     private int flag;
     private String selectedSpinneritem;
+    private Button btnReviews;
+    private Button btnPrivateReviews;
+    private RecyclerView recycle;
     private ArrayList<String> size_list;
     private ArrayList<String> quantity_list;
 
-
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<String> uid_list;
+    private String categoryTxt;
+    private String pidTxt;
+    private String select;
+    private String some;
+    private String some2;
     public interface MyCallback
     {
         void onCallback(ArrayList<String> value);
@@ -90,6 +106,7 @@ public class productDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_product_detail);
 
         image_src = new ArrayList<>();
+        recycle = findViewById(R.id.recyclerReview);
         size_list = new ArrayList<>();
         quantity_list = new ArrayList<>();
 
@@ -104,7 +121,7 @@ public class productDetailActivity extends AppCompatActivity
         User_ID = Prevalent.currentOnlineUser;
         orderid_list = new ArrayList<>();
         group_list = new ArrayList<>();
-
+        btnPrivateReviews=findViewById(R.id.privateReviews);
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         buyNowButton = findViewById(R.id.buy_now_Button);
         numberButton = findViewById(R.id.numberBtn);
@@ -113,13 +130,38 @@ public class productDetailActivity extends AppCompatActivity
         SizeSpinner = findViewById(R.id.size_spinner);
         productPrice = findViewById(R.id.productPrice);
         shareButton = findViewById(R.id.share_button);
+        btnReviews = findViewById(R.id.reviewbtn);
 
         shareButton.setVisibility(View.INVISIBLE);
 
         ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image);
         ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
         viewPager.setAdapter(adapter);
+        btnReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
+                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
+                intent.putExtra("category",category);
+                intent.putExtra("pid",productID);
+                intent.putExtra("select","No");
+                startActivity(intent);
+                    //select="No";
 
+            }
+        });
+        btnPrivateReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(productDetailActivity.this,ReviewDisplayActivity.class);
+                //Intent intent = new Intent(HomeActivity.this,ReviewDisplayActivity.class);
+                intent.putExtra("category",category);
+                intent.putExtra("pid",productID);
+                intent.putExtra("select","Yes");
+                startActivity(intent);
+                //select="Yes";
+            }
+        });
         viewPager.setOnClickListener(new View.OnClickListener()
         {
             @Override
