@@ -1,8 +1,10 @@
 package com.example.merchandiseapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,7 @@ public class myWallet extends AppCompatActivity {
     private EditText Money_Added;
     private Button Btn_Add;
     private G_var global;
+    private Button Btn_100, Btn_500, Btn_1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,13 +51,54 @@ public class myWallet extends AppCompatActivity {
         Current_Amount = findViewById(R.id.cur_balance);
         Btn_Add = findViewById(R.id.Btn_Add_Money);
         Money_Added = findViewById(R.id.Text_Money);
+        Btn_100 = findViewById(R.id.Btn_100);
+        Btn_500 = findViewById(R.id.Btn_500);
+        Btn_1000 = findViewById(R.id.Btn_1000);
 
-        getInfo();
-        Btn_Add.setOnClickListener(new View.OnClickListener() {
+
+        Current_Amount.setText("Current Balance : " + Prevalent.currentWalletMoney);
+
+        Btn_Add.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
-                //transact();
+                if(TextUtils.isEmpty(Money_Added.getText().toString().trim()))
+                {
+                    Toast.makeText(myWallet.this, "Please Add Some Amount", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Prevalent.currentMoney = Money_Added.getText().toString();
+                Intent intent = new Intent(myWallet.this, PaymentWalletActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Btn_100.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Money_Added.setText("100");
+            }
+        });
+
+        Btn_500.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Money_Added.setText("500");
+            }
+        });
+
+        Btn_1000.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Money_Added.setText("1000");
             }
         });
     }
@@ -98,9 +142,10 @@ public class myWallet extends AppCompatActivity {
     }
 
 
-    public void getInfo()
+    /*public void getInfo()
     {
         UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+
         UserData.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -108,7 +153,7 @@ public class myWallet extends AppCompatActivity {
             {
                 if(dataSnapshot.child("Wallet_Money").exists())
                 {
-                    Current_Amount.setText(dataSnapshot.child("Wallet_Money").getValue().toString());
+                    Current_Amount.setText("Current Balance : " + dataSnapshot.child("Wallet_Money").getValue().toString());
                 }
 
                 else //Just add the Money as "0" in the data
@@ -121,7 +166,7 @@ public class myWallet extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task)
                         {
-
+                            Current_Amount.setText("Current Balance : 0");
                         }
                     });
                 }
@@ -136,5 +181,5 @@ public class myWallet extends AppCompatActivity {
 
         return;
 
-    }
+    }*/
 }

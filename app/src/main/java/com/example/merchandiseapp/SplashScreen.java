@@ -178,7 +178,8 @@ public class SplashScreen extends AppCompatActivity {
         hideNav();
     }
 
-    public void getImage(){
+    public void getImage()
+    {
         StorageReference mImageRef;
 
         if(type.equals("users"))
@@ -190,7 +191,8 @@ public class SplashScreen extends AppCompatActivity {
 
         final long ONE_MEGABYTE = 1024 * 1024 * 20;
         mImageRef.getBytes(ONE_MEGABYTE)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                .addOnSuccessListener(new OnSuccessListener<byte[]>()
+                {
                     @Override
                     public void onSuccess(byte[] bytes) {
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -198,7 +200,8 @@ public class SplashScreen extends AppCompatActivity {
                         global.setBitmap(bm);
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
+                .addOnFailureListener(new OnFailureListener()
+                {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
@@ -206,7 +209,8 @@ public class SplashScreen extends AppCompatActivity {
                 });
     }
 
-    public void hideNav(){
+    public void hideNav()
+    {
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

@@ -12,20 +12,16 @@
             android:id="@+id/cart"
             android:icon="@drawable/cart_nav"
             android:title="Cart" />
-        <item
-            android:id="@+id/orders"
-            android:icon="@drawable/orders"
-            android:title="Orders History" />
-        <item
-            android:id="@+id/settings"
-            android:icon="@drawable/settings_nav"
-            android:title="Settings" />
-
 
         <item
-            android:title="FAQs"
-            android:id="@+id/faq"
+            android:id="@+id/wallet"
+            android:icon="@drawable/wallet_nav"
+            android:title="Wallet" />
+        <item
+            android:title="Orders"
+            android:id="@+id/orders_list"
             android:icon="@drawable/faq_nav"/>
+
 
         <item
             android:title="Customized Orders"
@@ -33,29 +29,36 @@
             android:icon="@drawable/faq_nav"/>
 
         <item
-            android:title="Orders"
-            android:id="@+id/orders_list"
-            android:icon="@drawable/faq_nav"/>
-
-        <item
             android:title="View Un-Paid Requests"
             android:id="@+id/unpaid_request"
             android:icon="@drawable/faq_nav"/>
+
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Delivered Orders" />
+
+        <item
+            android:id="@+id/orders"
+            android:icon="@drawable/orders"
+            android:title="Orders History" />
+        <item
+            android:title="FAQs"
+            android:id="@+id/faq"
+            android:icon="@drawable/faq_nav"/>
+
     </group>
 
     <item android:title="Communicate">
         <menu>
-            <item
+            <!--<item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Delivered Orders" />
+                android:title="Share" />-->
+
             <item
                 android:id="@+id/nav_logout"
-                android:title="Logout" />
+                android:title="logout" />
         </menu>
     </item>
 

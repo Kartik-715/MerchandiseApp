@@ -31,7 +31,7 @@ public class UPIActivity extends AppCompatActivity
 
         initializeViews();
 
-        amountEt.setText(getIntent().getStringExtra("amount"));
+        amountEt.setText("Total Amount : " + getIntent().getStringExtra("amount"));
 
         send.setOnClickListener(new View.OnClickListener()
         {

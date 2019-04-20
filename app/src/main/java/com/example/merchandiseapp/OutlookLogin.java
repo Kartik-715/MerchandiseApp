@@ -71,6 +71,9 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         password = (EditText)findViewById(R.id.password);
         Join = findViewById(R.id.JoinNow);
 
+        email.setText("hey@gmail.com");
+        password.setText("F");
+
         callGraphButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)

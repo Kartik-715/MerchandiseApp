@@ -45,9 +45,7 @@ public class PaymentWalletActivity extends AppCompatActivity
 
         Btn_Payment = findViewById(R.id.Btn_Payment);
         radioGroup = findViewById(R.id.radiogroup);
-        Prevalent.currentMoney = "50";
-        Prevalent.currentWalletMoney = "75";
-        amount = "2";
+        amount = Prevalent.currentMoney ;
 
         Btn_Payment.setOnClickListener(new View.OnClickListener()
         {
@@ -72,9 +70,9 @@ public class PaymentWalletActivity extends AppCompatActivity
         if(radioButton.getText().toString().equals("UPI"))
         {
             Intent intent = new Intent(this, UPIActivity.class);
+            intent.putExtra("amount", amount) ;
             startActivity(intent);
         }
-
     }
 
     private void processPaytm()
@@ -182,7 +180,7 @@ public class PaymentWalletActivity extends AppCompatActivity
             public void onBackPressedCancelTransaction()
             {
                 Toast.makeText(PaymentWalletActivity.this, "Back pressed. Transaction cancelled", Toast.LENGTH_LONG).show();
-                finish();
+                //finish();
             }
 
             public void onTransactionCancel(String inErrorMessage, Bundle inResponse)

@@ -44,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.PublicClientApplication;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -81,6 +82,8 @@ public class HomeActivity extends AppCompatActivity
 
         // Setting up current User //
 
+        global = (G_var) getApplicationContext();
+        System.out.println("Hey : " + global.getUsername());
 
         orderType = getIntent().getStringExtra("orderType");
         String name = getIntent().getStringExtra("name");
@@ -93,8 +96,8 @@ public class HomeActivity extends AppCompatActivity
 
         Prevalent.currentOrderType = orderType;
         Prevalent.currentPhone = contact;
-        //Prevalent.currentEmail = email;
-        Prevalent.currentEmail = "mayank@iitg.ac.in";
+        //Prevalent.currentEmail = "mayank@iitg.ac.in";
+        Prevalent.currentEmail = email;
         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
         Prevalent.currentWalletMoney = wallet;
         Prevalent.currentGender = gender;
@@ -151,14 +154,17 @@ public class HomeActivity extends AppCompatActivity
                            {
                                //System.out.println(merchandise) ;
                                Merchandise mr = merchandise.getValue(Merchandise.class);
-                               Set<String> ss = new HashSet<>(accessibleGroups);
-                               if (mr.getAccessGroup() != null)
+                               if(accessibleGroups != null)
                                {
-                                   Set<String> u = new HashSet<>(mr.getAccessGroup());
-                                   ss.retainAll(u);
-                                   if (ss.size() != 0 && mr.getOrderType().equals(orderType))
+                                   Set<String> ss = new HashSet<>(accessibleGroups);
+                                   if (mr.getAccessGroup() != null)
                                    {
-                                       list.add(mr);
+                                       Set<String> u = new HashSet<>(mr.getAccessGroup());
+                                       ss.retainAll(u);
+                                       if (ss.size() != 0 && mr.getOrderType().equals(orderType))
+                                       {
+                                           list.add(mr);
+                                       }
                                    }
                                }
                            }
@@ -173,71 +179,14 @@ public class HomeActivity extends AppCompatActivity
                                adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey() );
 
                            }
-
                        }
-
-
                    }
 
                    @Override
                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                    }
-               }) ;
-
-//                FirebaseDatabase.getInstance().getReference().child("Merchandise").addListenerForSingleValueEvent(new ValueEventListener()
-//                {
-//
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-//                    {
-//                        //adaptor.clearFragments();
-//                        Log.w("DataChanged","Data is Changed") ;
-//
-//                        for (DataSnapshot postdatasnapshot : dataSnapshot.getChildren())
-//                        {
-//                            List<Merchandise> list = new ArrayList<>();
-//                            for(DataSnapshot merchandise: postdatasnapshot.getChildren())
-//                            {
-//                                //System.out.println(merchandise) ;
-//                                Merchandise mr = merchandise.getValue(Merchandise.class);
-//                                Set<String> s = new HashSet<>(accessibleGroups);
-//                                if (mr.getAccessGroup() != null)
-//                                {
-//                                    Set<String> u = new HashSet<>(mr.getAccessGroup());
-//                                    s.retainAll(u);
-//                                    if (s.size() != 0 && mr.getOrderType().equals(orderType))
-//                                    {
-//                                        list.add(mr);
-//                                    }
-//                                }
-//                            }
-//
-//                            if(list.size() != 0)
-//                            {
-//                                FragmentItem fragment = new FragmentItem() ;
-//                                Bundle bundle = new Bundle() ; // Incase you want to pass some arguments into Fragment //
-//                                fragment.setObject(list);
-//                                fragment.setArguments(bundle);
-//                                System.out.println("Added a fragment!");
-//                                adaptor.AddFragment(fragment, (String) postdatasnapshot.getKey() );
-//
-//                            }
-//
-//                        }
-//
-//                        // I have the list now! //
-//
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError)
-//                    {
-//                        Log.d("Error", "Couldn't read this Merchandise");
-//                    }
-//                });
+               });
             }
 
             @Override
@@ -248,16 +197,12 @@ public class HomeActivity extends AppCompatActivity
         });
 
 
-
-
         viewPager.setAdapter(adaptor);
         tabLayout.setupWithViewPager(viewPager);
 
         /******** Tab Layout Setting **********/
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Home");
+        toolbar.setTitle("Welcome to Merchandise App");
 
         setSupportActionBar(toolbar);
 
@@ -286,33 +231,12 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
-
-
-        //String User_ID, User_Email;
-        //User_Email = user.getEmail();
-        //User_ID = user.getUid();
-//        User_Email = "mayank@iitg.ac.in";
-//
-//        String temp_email = User_Email;
-//        int temp = User_Email.hashCode();
-//        final String hashcode = Integer.toString(temp);
-//
-//        Prevalent.currentOnlineUser = hashcode;
-//        Prevalent.currentEmail = temp_email;
-
-        /*User_ID = user.getUid();
-
-        Prevalent.currentOnlineUser = User_ID;
-        Prevalent.currentEmail = User_Email;*/
-
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
         TextView navemail = headerView.findViewById(R.id.emailtextView);
-        //navUsername.setText(global.getUsername());
+        navUsername.setText("Hello " + global.getUsername());
         navemail.setText(Prevalent.currentEmail);
         imageView = headerView.findViewById(R.id.imageView);
-        //addImage();
-//        new DownloadImageTask(imageView)
-//                .execute(user.getPhotoUrl().toString());
+        addImage();
     }
 
     /*@Override
@@ -386,16 +310,23 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-        /*else if (id == R.id.wallet)
+        else if (id == R.id.cart)
         {
-            Intent intent = new Intent(this, myWallet.class);
+            Intent intent = new Intent(HomeActivity.this, CartActivity.class);
             startActivity(intent);
-        }*/
+        }
+
         else if (id == R.id.orders)
         {
             Intent intent = new Intent(this,Order_History.class);
             startActivity(intent);
 
+        }
+
+        else if(id == R.id.wallet)
+        {
+            Intent intent = new Intent(this,myWallet.class);
+            startActivity(intent);
         }
 
         else if (id == R.id.nav_share)
@@ -483,7 +414,7 @@ public class HomeActivity extends AppCompatActivity
         imageView.setMinimumHeight(dm.heightPixels);
         imageView.setMinimumWidth(dm.widthPixels);
         //Toast.makeText(getApplicationContext(),"Adding Image ..",Toast.LENGTH_SHORT).show();
-        //imageView.setImageBitmap(global.getBitmap());
+        imageView.setImageBitmap(global.getBitmap());
     }
 
 
