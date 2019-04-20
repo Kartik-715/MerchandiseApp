@@ -85,15 +85,15 @@ public class orderRequestDetails extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.child("Orders").getChildren()) {
 
 //                    System.out.println(ds.child("IsPaid").getValue().toString());
-
-                    Contact.add((String) ds.child("Contact").getValue());
-                    UserID.add((String) ds.child("UserID").getValue());
-                    Email.add((String) ds.child("Email").getValue());
-                    Quantity.add((String) ds.child("Quantity").getValue());
-                    Size.add((String) ds.child("Size").getValue());
-                    UserName.add((String) ds.child("UserName").getValue());
-                    OrderID.add((String) ds.child("OrderID").getValue());
-
+                    if(ds.child("IsPlaced").getValue().toString().equals("true")) {
+                        Contact.add((String) ds.child("Contact").getValue());
+                        UserID.add((String) ds.child("UserID").getValue());
+                        Email.add((String) ds.child("Email").getValue());
+                        Quantity.add((String) ds.child("Quantity").getValue());
+                        Size.add((String) ds.child("Size").getValue());
+                        UserName.add((String) ds.child("UserName").getValue());
+                        OrderID.add((String) ds.child("OrderID").getValue());
+                    }
 //                                    System.out.println( ds.child("UserID").toString());
 ////                                    System.out.println( ds.child("Contact").toString());
 //                                    System.out.println( ds.child("Email").toString());
@@ -147,16 +147,6 @@ public class orderRequestDetails extends AppCompatActivity {
 
                 }
 
-
-
-
-
-
-
-
-
-
-
             }
 
             @Override
@@ -164,28 +154,6 @@ public class orderRequestDetails extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
