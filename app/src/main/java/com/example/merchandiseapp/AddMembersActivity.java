@@ -54,7 +54,6 @@ public class AddMembersActivity extends AppCompatActivity
     {
         inputText = EmailID.getText().toString();
         inputText = inputText.trim();
-
         if(inputText.length() == 0)
         {
             System.out.println(inputText);
@@ -89,7 +88,6 @@ public class AddMembersActivity extends AppCompatActivity
         }
 
         // TODO : FOR TESTING REMOVE ONCE WE HAVE ADDED CURRENTGROUPNAME FROM CODE
-
         Prevalent_Groups.currentGroupName ="CSEA";
         int temp = inputText.hashCode();
         final String hashcode = Integer.toString(temp);
@@ -116,8 +114,7 @@ public class AddMembersActivity extends AppCompatActivity
 
                     for(String group:groups)
                     {
-                        //userRef.child(hashcode).child("Groups").push(group);
-                        //userRef.child(hashcode).child("Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
+                        userRef.child(hashcode).child("Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
                     }
                 }
 
@@ -128,7 +125,7 @@ public class AddMembersActivity extends AppCompatActivity
 
                     for(String group:groups)
                     {
-                        //userRef.child(hashcode).child("Groups").push(group);
+                        userRef.child(hashcode).child("Groups").child(Prevalent_Groups.currentGroupName).setValue("true");
                     }
 
                 }
