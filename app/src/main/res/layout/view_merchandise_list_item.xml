@@ -38,11 +38,11 @@
 
         <TextView
             android:id="@+id/cart_product_quantity"
-            android:layout_width="160dp"
+            android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_name"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
             android:text="Quantity:"
@@ -50,14 +50,28 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/cart_product_quantity2"
+            android:layout_width="202dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cart_product_name"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="41dp"
+            android:layout_toRightOf="@+id/product_image"
+            android:paddingLeft="20dp"
+            android:text="Size:Quantity"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <Spinner
             android:id="@+id/product_quantity_spinner"
             style="@style/FirebaseUI.CountrySpinner"
-            android:layout_width="32dp"
-            android:layout_height="25dp"
+            android:layout_width="202dp"
+            android:layout_height="30dp"
             android:layout_below="@+id/cart_product_quantity"
-            android:layout_marginLeft="184dp"
-            android:layout_marginTop="-22dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="37dp"
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/product_image"
             android:background="@android:drawable/btn_dropdown"
@@ -73,7 +87,7 @@
             android:layout_height="32dp"
             android:layout_below="@+id/product_quantity_spinner"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="6dp"
             android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
             android:text="Product Price"
@@ -97,14 +111,13 @@
 
         <Button
             android:id="@+id/cart_edit_item"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/product_image"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="9dp"
 
 
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="21dp"
             android:background="@color/MidnightBlue"
             android:text="Edit Merchandise"
             android:textAllCaps="false"
@@ -112,14 +125,12 @@
 
         <Button
             android:id="@+id/cart_remove_item"
-            android:layout_width="185dp"
+            android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:layout_below="@+id/product_image"
+            android:layout_below="@+id/cart_edit_item"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="5dp"
 
-            android:layout_marginEnd="0dp"
             android:background="@color/MidnightBlue"
             android:text="Remove"
             android:textAllCaps="false"
@@ -127,13 +138,11 @@
 
         <Button
             android:id="@+id/cart_make_public"
-            android:layout_width="184dp"
+            android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_below="@+id/product_image"
+            android:layout_below="@+id/cart_edit_item"
             android:layout_alignParentEnd="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="33dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginTop="5dp"
             android:background="@color/MidnightBlue"
             android:text="Make Public"
             android:textAllCaps="false"
