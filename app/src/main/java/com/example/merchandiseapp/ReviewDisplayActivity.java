@@ -77,10 +77,9 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 
 
     //@Override
-    protected void display() {
-        //Toast.makeText(ReviewDisplayActivity.this," "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+    protected void display()
+    {
         super.onStart();
-        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+"********************** "+pidTxt,Toast.LENGTH_LONG).show();
         final DatabaseReference reviewListRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(categoryTxt).child(pidTxt).child("Rating");
 
         if (select.equals("No")) {
@@ -90,13 +89,13 @@ public class ReviewDisplayActivity extends AppCompatActivity {
             FirebaseRecyclerAdapter<Rating, reviewsViewHolder> adapter
                     = new FirebaseRecyclerAdapter<Rating, reviewsViewHolder>(options) {
                 @Override
-                protected void onBindViewHolder(@NonNull reviewsViewHolder holder, int position, @NonNull final Rating model) {
+                protected void onBindViewHolder(@NonNull reviewsViewHolder holder, int position, @NonNull final Rating model)
+                {
 
                     holder.lreview.setText(model.getComment());
                     holder.lstars.setText(model.getStars());
                     holder.luser.setText(model.getUID());
                     uid_list.add(model.getUID());
-                    //Toast.makeText(ReviewDisplayActivity.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
                 }
 
                 @NonNull

@@ -293,7 +293,7 @@ public class productDetailActivity extends AppCompatActivity
         productIDMap.put("Price", productPrice.getText().toString());
         productIDMap.put("Size", size_list);
         productIDMap.put("Quantity", quantity_list);
-        productIDMap.put("UserName", Prevalent.currentName);
+        //productIDMap.put("UserName", Prevalent.currentName);
 
         cartListRef.child(productID).updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -307,7 +307,6 @@ public class productDetailActivity extends AppCompatActivity
 
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("ProductID",productID);
-        //cartMap.put("pname",productName.getText().toString());
         cartMap.put("GroupName",productName.getText().toString());
         cartMap.put("Price",productPrice.getText().toString());
         cartMap.put("Date",saveCurrentDate);
@@ -323,6 +322,8 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("Image", image_src);
         cartMap.put("Category", category);
         cartMap.put("Size", selectedSpinneritem);
+        cartMap.put("UserName", Prevalent.currentName);
+
 
         //Removing the previous one and making new one
         final int oneTypeProductPrice = ( Integer.valueOf(productPrice.getText().toString()) ) * ( Integer.valueOf(numberButton.getNumber()) ) ;
@@ -435,7 +436,6 @@ public class productDetailActivity extends AppCompatActivity
         productIDMap.put("Price", productPrice.getText().toString());
         productIDMap.put("Size", size_list);
         productIDMap.put("Quantity", quantity_list);
-        productIDMap.put("UserName", Prevalent.currentName);
 
         cartListRef.child(productID).updateChildren(productIDMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -466,6 +466,8 @@ public class productDetailActivity extends AppCompatActivity
         cartMap.put("Image", image_src);
         cartMap.put("Category", category);
         cartMap.put("Size", selectedSpinneritem);
+        cartMap.put("UserName", Prevalent.currentName);
+
 
         //Removing the previous one and making new one
         /*cartListRef.child(User_ID).child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
@@ -587,7 +589,6 @@ public class productDetailActivity extends AppCompatActivity
                         image = merchandises.getImage().get(0);
                         Picasso.get().load(merchandises.getImage().get(0)).into(productImage);
                     }
-
                     int final_quantity = Integer.parseInt(merchandises.getQuantity().get(selecteditem));
                     numberButton.setRange(1,final_quantity);
 
