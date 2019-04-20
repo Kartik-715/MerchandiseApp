@@ -20,17 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PublicReviewDisplayActivity"></activity>
+        <activity android:name=".PublicReviewDisplayActivity" />
         <activity android:name=".PrivateReviewDisplayActivity" />
         <activity android:name=".GiveRatingsActivity" />
         <activity android:name=".ReviewDisplayActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PaymentWalletActivity" />
         <activity android:name=".UPIActivity" />
-        <activity android:name=".orderRequestDetails"></activity>
-
         <activity android:name=".orderRequestDetails" />
-        <activity android:name=".UPIActivity" />
         <activity android:name=".OrderStatusActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".LoginActivity2" />
@@ -65,9 +62,7 @@
         <!-- </intent-filter> -->
         <!-- </service> -->
         <activity android:name=".ViewOrder" />
-        <activity android:name=".ViewOrder"></activity>
         <activity android:name=".ManageMembersActivity">
-
         </activity>
         <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
@@ -77,11 +72,6 @@
         <activity android:name=".SplashScreen" />
         <activity android:name=".UserRegister" />
         <activity android:name=".GroupRequestDetails" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".GroupRegister" />
         <activity android:name=".myNotifications">
 
         </activity>
@@ -154,10 +144,6 @@
         <activity
             android:name=".AddMerchandise"
             android:label="@string/app_name" />
-        <!--
-<activity android:name="com.microsoft.identity.client.BrowserTabActivity" />
-            android:label="@string/app_name" />
-        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_checkbox_selected" />
@@ -183,6 +169,7 @@
             android:name=".LoginActivity"
             android:label="@string/app_name">
         </activity>
+
     </application>
 
 </manifest>
