@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -151,6 +152,7 @@ public class RequestDetailActivity extends AppCompatActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(RequestDetailActivity.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
         intent.putExtra("orderType", Prevalent.currentOrderType);
         startActivity(intent);
     }
@@ -335,7 +337,8 @@ public class RequestDetailActivity extends AppCompatActivity
         requestMap2.put("Status", "incart");
         requestMap2.put("Time", saveCurrentTime);
         requestMap2.put("UserID", User_ID);
-        requestMap2.put("UserName", "Chirag");
+        requestMap2.put("UserName", Prevalent.currentName);
+        //requestMap2.put("Price", productPrice.getText().toString());
 
         requestRef2.child(neworderID).updateChildren(requestMap2).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -385,11 +388,15 @@ public class RequestDetailActivity extends AppCompatActivity
         requestMap2.put("Time", saveCurrentTime);
         requestMap2.put("UserID", User_ID);
         requestMap2.put("ProductID", productID);
+        requestMap2.put("Price", productPrice.getText().toString());
+
         if(image_src.get(0) != null)
             requestMap2.put("Image", image_src.get(0));
         else
             requestMap2.put("Image", "");
         requestMap2.put("UserName", "Chirag");
+
+        final int oneTypeProductPrice = ( Integer.valueOf(productPrice.getText().toString()) ) * ( Integer.valueOf(numberButton.getNumber()) ) ;
 
         requestRef.updateChildren(requestMap2).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -398,13 +405,13 @@ public class RequestDetailActivity extends AppCompatActivity
             {
                 if(task.isSuccessful())
                 {
+                    Prevalent.currentMoney = Integer.toString(oneTypeProductPrice);
                     Toast.makeText(RequestDetailActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RequestDetailActivity.this, TakeRequestDetailsActivity.class);
                     intent.putExtra("orderID", neworderID);
                     intent.putExtra("group_name", group_name);
                     intent.putExtra("product_id", productID);
                     startActivity(intent);
-
                 }
             }
         });

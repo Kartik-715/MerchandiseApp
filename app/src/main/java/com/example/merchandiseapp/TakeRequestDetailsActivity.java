@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
 {
     private ArrayList<String> orderid_list;
     private ArrayList<String> group_list;
+    private ArrayList<String> product_list;
     private EditText PhoneNumber, Address, Email_ID;
     private Button Pay_Now, Pay_Later;
     private String orderID, groupName, productID;
@@ -45,6 +47,11 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         groupName = getIntent().getStringExtra("group_name");
         productID = getIntent().getStringExtra("product_id");
 
+        orderid_list = new ArrayList<>();
+        group_list = new ArrayList<>();
+        product_list = new ArrayList<>();
+
+        updateWallet();
         final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderID);
 
         requestRef.addListenerForSingleValueEvent(new ValueEventListener()
@@ -114,14 +121,22 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
         requestMap.put("Email",Email_ID.getText().toString());
-        requestMap.put("IsPaid", "true");
+        //requestMap.put("IsPaid", "true");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
             {
-                Toast.makeText(TakeRequestDetailsActivity.this, "Successfully Paid", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(TakeRequestDetailsActivity.this, PaymentActivity.class);
+                orderid_list.add(orderID);
+                group_list.add(groupName);
+                product_list.add(productID);
+                intent.putExtra("orderid_list", orderid_list);
+                intent.putExtra("group_list", group_list);
+                intent.putExtra("product_list", product_list);
+                startActivity(intent);
+                //Toast.makeText(TakeRequestDetailsActivity.this, "Successfully Paid", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -161,6 +176,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             public void onComplete(@NonNull Task<Void> task)
             {
                 Intent intent = new Intent(TakeRequestDetailsActivity.this, HomeActivity.class);
+                Prevalent_Intent.setIntent(intent);
                 intent.putExtra("orderType", Prevalent.currentOrderType);
                 startActivity(intent);
             }
@@ -175,7 +191,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         requestMap.put("Contact", PhoneNumber.getText().toString());
         requestMap.put("Address", Address.getText().toString());
         requestMap.put("Email",Email_ID.getText().toString());
-        requestMap.put("IsPaid", "true");
+        //requestMap.put("IsPaid", "true");
 
         requestRef.updateChildren(requestMap).addOnCompleteListener(new OnCompleteListener<Void>()
         {
@@ -205,6 +221,44 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    public void updateWallet()
+    {
+        final DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+        UserData.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.child("Wallet_Money").exists())
+                {
+                    Prevalent.currentWalletMoney = dataSnapshot.child("Wallet_Money").getValue().toString();
+                }
+
+                else
+                {
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("Wallet_Money", "0");
+                    Prevalent.currentWalletMoney = "0";
+
+                    UserData.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
     }
 
 }

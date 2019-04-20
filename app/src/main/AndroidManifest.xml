@@ -22,13 +22,20 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ReviewDisplayActivityGroup"></activity>
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".ReviewDisplayActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".PaymentWalletActivity"></activity>
+        <activity android:name=".UPIActivity" />
         <activity android:name=".orderRequestDetails"></activity>
         <activity android:name=".UPIActivity" />
+        <activity android:name=".OrderStatusActivity" />
         <activity android:name=".PaymentActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity2" />
         <activity android:name=".RedirectActivity" />
         <activity android:name=".ViewMerchandise" /> <!-- <service -->
-        <activity android:name=".EditMerchandise" /> <!-- android:name=".java.MyFirebaseMessagingService" -->
+        <activity android:name=".EditMerchandise" />
+        <!-- android:name=".java.MyFirebaseMessagingService" -->
         <!-- android:exported="false"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
@@ -41,13 +48,15 @@
         <activity android:name=".TakeRequestDetailsActivity" />
         <activity android:name=".RequestDetailActivity" />
         <activity android:name=".ViewRequestsActivity" />
-        <activity android:name=".LoginActivity" /> <!-- <service -->
+        <activity android:name=".LoginActivity" />
+        <!-- <service -->
         <!-- android:name=".java.MyFirebaseMessagingService" -->
         <!-- android:exported="false"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
         <!-- </intent-filter> -->
         <!-- </service> -->
+        <activity android:name=".ViewOrder"></activity>
         <activity android:name=".ViewOrder" />
         <activity android:name=".ManageMembersActivity">
 
@@ -55,11 +64,17 @@
         <activity android:name=".AccessedMembersActivity" />
         <activity android:name=".AddMembersActivity" />
         <activity android:name=".PreBookings" />
-        <activity android:name=".UserSignUp" />
+        <activity android:name=".UserSignUp"></activity>
         <activity android:name=".GroupManageProfile" />
         <activity android:name=".SplashScreen" />
         <activity android:name=".UserRegister" />
-        <activity android:name=".OutlookLogin"></activity>
+        <activity android:name=".OutlookLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".GroupRegister" />
         <activity android:name=".myNotifications">
             <intent-filter>
@@ -75,7 +90,8 @@
 
 
         </activity>
-        <activity android:name=".MultipleImages" /> <!-- <activity android:name=".CustomAdapter" /> -->
+        <activity android:name=".MultipleImages" />
+        <!--<activity android:name=".CustomAdapter" />-->
         <activity android:name=".ListView" />
         <activity android:name=".GroupRequestDetails" />
         <activity android:name=".grp_manage_profile" />
@@ -123,17 +139,19 @@
         <activity
             android:name=".AddMerchandise"
             android:label="@string/app_name" />
-        <!--
-<activity android:name="com.microsoft.identity.client.BrowserTabActivity" />
-            android:label="@string/app_name" />
-        -->
+
+        <!--<activity android:name="com.microsoft.identity.client.BrowserTabActivity" />
+            android:label="@string/app_name" />-->
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_checkbox_selected" />
+
         <!--
  Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.
         -->
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" /> <!-- Intent filter to capture System Browser calling back to our app after Sign In -->

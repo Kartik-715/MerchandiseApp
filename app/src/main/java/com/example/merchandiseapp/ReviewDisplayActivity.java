@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ReviewDisplayActivityGroup extends AppCompatActivity {
+public class ReviewDisplayActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -33,13 +33,13 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
     private String some2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_display);
-
-
-        pidTxt = getIntent().getStringExtra("PID");
-        categoryTxt = getIntent().getStringExtra("Category");
+        pidTxt = getIntent().getStringExtra("pid");
+        categoryTxt = getIntent().getStringExtra("category");
+        //Toast.makeText(ReviewDisplayActivity.this,"hey "+categoryTxt+" "+pidTxt,Toast.LENGTH_LONG).show();
         uid_list = new ArrayList<String>();
         select = getIntent().getStringExtra("select");
         recyclerView = findViewById(R.id.recyclerReview);
@@ -53,13 +53,14 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 some = (String) dataSnapshot.child("GroupName").getValue();
                 some2=(String) dataSnapshot.child("GroupName").getValue();
-                if (select.equals("Yes")) {
-                    select = (String) dataSnapshot.child("GroupName").getValue();
 
-                    //Toast.makeText(ReviewDisplayActivityGroup.this,select,Toast.LENGTH_LONG).show();
+                if (select.equals("Yes"))
+                {
+                    select = (String) dataSnapshot.child("GroupName").getValue();
+                    //Toast.makeText(ReviewDisplayActivity.this,select,Toast.LENGTH_LONG).show();
                 }
                 display();
-                //Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+                //Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -67,7 +68,7 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
 
             }
         });
-       // Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" "+select,Toast.LENGTH_LONG).show();
+       // Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" "+select,Toast.LENGTH_LONG).show();
 //        if (select == "Yes") {
 //            select = some;
 //        }
@@ -76,10 +77,9 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
 
 
     //@Override
-    protected void display() {
-        //Toast.makeText(ReviewDisplayActivityGroup.this," "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+    protected void display()
+    {
         super.onStart();
-        //Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+categoryTxt+"********************** "+pidTxt,Toast.LENGTH_LONG).show();
         final DatabaseReference reviewListRef = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(categoryTxt).child(pidTxt).child("Rating");
 
         if (select.equals("No")) {
@@ -89,13 +89,13 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
             FirebaseRecyclerAdapter<Rating, reviewsViewHolder> adapter
                     = new FirebaseRecyclerAdapter<Rating, reviewsViewHolder>(options) {
                 @Override
-                protected void onBindViewHolder(@NonNull reviewsViewHolder holder, int position, @NonNull final Rating model) {
+                protected void onBindViewHolder(@NonNull reviewsViewHolder holder, int position, @NonNull final Rating model)
+                {
 
                     holder.lreview.setText(model.getComment());
                     holder.lstars.setText(model.getStars());
                     holder.luser.setText(model.getUID());
                     uid_list.add(model.getUID());
-                    //Toast.makeText(ReviewDisplayActivityGroup.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
                 }
 
                 @NonNull
@@ -112,7 +112,7 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
 
 
         } else {
-            //Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
+            //Toast.makeText(ReviewDisplayActivity.this,"hey "+some +" "+some2+" "+categoryTxt + " " + pidTxt+" " +select,Toast.LENGTH_LONG).show();
             FirebaseRecyclerOptions<Rating> options = new FirebaseRecyclerOptions.Builder<Rating>()
                     .setQuery(reviewListRef.orderByChild("Group").equalTo(select), Rating.class)
                     .build();
@@ -125,7 +125,7 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
                     holder.lstars.setText(model.getStars());
                     holder.luser.setText(model.getUID());
                     uid_list.add(model.getUID());
-                    //Toast.makeText(ReviewDisplayActivityGroup.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ReviewDisplayActivity.this, "hey " + model.getComment() + " " + model.getStars() + " " + model.getUID(), Toast.LENGTH_LONG).show();
                 }
 
                 @NonNull
@@ -154,7 +154,7 @@ public class ReviewDisplayActivityGroup extends AppCompatActivity {
 //                holder.lstars.setText( model.getStars() );
 //                holder.luser.setText(model.getUID());
 //                uid_list.add(model.getUID());
-//                Toast.makeText(ReviewDisplayActivityGroup.this,"hey "+model.getComment()+" "+model.getStars()+" "+model.getUID(),Toast.LENGTH_LONG).show();
+//                Toast.makeText(ReviewDisplayActivity.this,"hey "+model.getComment()+" "+model.getStars()+" "+model.getUID(),Toast.LENGTH_LONG).show();
 //            }
 //
 //            @NonNull

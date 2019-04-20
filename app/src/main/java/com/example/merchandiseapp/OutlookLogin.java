@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,12 +39,12 @@ import com.microsoft.identity.client.exception.*;
 
 
 
-public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActivity {
-    /* Azure AD v2 Configs */
+public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActivity
+{
     final static String SCOPES [] = {"https://graph.microsoft.com/User.Read"};
     final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
     G_var global;
-    /* UI & Debugging Variables */
+
     private static final String TAG = MainActivity.class.getSimpleName();
     Button callGraphButton;
     Button LoginButton;
@@ -58,7 +59,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     private AuthenticationResult authResult;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outlook_login);
         hideNav();
@@ -69,21 +71,30 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         password = (EditText)findViewById(R.id.password);
         Join = findViewById(R.id.JoinNow);
 
-        callGraphButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        email.setText("hey@gmail.com");
+        password.setText("F");
+
+        callGraphButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
                 onCallGraphClicked();
             }
         });
 
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        LoginButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
                 onLoginButtonClicked();
             }
         });
 
-        Join.setOnClickListener(new View.OnClickListener() {
+        Join.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent i = new Intent(OutlookLogin.this,UserSignUp.class);
                 startActivity(i);
             }
@@ -91,29 +102,31 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
 
         /* Configure your sample app and save state for this activity */
         sampleApp = null;
-        if (sampleApp == null) {
+        if (sampleApp == null)
+        {
             sampleApp = new PublicClientApplication(
                     this.getApplicationContext(),
                     R.raw.auth_config);
          //  if(sampleApp != null) global.setSampleApp(sampleApp);
         }
 
-        /* Attempt to get a user and acquireTokenSilent
-         * If this fails we do an interactive request
-         */
         List<IAccount> accounts = null;
 
-        try {
+        try
+        {
             accounts = sampleApp.getAccounts();
 
-            if (accounts != null && accounts.size() == 1) {
-                /* We have 1 account */
-
-                sampleApp.acquireTokenSilentAsync(SCOPES, accounts.get(0), getAuthSilentCallback());
-            } else {
+            if (accounts != null && accounts.size() == 1)
+            {
+                //sampleApp.acquireTokenSilentAsync(SCOPES, accounts.get(0), getAuthSilentCallback());
+            }
+            else
+            {
                 /* We have no account or >1 account */
             }
-        } catch (IndexOutOfBoundsException e) {
+        }
+        catch (IndexOutOfBoundsException e)
+        {
             Log.d(TAG, "Account at this position does not exist: " + e.toString());
         }
 
@@ -145,46 +158,62 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
 
     /* Handles the redirect from the System Browser */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         sampleApp.handleInteractiveRequestRedirect(requestCode, resultCode, data);
     }
 
     /* Use MSAL to acquireToken for the end-user
      * Callback will call Graph api w/ access token & update UI
      */
-    private void onCallGraphClicked() {
+    private void onCallGraphClicked()
+    {
         sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
     }
 
-    private void onLoginButtonClicked() {
+    private void onLoginButtonClicked()
+    {
         String Email = email.getText().toString().trim();
         final String Password = password.getText().toString().trim();
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Users");
-        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)) {
+
+        if (TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password))
+        {
             Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
             return;
         }
+
         flag = false;
         int hash = Email.hashCode();
+
         final String hashValue = Integer.toString(hash);
-        ref.child(hashValue).addValueEventListener(new ValueEventListener() {
+
+        ref.child(hashValue).addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("Password").getValue().toString().equals(Password)) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    if (dataSnapshot.child("Password").getValue().toString().equals(Password))
+                    {
                         flag = true;
                         Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
                         intent.putExtra("Type", "users");
-                        intent.putExtra("Email", email.getText().toString());
+                        intent.putExtra("Email", email.getText().toString() );
+                        Prevalent.currentEmail = email.getText().toString();
+                        Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
                         startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
                     }
+
+                    else
+                        Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
                 }
 
-                else Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -277,7 +306,10 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         queue.add(request);
     }
     @Override
-    public void onBackPressed() {
+
+
+    public void onBackPressed()
+    {
         new AlertDialog.Builder(this)
                // .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Exit")
@@ -293,6 +325,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 .setNegativeButton("No", null)
                 .show();
     }
+
     //
     // Helper methods manage UI updates
     // ================================
@@ -302,11 +335,13 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     //
 
     /* Sets the graph response */
-    private void updateGraphUI(JSONObject graphResponse) {
+    private void updateGraphUI(JSONObject graphResponse)
+    {
         Intent i = new Intent(OutlookLogin.this, RedirectActivity.class);
-        i.putExtra("user",graphResponse.toString());
+        i.putExtra("user", graphResponse.toString());
 
         startActivity(i);
+    }
 /*     Accessing details of the user from the JSONObject can be done as follows...
        The below code is for retrieving attributes of the object
 
@@ -358,7 +393,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
 
          }
 */
-    }
+    //}
 
     /* Set the UI for successful token acquisition data */
  /*   private void updateSuccessUI() {
@@ -387,7 +422,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     // getAuthInteractiveCallback() - callback defined to handle acquireToken() case
     //
 
-    public Activity getActivity() {
+    public Activity getActivity()
+    {
         return this;
     }
 
@@ -395,55 +431,62 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
      * Looks if tokens are in the cache (refreshes if necessary and if we don't forceRefresh)
      * else errors that we need to do an interactive request.
      */
-    private AuthenticationCallback getAuthSilentCallback() {
-        return new AuthenticationCallback() {
+
+
+    /*private AuthenticationCallback getAuthSilentCallback()
+    {
+        return new AuthenticationCallback()
+        {
             @Override
             public void onSuccess(AuthenticationResult authenticationResult) {
-                /* Successfully got a token, call graph now */
-                Log.d(TAG, "Successfully authenticated");
+                *//* Successfully got a token, call graph now *//*
+                Log.d("Fuck", "Successfully authenticated");
 
-                /* Store the authResult */
+                *//* Store the authResult *//*
                 authResult = authenticationResult;
 
-                /* call graph */
+                *//* call graph *//*
                 callGraphAPI();
 
-                /* update the UI to post call graph state */
+                *//* update the UI to post call graph state *//*
               //  updateSuccessUI();
             }
 
             @Override
             public void onError(MsalException exception) {
-                /* Failed to acquireToken */
+                *//* Failed to acquireToken *//*
                 Log.d(TAG, "Authentication failed: " + exception.toString());
 
                 if (exception instanceof MsalClientException) {
-                    /* Exception inside MSAL, more info inside MsalError.java */
+                    *//* Exception inside MSAL, more info inside MsalError.java *//*
                 } else if (exception instanceof MsalServiceException) {
-                    /* Exception when communicating with the STS, likely config issue */
+                    *//* Exception when communicating with the STS, likely config issue *//*
                 } else if (exception instanceof MsalUiRequiredException) {
-                    /* Tokens expired or no session, retry with interactive */
+                    *//* Tokens expired or no session, retry with interactive *//*
                 }
             }
 
             @Override
             public void onCancel() {
-                /* User canceled the authentication */
+                *//* User canceled the authentication *//*
                 Log.d(TAG, "User cancelled login.");
             }
         };
-    }
+    }*/
 
     /* Callback used for interactive request.  If succeeds we use the access
      * token to call the Microsoft Graph. Does not check cache
      */
-    private AuthenticationCallback getAuthInteractiveCallback() {
-        return new AuthenticationCallback() {
+    private AuthenticationCallback getAuthInteractiveCallback()
+    {
+        return new AuthenticationCallback()
+        {
             @Override
-            public void onSuccess(AuthenticationResult authenticationResult) {
+            public void onSuccess(AuthenticationResult authenticationResult)
+            {
                 /* Successfully got a token, call graph now */
-                Log.d(TAG, "Successfully authenticated");
-                Log.d(TAG, "ID Token: " + authenticationResult.getIdToken());
+                Log.d("Chigu", "Successfully authenticated");
+                Log.d("Chigu", "ID Token: " + authenticationResult.getIdToken());
 
                 /* Store the auth result */
                 authResult = authenticationResult;
@@ -456,21 +499,26 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
             }
 
             @Override
-            public void onError(MsalException exception) {
+            public void onError(MsalException exception)
+            {
                 /* Failed to acquireToken */
-                Log.d(TAG, "Authentication failed: " + exception.toString());
+                Log.d("Chiguu", "Authentication failed: " + exception.toString());
 
-                if (exception instanceof MsalClientException) {
+                if (exception instanceof MsalClientException)
+                {
                     /* Exception inside MSAL, more info inside MsalError.java */
-                } else if (exception instanceof MsalServiceException) {
+                }
+                else if (exception instanceof MsalServiceException)
+                {
                     /* Exception when communicating with the STS, likely config issue */
                 }
             }
 
             @Override
-            public void onCancel() {
+            public void onCancel()
+            {
                 /* User canceled the authentication */
-                Log.d(TAG, "User cancelled login.");
+                Log.d("Chiguu", "User cancelled login.");
             }
         };
 

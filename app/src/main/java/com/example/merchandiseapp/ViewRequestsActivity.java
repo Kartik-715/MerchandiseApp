@@ -46,6 +46,7 @@ public class ViewRequestsActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        Prevalent.currentOrderType = "2";
     }
 
     @Override
@@ -101,10 +102,12 @@ public class ViewRequestsActivity extends AppCompatActivity
             protected void onBindViewHolder(@NonNull RequestViewHolder holder, int position, @NonNull final Requests model)
             {
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price: " + model.getSize() + "$");
+                holder.txtProductPrice.setText("Price: Rs" + model.getPrice() );
                 holder.txtProductName.setText(model.getGroupName());
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage()).into(holder.RequestImage);
+
+                final int oneTypeProductPrice = ( Integer.valueOf(model.getPrice()) ) * ( Integer.valueOf(model.getQuantity()) ) ;
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()
                 {
@@ -213,11 +216,14 @@ public class ViewRequestsActivity extends AppCompatActivity
                         });
                     }
                 });
+
+
                 holder.PayNowButton.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
+                        Prevalent.currentMoney = Integer.toString(oneTypeProductPrice);
                         Intent intent = new Intent(ViewRequestsActivity.this, TakeRequestDetailsActivity.class);
                         intent.putExtra("orderID", model.getOrderID());
                         intent.putExtra("group_name", model.getGroupName());

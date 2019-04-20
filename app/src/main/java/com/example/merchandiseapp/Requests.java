@@ -18,12 +18,13 @@ public class Requests
     private String UserName;
     private String Image;
     private String ProductID;
+    private String Price;
 
     public Requests()
     {
     }
 
-    public Requests(String address, String contact, String date, String email, String groupName, String isPaid, String isPlaced, String orderID, String quantity, String size, String status, String time, String userID, String userName, String image, String productID)
+    public Requests(String address, String contact, String date, String email, String groupName, String isPaid, String isPlaced, String orderID, String quantity, String size, String status, String time, String userID, String userName, String image, String productID, String price)
     {
         Address = address;
         Contact = contact;
@@ -41,6 +42,17 @@ public class Requests
         UserName = userName;
         Image = image;
         ProductID = productID;
+        Price = price;
+    }
+
+    public String getPrice()
+    {
+        return Price;
+    }
+
+    public void setPrice(String price)
+    {
+        Price = price;
     }
 
     public String getAddress()

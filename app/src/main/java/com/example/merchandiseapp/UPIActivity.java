@@ -10,14 +10,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 public class UPIActivity extends AppCompatActivity
 {
 
-    EditText amountEt, noteEt, nameEt, upiIdEt;
+    EditText noteEt;
+    TextView amountEt, upiIdEt, nameEt ;
     Button send;
+    private ArrayList<String> orderid_list;
+    private ArrayList<String> group_list, product_list;
+    private String mode;
 
     final int UPI_PAYMENT = 0;
 
@@ -28,6 +37,12 @@ public class UPIActivity extends AppCompatActivity
         setContentView(R.layout.activity_upi);
 
         initializeViews();
+        orderid_list = getIntent().getStringArrayListExtra("orderid_list");
+        group_list = getIntent().getStringArrayListExtra("group_list");
+        product_list = getIntent().getStringArrayListExtra("product_list");
+
+        amountEt.setText("Total Amount : " + getIntent().getStringExtra("amount"));
+        mode = getIntent().getStringExtra("mode");
 
         send.setOnClickListener(new View.OnClickListener()
         {
@@ -35,7 +50,7 @@ public class UPIActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 //Getting the values from the EditTexts
-                String amount = amountEt.getText().toString();
+                String amount = getIntent().getStringExtra("amount");
                 String note = noteEt.getText().toString();
                 String name = nameEt.getText().toString();
                 String upiId = upiIdEt.getText().toString();
@@ -62,7 +77,6 @@ public class UPIActivity extends AppCompatActivity
                 .appendQueryParameter("cu", "INR")
                 .build();
 
-
         Intent upiPayIntent = new Intent(Intent.ACTION_VIEW);
         upiPayIntent.setData(uri);
 
@@ -81,7 +95,8 @@ public class UPIActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
@@ -115,36 +130,60 @@ public class UPIActivity extends AppCompatActivity
         {
             String str = data.get(0);
             String paymentCancel = "";
-            if(str == null) str = "discard";
+            if (str == null) str = "discard";
             String status = "";
             String approvalRefNo = "";
             String response[] = str.split("&");
-            for (int i = 0; i < response.length; i++)
-            {
-                String equalStr[] = response[i].split("=");
 
-                if(equalStr.length >= 2)
-                {
+            System.out.println("RESPONSE: " + response.toString());
+            for (int i = 0; i < response.length; i++) {
+                String equalStr[] = response[i].split("=");
+                System.out.println("equalStr: " + equalStr.toString());
+
+
+                if (equalStr.length >= 2) {
                     if (equalStr[0].toLowerCase().equals("Status".toLowerCase()))
                         status = equalStr[1].toLowerCase();
 
                     else if (equalStr[0].toLowerCase().equals("ApprovalRefNo".toLowerCase()) || equalStr[0].toLowerCase().equals("txnRef".toLowerCase()))
                         approvalRefNo = equalStr[1];
-                }
-                else
+                } else
                     paymentCancel = "Payment cancelled by user.";
             }
 
             if (status.equals("success"))
             {
+                if(mode.equals("Wallet"))
+                {
+                    final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+                    String current_wallet_money = Prevalent.currentWalletMoney;
+                    System.out.println("Initial " + Prevalent.currentWalletMoney);
+                    int current_w_money = Integer.parseInt(current_wallet_money);
+                    int added_w_money = Integer.parseInt(amountEt.getText().toString());
+
+                    current_w_money += added_w_money;
+                    current_wallet_money = Integer.toString(current_w_money);
+
+                    userRef.child("Wallet_Money").setValue(current_wallet_money);
+                    Prevalent.currentWalletMoney = current_wallet_money;
+
+                    //Toast.makeText(this, "Congratulations, your order has been placed", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    updateFirebase();
+
+                }
                 Toast.makeText(UPIActivity.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
             }
 
-            else if("Payment cancelled by user.".equals(paymentCancel))
+            else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(UPIActivity.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
+            }
 
-            else
+            else {
                 Toast.makeText(UPIActivity.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
+            }
         }
 
         else
@@ -165,4 +204,41 @@ public class UPIActivity extends AppCompatActivity
         }
         return false;
     }
+
+    private void updateFirebase()
+    {
+        for(int i=0;i<orderid_list.size();i++)
+        {
+            String orderid = orderid_list.get(i);
+            String group_name = group_list.get(i);
+            String product_name = product_list.get(i);
+
+            final DatabaseReference cartListRef;
+            final DatabaseReference cartListRef2;
+
+            if(Prevalent.currentOrderType.equals("1"))
+            {
+                cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+                cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
+
+                cartListRef.child("IsPlaced").setValue("true");
+                cartListRef2.child("IsPlaced").setValue("true");
+                cartListRef.child("Status").setValue("packed");
+                cartListRef2.child("Status").setValue("packed");
+            }
+
+            else
+            {
+                cartListRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+                cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Requests").child(product_name).child("Requests").child(orderid);
+
+                cartListRef.child("IsPaid").setValue("true");
+                cartListRef2.child("IsPaid").setValue("true");
+                //cartListRef.child("Status").setValue("");
+                //cartListRef2.child("Status").setValue("");
+            }
+
+        }
+    }
 }
+
