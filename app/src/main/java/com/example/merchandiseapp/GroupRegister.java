@@ -307,11 +307,13 @@ public class GroupRegister extends AppCompatActivity {
         int temp = grpEmail.getText().toString().hashCode();
 
         GroupData.child("UID").setValue(Integer.toString(temp));
-        GroupData.child("Image_Location").setValue(imageLocation);
+        GroupData.child("Image_Location").setValue(0/);
         GroupData.child("isApproved").setValue("No");
 
-        Toast.makeText(getApplicationContext(),"Group Created",Toast.LENGTH_SHORT).show();
-        onBackPressed();
+        Toast.makeText(getApplicationContext(),"Group Request Sent: You can Login When Group is Approved",Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, OutlookLogin.class) ;
+        startActivity(i);
+
     }
 
     public void sendCode() {
