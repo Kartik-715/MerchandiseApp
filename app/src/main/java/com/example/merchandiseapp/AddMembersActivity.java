@@ -87,18 +87,18 @@ public class AddMembersActivity extends AppCompatActivity
             return;
         }
 
-        //FOR TESTING REMOVE ONCE WE HAVE ADDED CURRENTGROUPNAME FROM CODE
-        //Prevalent_Groups.currentGroupName ="CSEA";
         int temp = inputText.hashCode();
         final String hashcode = Integer.toString(temp);
         Toast.makeText(AddMembersActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
         final DatabaseReference memberRef = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members");
+        DatabaseReference useRef = FirebaseDatabase.getInstance().getReference().child("Users") ;
         ArrayList<String> members = new ArrayList<>();
         members.add(hashcode);
 
         for(String member:members)
         {
             memberRef.child("EmailID").child(member).setValue(inputText);
+            useRef.child(member).child("Groups").child(Prevalent_Groups.currentGroupName).setValue("true") ;
         }
 
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
