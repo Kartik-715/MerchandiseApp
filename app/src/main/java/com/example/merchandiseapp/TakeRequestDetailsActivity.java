@@ -26,6 +26,7 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
 {
     private ArrayList<String> orderid_list;
     private ArrayList<String> group_list;
+    private ArrayList<String> product_list;
     private EditText PhoneNumber, Address, Email_ID;
     private Button Pay_Now, Pay_Later;
     private String orderID, groupName, productID;
@@ -45,6 +46,10 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         orderID = getIntent().getStringExtra("orderID");
         groupName = getIntent().getStringExtra("group_name");
         productID = getIntent().getStringExtra("product_id");
+
+        orderid_list = new ArrayList<>();
+        group_list = new ArrayList<>();
+        product_list = new ArrayList<>();
 
         Toast.makeText(this, Prevalent.currentMoney, Toast.LENGTH_SHORT).show();
 
@@ -125,6 +130,12 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             public void onComplete(@NonNull Task<Void> task)
             {
                 Intent intent = new Intent(TakeRequestDetailsActivity.this, PaymentActivity.class);
+                orderid_list.add(orderID);
+                group_list.add(groupName);
+                product_list.add(productID);
+                intent.putExtra("orderid_list", orderid_list);
+                intent.putExtra("group_list", group_list);
+                intent.putExtra("product_list", product_list);
                 startActivity(intent);
                 //Toast.makeText(TakeRequestDetailsActivity.this, "Successfully Paid", Toast.LENGTH_SHORT).show();
             }

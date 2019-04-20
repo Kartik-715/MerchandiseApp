@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.firebase.ui.auth.data.model.PhoneNumber;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,7 @@ import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -37,6 +39,8 @@ public class PaymentActivity extends AppCompatActivity
     private RadioButton radioButton;
     private DatabaseReference UserData;
     private String amount;
+    private ArrayList<String> orderid_list;
+    private ArrayList<String> group_list, product_list;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,6 +52,10 @@ public class PaymentActivity extends AppCompatActivity
         radioGroup = findViewById(R.id.radiogroup);
         amount = Prevalent.currentMoney ;
         System.out.println("Current Money: " + amount);
+
+        orderid_list = getIntent().getStringArrayListExtra("orderid_list");
+        group_list = getIntent().getStringArrayListExtra("group_list");
+        product_list = getIntent().getStringArrayListExtra("product_list");
 
         updateWallet();
 
@@ -74,92 +82,15 @@ public class PaymentActivity extends AppCompatActivity
         if(radioButton.getText().toString().equals("UPI"))
         {
             Intent intent = new Intent(this, UPIActivity.class);
-            intent.putExtra("amount", amount) ;
+            intent.putExtra("amount", amount);
+            intent.putExtra("orderid_list", orderid_list);
+            intent.putExtra("group_list", group_list);
+            intent.putExtra("product_list", product_list);
             startActivity(intent);
         }
         if(radioButton.getText().toString().equals("Wallet Money"))
         {
-
-            int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
-            int currentMoney = Integer.parseInt(Prevalent.currentMoney);
-
-            System.out.println("Chirag" + walletMoney + " " + currentMoney);
-
-            if(currentMoney <= walletMoney)
-            {
-                walletMoney -= currentMoney;
-                System.out.println("First : " + Prevalent.currentWalletMoney);
-                final String Wallet_Money = Integer.toString(walletMoney);
-                Prevalent.currentWalletMoney = Wallet_Money;
-                System.out.println("First : " + Prevalent.currentWalletMoney);
-
-
-                final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
-                userRef.addValueEventListener(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                    {
-                        if(dataSnapshot.child("Wallet_Money").exists())
-                        {
-                            HashMap<String, Object> userdataMap = new HashMap<>();
-                            userdataMap.put("Wallet_Money", Wallet_Money);
-
-                            userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
-                            {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-
-                                }
-                            });
-                        }
-
-                        else //Just add the Money as "0" in the data
-                        {
-                            HashMap<String, Object> userdataMap = new HashMap<>();
-                            userdataMap.put("Wallet_Money", "0");
-
-                            userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
-                            {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError)
-                    {
-
-                    }
-                });
-            }
-
-            else
-            {
-                new AlertDialog.Builder(PaymentActivity.this).setTitle("Insufficient Wallet Amount").setMessage("Do you want to add Money in Wallet?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(PaymentActivity.this, myWallet.class);
-                                startActivity(intent);
-                                //finish();
-                            }
-
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-
-                Toast.makeText(PaymentActivity.this, "Not Sufficient Money in Wallet, Add Money in Wallet to Proceed to Payment", Toast.LENGTH_SHORT).show();
-                System.out.println("qwert123");
-            }
-
-
+            processWallet();
         }
     }
 
@@ -286,6 +217,7 @@ public class PaymentActivity extends AppCompatActivity
 
             public void onTransactionSuccess(Bundle inResponse)
             {
+                updateFirebase();
                 Toast.makeText(PaymentActivity.this, "Transaction Successful", Toast.LENGTH_SHORT).show();
             }
 
@@ -332,5 +264,154 @@ public class PaymentActivity extends AppCompatActivity
     {
         String uuid = UUID.randomUUID().toString();
         return uuid.replaceAll("-", "");
+    }
+
+    private void processWallet()
+    {
+        int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
+        int currentMoney = Integer.parseInt(Prevalent.currentMoney);
+
+        //walletMoney = 10000;
+        System.out.println("Chirag" + walletMoney + " " + currentMoney);
+
+        if(currentMoney <= walletMoney)
+        {
+
+            walletMoney -= currentMoney;
+            System.out.println("First : " + Prevalent.currentWalletMoney);
+            final String Wallet_Money = Integer.toString(walletMoney);
+            Prevalent.currentWalletMoney = Wallet_Money;
+            System.out.println("First : " + Prevalent.currentWalletMoney);
+            System.out.println("First : " + Prevalent.currentOnlineUser);
+
+            final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+
+            userRef.child("Wallet_Money").setValue(Wallet_Money);
+            updateFirebase();
+            Toast.makeText(this, "Congratulations, your order has been placed", Toast.LENGTH_SHORT).show();
+
+
+            /*userRef.addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    if(dataSnapshot.child("Wallet_Money").exists())
+                    {
+                        HashMap<String, Object> userdataMap = new HashMap<>();
+                        userdataMap.put("Wallet_Money", Wallet_Money);
+
+                        userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+
+                            }
+                        });
+                    }
+
+                    else //Just add the Money as "0" in the data
+                    {
+                        HashMap<String, Object> userdataMap = new HashMap<>();
+                        userdataMap.put("Wallet_Money", "0");
+
+                        userRef.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });*/
+        }
+
+        else
+        {
+            new AlertDialog.Builder(PaymentActivity.this).setTitle("Insufficient Wallet Amount").setMessage("Do you want to add Money in Wallet?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PaymentActivity.this, myWallet.class);
+                            startActivity(intent);
+                            //finish();
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
+            Toast.makeText(PaymentActivity.this, "Not Sufficient Money in Wallet, Add Money in Wallet to Proceed to Payment", Toast.LENGTH_SHORT).show();
+            System.out.println("qwert123");
+        }
+
+    }
+
+    private void updateFirebase()
+    {
+        for(int i=0;i<orderid_list.size();i++)
+        {
+            String orderid = orderid_list.get(i);
+            String group_name = group_list.get(i);
+            String product_name = product_list.get(i);
+
+            final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+            final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
+
+            cartListRef.child("IsPlaced").setValue("true");
+            cartListRef2.child("IsPlaced").setValue("true");
+            //cartListRef.child("Status").setValue("")
+            //cartListRef2.child("Status").setValue("")
+
+            /*final HashMap<String, Object> cartMap = new HashMap<>();
+            cartMap.put("IsPlaced", PhoneNumber.getText().toString());
+            cartMap.put("Address", Address.getText().toString());
+            cartMap.put("Email",Email_ID.getText().toString());
+
+            cartListRef.updateChildren(cartMap)
+                    .addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+
+            cartListRef2.updateChildren(cartMap)
+                    .addOnCompleteListener(new OnCompleteListener<Void>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+
+                        }
+                    });
+
+            cartListRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });*/
+        }
     }
 }

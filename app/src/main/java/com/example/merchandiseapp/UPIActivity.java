@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 public class UPIActivity extends AppCompatActivity
 {
@@ -20,6 +24,8 @@ public class UPIActivity extends AppCompatActivity
     EditText noteEt;
     TextView amountEt, upiIdEt, nameEt ;
     Button send;
+    private ArrayList<String> orderid_list;
+    private ArrayList<String> group_list, product_list;
 
     final int UPI_PAYMENT = 0;
 
@@ -30,6 +36,9 @@ public class UPIActivity extends AppCompatActivity
         setContentView(R.layout.activity_upi);
 
         initializeViews();
+        orderid_list = getIntent().getStringArrayListExtra("orderid_list");
+        group_list = getIntent().getStringArrayListExtra("group_list");
+        product_list = getIntent().getStringArrayListExtra("product_list");
 
         amountEt.setText("Total Amount : " + getIntent().getStringExtra("amount"));
 
@@ -139,11 +148,17 @@ public class UPIActivity extends AppCompatActivity
                     paymentCancel = "Payment cancelled by user.";
             }
 
-            if (status.equals("success")) {
+            if (status.equals("success"))
+            {
+                updateFirebase();
                 Toast.makeText(UPIActivity.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
-            } else if ("Payment cancelled by user.".equals(paymentCancel)) {
+            }
+
+            else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(UPIActivity.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+
+            else {
                 Toast.makeText(UPIActivity.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
             }
         }
@@ -165,5 +180,24 @@ public class UPIActivity extends AppCompatActivity
             }
         }
         return false;
+    }
+
+    private void updateFirebase()
+    {
+        for (int i = 0; i < orderid_list.size(); i++)
+        {
+            String orderid = orderid_list.get(i);
+            String group_name = group_list.get(i);
+            String product_name = product_list.get(i);
+
+            final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
+            final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
+
+            cartListRef.child("IsPlaced").setValue("true");
+            cartListRef2.child("IsPlaced").setValue("true");
+            //cartListRef.child("Status").setValue("")
+            //cartListRef2.child("Status").setValue("")
+        }
+
     }
 }

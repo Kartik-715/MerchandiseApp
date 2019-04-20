@@ -101,7 +101,15 @@ public class DetailsActivity extends AppCompatActivity
             final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
             final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
 
-            final HashMap<String, Object> cartMap = new HashMap<>();
+            cartListRef.child("Contact").setValue(PhoneNumber.getText().toString());
+            cartListRef.child("Address").setValue(Address.getText().toString());
+            cartListRef.child("Email").setValue(Email_ID.getText().toString());
+
+            cartListRef2.child("Contact").setValue(PhoneNumber.getText().toString());
+            cartListRef2.child("Address").setValue(Address.getText().toString());
+            cartListRef2.child("Email").setValue(Email_ID.getText().toString());
+
+            /*final HashMap<String, Object> cartMap = new HashMap<>();
             cartMap.put("Contact", PhoneNumber.getText().toString());
             cartMap.put("Address", Address.getText().toString());
             cartMap.put("Email",Email_ID.getText().toString());
@@ -139,11 +147,14 @@ public class DetailsActivity extends AppCompatActivity
                 {
 
                 }
-            });
+            });*/
         }
 
         //  System.out.println("Kartik : " + Prevalent.currentMoney);
         Intent intent = new Intent(DetailsActivity.this, PaymentActivity.class);
+        intent.putExtra("orderid_list", orderid_list);
+        intent.putExtra("group_list", group_list);
+        intent.putExtra("product_list", product_list);
         startActivity(intent);
 
     }
