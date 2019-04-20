@@ -47,7 +47,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
-        android:text="Notification Panel is empty!"
+        android:text="No Pending Group Approvals"
         android:textColor="#848484"
         android:textSize="15sp"
         android:visibility="invisible" />

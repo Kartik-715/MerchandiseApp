@@ -224,7 +224,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 {
                     if (dataSnapshot.child("Password").getValue().toString().equals(Password))
                     {
-                        Toast.makeText(getApplicationContext(),"Admin Activity",Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(OutlookLogin.this,AdminNotificationDisplayActivity.class) ;
+                        startActivity(i);
                     }
 
                     else
@@ -247,6 +248,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         final String Email = email.getText().toString().trim();
         final String Password = password.getText().toString().trim();
 
+
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Users");
 
@@ -259,6 +261,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         int hash = Email.hashCode();
 
         final String hashValue = Integer.toString(hash);
+
+        System.out.println(hashValue);
 
         ref.child(hashValue).addValueEventListener(new ValueEventListener()
         {
