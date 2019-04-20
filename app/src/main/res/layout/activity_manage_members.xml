@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Member's Email"
+        android:hint="Member's Email"
         android:layout_width="match_parent" />
     <Button
         android:id="@+id/button_search"

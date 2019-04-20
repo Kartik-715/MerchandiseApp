@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ public class ManageMembersActivity extends AppCompatActivity {
     private ListView memberListView;
     private HashMap<String,Object> hmp = new HashMap<>();
     private ArrayList<String> MembersEmail = new ArrayList<String>();
+    private String userEmail;
     ArrayAdapter adapter;
 
 
@@ -54,8 +56,16 @@ public class ManageMembersActivity extends AppCompatActivity {
 
 
 
+
+
+
         // TODO : FOR TESTING REMOVE ONCE WE HAVE ADDED CURRENTGROUPNAME FROM CODE
         Prevalent_Groups.currentGroupName ="CSEA";
+//        Prevalent_Groups.currentGroupMemberEmail ="aryan170101013@iitg.ac.in";
+
+        userEmail = "aryan170101013@iitg.ac.in";
+
+
 
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
@@ -122,135 +132,29 @@ public class ManageMembersActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String searchString = memberEmail_editTxt.getText().toString();
-                if (searchString.equals(""))
-                {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-                    alertDialogBuilder.setTitle("Email invalid");
-                    alertDialogBuilder.setMessage("Enter a valid Email id first");
-                    alertDialogBuilder.setIcon(R.drawable.checkmark_selected);
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-                else
-                {
-                    ManageMembersActivity.this.adapter.getFilter().filter(searchString);
-                    adapter.notifyDataSetChanged();
 
-                }
+                buttonclickFunc(view,memberEmail_editTxt.getText().toString());
+
+
 
             }
         });
 
+
+
         memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @SuppressLint("ShowToast")
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Object o = adapter.getItem(position);
                 final String email = o.toString();
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-                // Setting Alert Dialog Title
-                alertDialogBuilder.setTitle("Confirm Remove..!!!");
-                // Icon Of Alert Dialog
-                alertDialogBuilder.setIcon(R.drawable.checkmark_selected);
-                // Setting Alert Dialog Message
-                alertDialogBuilder.setMessage("Are you sure,You want to remove Member?");
-                alertDialogBuilder.setCancelable(false);
+                if (email.equals(userEmail))
+                {
+                    Toast.makeText(getApplicationContext(),"You are already login, so can't remove.", Toast.LENGTH_LONG);
+                }
 
-                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-
-
-                        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("Email_ID");
-                        final Query queries = ref.orderByKey().equalTo(email);
-
-                        queries.addListenerForSingleValueEvent(new ValueEventListener()
-                        {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                            {
-
-                                if(dataSnapshot.exists())
-                                {
-                                    //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
-                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-                                    // Setting Alert Dialog Title
-                                    alertDialogBuilder.setTitle("Confirm Remove!!!");
-                                    // Icon Of Alert Dialog
-                                    alertDialogBuilder.setIcon(R.drawable.checkmark_selected);
-                                    // Setting Alert Dialog Message
-                                    alertDialogBuilder.setMessage("Selected member is authorized member.Are you sure,You want to remove authorized Member?");
-                                    alertDialogBuilder.setCancelable(false);
-
-                                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-
-
-                                            RemoveAuthorizedMember(email);
-                                            adapter.remove(o);
-                                            adapter.notifyDataSetChanged();
-
-
-                                        }
-
-                                    });
-
-                                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(getApplicationContext(),"You clicked over No",Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-
-                                    AlertDialog alertDialog = alertDialogBuilder.create();
-                                    alertDialog.show();
-                                }
-                                else
-                                {
-                                    //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
-                                    RemoveMember(email);
-                                }
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError)
-                            {
-
-                            }
-                        });
-
-                        }
-
-                });
-
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"You clicked over No",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
+                func(o,email);
 
             }
         });
@@ -262,10 +166,168 @@ public class ManageMembersActivity extends AppCompatActivity {
 
     }
 
-    private void RemoveMember(String email) {
+
+
+    private void buttonclickFunc(View view,final String searchString) {
+
+
+        if (searchString.equals(""))
+        {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Email invalid");
+            alertDialogBuilder.setMessage("Enter a valid Email id first");
+            alertDialogBuilder.setIcon(R.drawable.checkmark_selected);
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+        else
+        {
+            ManageMembersActivity.this.adapter.getFilter().filter(searchString);
+            adapter.notifyDataSetChanged();
+
+        }
+
+    }
+
+    public void func(final Object o, final String email)
+    {
+        int hash = email.trim().hashCode();
+        final String hashValue = Integer.toString(hash);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // Setting Alert Dialog Title
+        alertDialogBuilder.setTitle("Confirm Remove..!!!");
+        // Icon Of Alert Dialog
+        alertDialogBuilder.setIcon(R.drawable.checkmark_selected);
+        // Setting Alert Dialog Message
+        alertDialogBuilder.setMessage("Are you sure,You want to remove Member?");
+        alertDialogBuilder.setCancelable(false);
+
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+
+
+
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("Email_ID");
+                final Query queries = ref;
+
+                queries.addListenerForSingleValueEvent(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        System.out.println(dataSnapshot.getChildrenCount());
+                        HashMap<String, Object> AllMembers = (HashMap<String , Object>) dataSnapshot.getValue();
+
+                        Iterator it = AllMembers.entrySet().iterator();
+
+                        long ctr=0;
+
+                        long count = dataSnapshot.getChildrenCount();
+
+                        while (it.hasNext())
+                        {
+                            ctr++;
+                            HashMap.Entry pair = (HashMap.Entry) it.next();
+                            if(pair.getValue().equals(email))
+                            {
+                                alertType2(email,o);
+                                //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
+
+                                break;
+
+                            }
+                            if(ctr == count)
+                            {
+                                RemoveMember(email,o);
+                            }
+                        }
+
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError)
+                    {
+
+                    }
+                });
+
+            }
+
+        });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"You clicked over No",Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+
+    }
+
+    private void alertType2(final String email,final Object o) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // Setting Alert Dialog Title
+        alertDialogBuilder.setTitle("Confirm Remove!!!");
+        // Icon Of Alert Dialog
+        alertDialogBuilder.setIcon(R.drawable.checkmark_selected);
+        // Setting Alert Dialog Message
+        alertDialogBuilder.setMessage("Selected member is authorized member.Are you sure,You want to remove authorized Member?");
+        alertDialogBuilder.setCancelable(false);
+
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+
+
+                RemoveAuthorizedMember(email,o);
+
+
+
+            }
+
+        });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"You clicked over No",Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
+
+    private void RemoveMember(final String email,final Object o) {
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
         int hash = email.trim().hashCode();
         final String hashValue = Integer.toString(hash);
+        System.out.println("adahfdkfhasdkjh"+hashValue);
         ref.child(hashValue).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
@@ -273,13 +335,18 @@ public class ManageMembersActivity extends AppCompatActivity {
             {
                 if(task.isSuccessful())
                 {
+                    adapter.remove(o);
+                    adapter.notifyDataSetChanged();
+                    finish();
+                    startActivity(getIntent());
                     Toast.makeText(getApplicationContext(), "Member Removed Successfully.", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
     }
 
-    private void RemoveAuthorizedMember(String email) {
+    private void RemoveAuthorizedMember(final String email,final Object o) {
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Authorized_Members").child("Email_ID");
         final DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
@@ -293,6 +360,10 @@ public class ManageMembersActivity extends AppCompatActivity {
             {
                 if(task.isSuccessful())
                 {
+                    adapter.remove(o);
+                    adapter.notifyDataSetChanged();
+                    finish();
+                    startActivity(getIntent());
                     Toast.makeText(getApplicationContext(), "Member Removed Successfully from Authorized list.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -305,6 +376,7 @@ public class ManageMembersActivity extends AppCompatActivity {
             {
                 if(task.isSuccessful())
                 {
+
                     Toast.makeText(getApplicationContext(), "Member Removed Successfully.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -312,4 +384,6 @@ public class ManageMembersActivity extends AppCompatActivity {
 
 
     }
+
+
 }
