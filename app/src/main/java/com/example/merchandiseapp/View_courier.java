@@ -39,7 +39,7 @@ public class View_courier extends AppCompatActivity {
                 for (DataSnapshot ds:dataSnapshot.getChildren())
                     if (ds.child("AccessLevel").getValue() != null && ds.child("AccessLevel").getValue().toString().equals("1")) {
                         Context context = getApplicationContext();
-                        Toast.makeText(context, "Yay!!!!!!!!!!!!!!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(context, "Yay!!!!!!!!!!!!!!", Toast.LENGTH_LONG).show();
                        /* if(ds.child("Name").getValue().toString().equals("Admin")) {
                          continue;
                         }

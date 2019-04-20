@@ -309,7 +309,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
             final StorageReference ref = storageReference.child("images/users/"+global.getUid());
 
-            Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
 
             ref.putFile(filePath)
                     .addOnSuccessListener(

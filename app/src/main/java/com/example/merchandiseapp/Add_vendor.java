@@ -77,7 +77,7 @@ public class Add_vendor extends AppCompatActivity {
         String address_str = address.getText().toString().trim();
         if(!TextUtils.isEmpty(Username_str) && !TextUtils.isEmpty(Contact_str) && !TextUtils.isEmpty(password_str) &&
                 !TextUtils.isEmpty(emailid_str)  && !TextUtils.isEmpty(upi_str) && !TextUtils.isEmpty(address_str)){
-            Toast.makeText(this,"Yay!!!!!!!!!!!!!!",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"Yay!!!!!!!!!!!!!!",Toast.LENGTH_LONG).show();
             String id[] = emailid_str.split("@");
 
             //User_data usr = new User_data(Username_str,Contact_str,password_str,emailid_str,upi_str,"2",address_str);
