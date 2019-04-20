@@ -20,13 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ManageMembersActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".orderRequestDetails"></activity>
         <activity android:name=".UPIActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".RegisterActivity" />
@@ -61,19 +55,17 @@
         <activity android:name=".GroupManageProfile" />
         <activity android:name=".SplashScreen" />
         <activity android:name=".UserRegister" />
-        <activity android:name=".OutlookLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".OutlookLogin"></activity>
         <activity android:name=".GroupRegister" />
         <activity
             android:name=".GroupActivity"
             android:label="GroupActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".MultipleImages" /> <!-- <activity android:name=".CustomAdapter" /> -->
         <activity android:name=".ListView" />
