@@ -130,6 +130,7 @@ public class productDetailActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         /*Spinner Display*/
         arraySpinner = new ArrayList<>();
 

@@ -96,8 +96,8 @@ public class HomeActivity extends AppCompatActivity
 
         Prevalent.currentOrderType = orderType;
         Prevalent.currentPhone = contact;
-        //Prevalent.currentEmail = "mayank@iitg.ac.in";
-        Prevalent.currentEmail = email;
+        Prevalent.currentEmail = "mayank@iitg.ac.in";
+        //Prevalent.currentEmail = email;
         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
         Prevalent.currentWalletMoney = wallet;
         Prevalent.currentGender = gender;

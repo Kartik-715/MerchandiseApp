@@ -1,5 +1,7 @@
 package com.example.merchandiseapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -81,6 +83,8 @@ public class PaymentActivity extends AppCompatActivity
             int walletMoney = Integer.parseInt(Prevalent.currentWalletMoney);
             int currentMoney = Integer.parseInt(Prevalent.currentMoney);
 
+            System.out.println("Chirag" + walletMoney + " " + currentMoney);
+
             if(currentMoney <= walletMoney)
             {
                 walletMoney -= currentMoney;
@@ -136,7 +140,24 @@ public class PaymentActivity extends AppCompatActivity
             }
 
             else
+            {
+                new AlertDialog.Builder(PaymentActivity.this).setTitle("Insufficient Wallet Amount").setMessage("Do you want to add Money in Wallet?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(PaymentActivity.this, myWallet.class);
+                                startActivity(intent);
+                                //finish();
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
                 Toast.makeText(PaymentActivity.this, "Not Sufficient Money in Wallet, Add Money in Wallet to Proceed to Payment", Toast.LENGTH_SHORT).show();
+                System.out.println("qwert123");
+            }
 
 
         }
