@@ -307,7 +307,7 @@ public class GroupRegister extends AppCompatActivity {
         int temp = grpEmail.getText().toString().hashCode();
 
         GroupData.child("UID").setValue(Integer.toString(temp));
-        GroupData.child("Image_Location").setValue(0/);
+        GroupData.child("Image_Location").setValue(0);
         GroupData.child("isApproved").setValue("No");
 
         Toast.makeText(getApplicationContext(),"Group Request Sent: You can Login When Group is Approved",Toast.LENGTH_SHORT).show();

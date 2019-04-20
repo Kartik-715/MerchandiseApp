@@ -59,9 +59,9 @@ public class ManageMembersActivity extends AppCompatActivity {
         userEmail = Prevalent.currentEmail ;
 
 
+        System.out.println("Current Group Name: " + Prevalent_Groups.currentGroupName);
 
-
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("EmailID");
 
 
         MembersEmail = new ArrayList<>();
@@ -71,6 +71,7 @@ public class ManageMembersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 hmp = (HashMap<String , Object>) dataSnapshot.getValue();
+                System.out.println(hmp);
 
                 long ctr=0;
 
