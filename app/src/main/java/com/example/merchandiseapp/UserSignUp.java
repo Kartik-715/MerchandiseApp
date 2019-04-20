@@ -117,10 +117,12 @@ public class UserSignUp extends AppCompatActivity
         {
             @Override
             public void onClick(View v){
-                if(validate_entries())
-                {
-                    sendCode();
-                }
+//                if(validate_entries())
+//                {
+//                    sendCode();
+//                }
+
+                update_info();
             }
         });
 
@@ -344,6 +346,7 @@ public class UserSignUp extends AppCompatActivity
                     public void onCodeSent(String verificationId,
                                            PhoneAuthProvider.ForceResendingToken token) {
 
+                        System.out.println("CODE SENT");
                         phoneVerificationId = verificationId;
                         resendToken = token;
 
