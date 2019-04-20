@@ -32,7 +32,7 @@ public class SplashScreen extends AppCompatActivity {
     String uid;
     String grpName;
     String email;
-    Intent i;
+    Intent i, intent;
 
     private static int SPLASH_TIME_OUT = 5000;
 
@@ -128,12 +128,18 @@ public class SplashScreen extends AppCompatActivity {
 
 
                         global.setUsername(grpName);
-                        global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
+
+                        if(dataSnapshot.child("Image Location").getValue() == null)
+                            global.setImageLocation("/");
+
+                        else
+                        {
+                            global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
+                            getImage();
+                        }
                         global.setEmail(dataSnapshot.child("EmailID").getValue().toString());
                         global.setContact(dataSnapshot.child("Contact").getValue().toString());
                         global.setUPI(dataSnapshot.child("UPI").getValue().toString());
-                        global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
-                        getImage();
                     }
 
                     @Override
@@ -144,17 +150,18 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
 
-       /* new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable()
+        {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 if(type.equals("users"))
                 {
-                    *//*i = new Intent(getApplicationContext(),HomeActivity.class);
-                    i.putExtra("orderType", "1");*//*
+                    intent = new Intent(getApplicationContext(),HomeActivity.class);
+                    intent.putExtra("orderType", "1");
                     intent = new Intent(getApplicationContext(),HomeActivity.class);
                     intent.putExtra("orderType", "2");
-
                 }
 
                 else
@@ -164,11 +171,8 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, SPLASH_TIME_OUT);*/
-
-
+        }, SPLASH_TIME_OUT);
     }
-
 
 
     @Override

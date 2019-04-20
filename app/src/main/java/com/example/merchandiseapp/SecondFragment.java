@@ -1,5 +1,6 @@
 package com.example.merchandiseapp;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,8 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class SecondFragment extends Fragment {
     // Store instance variables
@@ -46,6 +51,7 @@ public class SecondFragment extends Fragment {
     String Category;
     String PID;
     String GroupName;
+    final Calendar myCalendar = Calendar.getInstance();
 
 
     private TextView a;
@@ -157,18 +163,42 @@ public class SecondFragment extends Fragment {
                             @Override
                             public void onClick(View view)
                             {
+                                final String a1;
 
-                                for(int i=0;i<UserName.size();i++) {
-                                    myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(UserID.get(i));
+                                DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+                                    @Override
+                                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                                          int dayOfMonth) {
+                                        // TODO Auto-generated method stub
+                                        myCalendar.set(Calendar.YEAR, year);
+                                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                                    String notiList;
-                                    notiList = "Your order has been declined.Fuck OFF!!21 me lele";
 
-                                    HashMap<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put(  "notiList",notiList);
-                                    myRef.updateChildren(childUpdates);
-                                    System.out.println("Hello + " + UserID.get(i));
-                                }
+                                        System.out.println(updateLabel());
+                                        for(int i=0;i<UserName.size();i++) {
+                                            myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(UserID.get(i));
+                                            System.out.println(updateLabel());
+
+                                            String notiList;
+                                            notiList = "Kindly note that your order requested ";
+                                            notiList+= "is long overdue.Please pay before "+ updateLabel() + " to avoid cancellation." ;
+                                            HashMap<String, Object> childUpdates = new HashMap<>();
+                                            childUpdates.put(  "notiList",notiList);
+                                            myRef.updateChildren(childUpdates);
+                                            System.out.println("Hello + " + UserID.get(i));
+                                        }
+                                    }
+
+                                };
+
+                                new DatePickerDialog(
+                                        getActivity(), date, myCalendar
+                                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+
+
                             }
                         });
                         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&");
@@ -193,7 +223,7 @@ public class SecondFragment extends Fragment {
 //                        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1 , listNew);
 //                        listView.setAdapter(adapter);
 //                        System.out.println("hello"+adapter);
-                        CustomAdapter customAdapter = new CustomAdapter(getActivity().getApplicationContext(),
+                            CustomAdapter customAdapter = new CustomAdapter(getActivity().getApplicationContext(),
 
                                 Contact,
                                 Email,
@@ -239,5 +269,14 @@ public class SecondFragment extends Fragment {
 
 
 
+    }
+    private String updateLabel() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+        System.out.println(sdf.toString() + "!!!");
+        System.out.println(sdf+ "!!!");
+        return sdf.format(myCalendar.getTime());
+//        sdf.format(myC)
+//        System.out.println(sdf.format(myCalendar.getTime()));
     }
 }

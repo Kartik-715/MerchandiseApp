@@ -86,15 +86,27 @@ public class ViewOrder extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
 
+                if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+                {
+
+
+
 
                 myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
                 myRef1.child("IsOpen").setValue("false");
 
                 myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
                 myRef2.child("IsOpen").setValue("false");
+                }
+                else{
+                    //no connection
+                    Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+                    toast.show();
+                }
 
                 finish();
                 startActivity(getIntent());
+
             }
         });
 
@@ -123,6 +135,11 @@ public class ViewOrder extends AppCompatActivity {
         preOederListRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Orders");
         final Query queries = preOederListRef;
 
+        if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+        {
+
+
+
         queries.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
@@ -150,6 +167,12 @@ public class ViewOrder extends AppCompatActivity {
 
             }
         });
+        }
+        else{
+            //no connection
+            Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     private void NoDataExists()
@@ -166,6 +189,10 @@ public class ViewOrder extends AppCompatActivity {
         FirebaseRecyclerOptions<OrderDetails> options = new FirebaseRecyclerOptions.Builder<OrderDetails>()
                 .setQuery(queries, OrderDetails.class)
                 .build();
+
+        if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+        {
+
 
         final FirebaseRecyclerAdapter<OrderDetails, viewOrderHolder> adapter
                 = new FirebaseRecyclerAdapter<OrderDetails,  viewOrderHolder>(options) {
@@ -210,11 +237,7 @@ public class ViewOrder extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-//                        Intent intent = new Intent(PreBookings.this, GroupRequestDetails.class);
-//                        intent.putExtra("PID", model.getPID());
-//                        intent.putExtra("Category", model.getCategory());
-//                        intent.putExtra("GroupName",GroupName);
-//                        startActivity(intent);
+
 
                     }
                 });
@@ -246,5 +269,11 @@ public class ViewOrder extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         adapter.startListening();
+        }
+        else{
+            //no connection
+            Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }

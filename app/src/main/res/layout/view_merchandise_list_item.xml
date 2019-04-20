@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,22 +11,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Wheat"
+        android:background="@color/DeepSkyBlue"
         android:padding="10dp">
 
         <ImageView
             android:id="@+id/product_image"
-            android:layout_width="130dp"
-            android:layout_height="170dp"
-            android:layout_below="@+id/product_name"
-            android:layout_marginTop="2dp"
-            android:scaleType="centerCrop" />
+            android:layout_width="135dp"
+            android:layout_height="163dp"
+            android:layout_below="@+id/cart_product_status"
+            android:layout_marginTop="12dp"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/cart_product_name"
-            android:layout_width="match_parent"
+            android:layout_width="233dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/cart_product_status"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="13dp"
             android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
             android:text="Product Name"
@@ -35,12 +38,11 @@
 
         <TextView
             android:id="@+id/cart_product_quantity"
-            android:layout_width="match_parent"
+            android:layout_width="231dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_name"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
             android:text="Quantity:"
@@ -48,87 +50,103 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/cart_product_quantity2"
+            android:layout_width="231dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cart_product_name"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="41dp"
+            android:layout_toRightOf="@+id/product_image"
+            android:paddingLeft="20dp"
+            android:text="Size:Quantity"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold|italic" />
+
         <Spinner
             android:id="@+id/product_quantity_spinner"
             style="@style/FirebaseUI.CountrySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_quantity"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="37dp"
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/product_image"
             android:background="@android:drawable/btn_dropdown"
             android:paddingLeft="40dp"
-            android:spinnerMode="dropdown"
+            android:spinnerMode="dialog"
             android:textSize="16sp"
             android:textStyle="bold" />
 
+
         <TextView
             android:id="@+id/cart_product_price"
-            android:layout_width="match_parent"
+            android:layout_width="224dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/product_quantity_spinner"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp"
             android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
             android:text="Product Price"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/cart_product_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cart_product_price"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/product_image"
             android:paddingLeft="20dp"
-            android:text="Product Status : Open"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:text="Product Status"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/fui_bgGitHub"
+            android:textColorHighlight="@color/CadetBlue"
+            android:textSize="18sp"
             android:textStyle="bold" />
+
         <Button
             android:id="@+id/cart_edit_item"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/product_image"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp"
 
 
-            android:background="@color/Tomato"
+            android:layout_marginTop="21dp"
+            android:background="@color/MidnightBlue"
             android:text="Edit Merchandise"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/cart_remove_item"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_below="@+id/cart_edit_item"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginTop="5dp"
 
-            android:background="@color/Tomato"
+            android:background="@color/MidnightBlue"
             android:text="Remove"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
+
         <Button
             android:id="@+id/cart_make_public"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_below="@+id/cart_edit_item"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="50dp"
-            android:background="@color/Tomato"
+            android:layout_marginTop="5dp"
+            android:background="@color/MidnightBlue"
             android:text="Make Public"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
-
-
 
 
     </RelativeLayout>

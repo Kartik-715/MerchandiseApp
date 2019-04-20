@@ -97,6 +97,10 @@ public class PreBookings extends AppCompatActivity {
 
                 myRef3 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Requests").child(PID);
 
+                if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+                {
+
+
 
                 myRef3.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -137,22 +141,17 @@ public class PreBookings extends AppCompatActivity {
 
                                                 for(int i=0;i<toPay.size();i++)
                                                 {
-//                                                    obj.
-//                                                    String a = "0";
                                                         Long a =0L;
                                                     obj.put(toPay.get(i),a );
-//                                                    obj["aryan"]+=10;
                                                 }
 
                                                 for(int i=0;i<toPay.size();i++)
                                                 {
-//                                                    obj.
 
                                                     Long mon = obj.get(toPay.get(i));
                                                     mon = mon+ Long.parseLong( quantity.get(i));
 
                                                     obj.put(  toPay.get(i), mon);
-//                                                    obj["aryan"]+=10;
                                                 }
 
                                                 Iterator it = obj.entrySet().iterator();
@@ -179,59 +178,8 @@ public class PreBookings extends AppCompatActivity {
                                                     it.remove();
                                                 }
 
-//                                                for (int i = 0; i < obj.size(); i++) {
-//
-//                                                    String money1 = dataSnapshot1.child(toPay.get(i)).child("Wallet_Money").getValue().toString();
-//                                                    Long money = Long.parseLong(money1);
-//                                                    System.out.println(toPay.get(i)+" "+price.toString() +" "+ quantity.get(i) +" "+ money.toString());
-//                                                    Long add = Long.parseLong(quantity.get(i)) * price;
-//                                                    money += add;
-//                                                    String money2 = money.toString();
-//                                                    myRef2 = FirebaseDatabase.getInstance().getReference().child("Users").child(toPay.get(i)).child("Wallet_Money");
-////
-////                                                            FirebaseDatabase.getInstance().getReference().child("Users")
-////                                                                    .child(toPay.get(i)).child("Wallet_Money").
-//                                                    myRef2.setValue(money2);
-//
-//                                                }
+
                                             }
-
-                                            //
-//                                                    myRef2.setValue(money2, new DatabaseReference().CompletionListener(){
-//                                                        void onComplete(DatabaseError error, DatabaseReference ref) {
-//                                                            System.out.println("Value was set. Error = "+error);
-//                                                        }
-//                                                        {}
-//
-//                                                        @Override
-//                                                        public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
-//                                                            if (firebaseError != null) {
-//                                                                System.out.println("Data could not be saved. " + firebaseError.getMessage());
-//                                                            } else {
-//                                                                System.out.println("Data saved successfully.");
-//                                                            }
-//                                                        }
-
-
-
-
-//                                                    );
-
-//
-//
-
-//
-//
-//                                                    final AtomicBoolean done = new AtomicBoolean(false);
-//                                                    ref.setValue(new , new Firebase.CompletionListener() {
-//                                                        @Override
-//                                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-//                                                            done.set(true);
-//                                                        }
-//                                                    });
-//                                                    while (!done.get());
-
-
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError databaseError1) {
@@ -255,6 +203,13 @@ public class PreBookings extends AppCompatActivity {
 
                     }
                 });
+
+                }
+                else{
+                    //no connection
+                    Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+                    toast.show();
+                }
 
 
 
@@ -297,11 +252,24 @@ public class PreBookings extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
 
 
+                if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+                {
+
+
+
                 myRef1 = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Merchandise").child(Category).child(PID);
                 myRef1.child("IsOpen").setValue("false");
 
                 myRef2 = FirebaseDatabase.getInstance().getReference().child("Merchandise").child(Category).child(PID);
                 myRef2.child("IsOpen").setValue("false");
+
+                }
+                else{
+                    //no connection
+                    Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
 
                 finish();
                 startActivity(getIntent());
@@ -329,6 +297,11 @@ public class PreBookings extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
+
+        if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+        {
+
+
 
         preOederListRef = FirebaseDatabase.getInstance().getReference("/Group").child(GroupName).child("Requests");
         final Query queries = preOederListRef.orderByChild("IsOpen").equalTo("true");
@@ -360,6 +333,12 @@ public class PreBookings extends AppCompatActivity {
 
             }
         });
+        }
+        else{
+            //no connection
+            Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     private void NoDataExists()
@@ -373,6 +352,11 @@ public class PreBookings extends AppCompatActivity {
 
 
             System.out.println(queries);
+
+        if(CheckNetwork.isInternetAvailable(getApplicationContext()))
+        {
+
+
             FirebaseRecyclerOptions<RequestDetails> options = new FirebaseRecyclerOptions.Builder<RequestDetails>()
                     .setQuery(queries, RequestDetails.class)
                     .build();
@@ -457,5 +441,11 @@ public class PreBookings extends AppCompatActivity {
 
             recyclerView.setAdapter(adapter);
             adapter.startListening();
+        }
+        else{
+            //no connection
+            Toast toast = Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }
