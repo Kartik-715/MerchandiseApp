@@ -25,6 +25,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="View Orders" />
         <item
+            android:id="@+id/nav_managedMembers"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Manage Members" />
+        <item
             android:id="@+id/nav_members"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Add Members" />

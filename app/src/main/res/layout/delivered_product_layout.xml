@@ -47,6 +47,19 @@
             android:layout_marginRight="5dp"
             />
 
+        <Button
+            android:id="@+id/Review_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/delivered_date"
+            android:layout_toRightOf="@+id/product_image"
+            android:textAllCaps="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:text="Give Review"
+            />
 
 
 

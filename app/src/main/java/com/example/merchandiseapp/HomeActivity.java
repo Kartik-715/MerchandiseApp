@@ -1,6 +1,10 @@
 package com.example.merchandiseapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,7 +12,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -64,6 +70,12 @@ public class HomeActivity extends AppCompatActivity
     private ProgressDialog loadingBar;
 
 
+    //for notification
+    private DatabaseReference notificationRef;
+    private String notiId;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,6 +83,45 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
+
+        //*****************FOR NOTIFICATION***********************//
+
+        String uidNoti = Prevalent.currentOnlineUser;
+        notificationRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uidNoti);
+        notificationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notiId =  dataSnapshot.getValue(userFetch.class).getNotiList();
+                // val = Integer.parseInt(notiId);
+                //Toast.makeText(myNotifications.this, "****" + arr[val]  , Toast.LENGTH_SHORT).show();
+                NotificationManager mNotificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel("YOUR_CHANNEL_ID",
+                            "YOUR_CHANNEL_NAME",
+                            NotificationManager.IMPORTANCE_DEFAULT);
+                    channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DISCRIPTION");
+                    mNotificationManager.createNotificationChannel(channel);
+                }
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Merchandise App:Delivery Status")
+                        .setContentText(notiId)
+                        .setAutoCancel(true);
+                Intent intent = new Intent(getApplicationContext(), OrderStatusActivity.class);
+                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mBuilder.setContentIntent(pi);
+                mNotificationManager.notify(0, mBuilder.build());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //*************************************************************************************//
 
         global = (G_var) getApplicationContext();
         System.out.println("Hey : " + global.getUsername());
@@ -348,6 +399,12 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
+        }
+
+        else if(id == R.id.reviews)
+        {
+            Intent intent = new Intent(HomeActivity.this, PrivateReviewDisplayActivity.class);
+            startActivity(intent);
         }
 
         else if (id == R.id.nav_logout)

@@ -32,7 +32,7 @@ public class  SplashScreen extends AppCompatActivity {
     String uid;
     String grpName;
     String email;
-    Intent i;
+    Intent i, intent;
 
     private static int SPLASH_TIME_OUT = 5000;
 
@@ -157,6 +157,7 @@ public class  SplashScreen extends AppCompatActivity {
             }
         }
     }
+
 
     @Override
     public void onResume()

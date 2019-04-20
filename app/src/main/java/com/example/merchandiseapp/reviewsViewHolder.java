@@ -9,7 +9,7 @@ import com.example.merchandiseapp.Interface.ItemClickListner;
 
 public class reviewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
-    public TextView lreview , lstars, luser;
+    public TextView lreview , lstars, luser, lstatus;
     private ItemClickListner itemClickListner;
 
     public reviewsViewHolder(@NonNull View itemView)
@@ -18,7 +18,7 @@ public class reviewsViewHolder extends RecyclerView.ViewHolder implements View.O
         lreview= itemView.findViewById(R.id.txtReviews);
         lstars= itemView.findViewById(R.id.txtStars);
         luser= itemView.findViewById(R.id.txtUser);
-
+        lstatus = itemView.findViewById(R.id.txtStatus);
     }
     @Override
     public void onClick(View v)

@@ -41,11 +41,11 @@ public class OrderStatusActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        loadingBar = new ProgressDialog(this);
+        /*loadingBar = new ProgressDialog(this);
         loadingBar.setTitle("Order Status");
         loadingBar.setMessage("Please wait, while we are Displaying Images for you");
         loadingBar.setCanceledOnTouchOutside(false);
-        loadingBar.show();
+        loadingBar.show();*/
     }
 
     @Override
@@ -73,7 +73,7 @@ public class OrderStatusActivity extends AppCompatActivity
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.DeliveredImage);
 
-                loadingBar.dismiss();
+                //loadingBar.dismiss();
                 orderid_list.add(model.getOrderID());
             }
 

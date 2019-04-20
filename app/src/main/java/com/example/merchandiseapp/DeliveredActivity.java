@@ -68,6 +68,19 @@ public class DeliveredActivity extends AppCompatActivity
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.DeliveredImage);
                 orderid_list.add(model.getOrderID());
+
+                holder.Review_Btn.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(DeliveredActivity.this, GiveRatingsActivity.class);
+                        intent.putExtra("category", model.getCategory());
+                        intent.putExtra("productID", model.getProductID());
+                        intent.putExtra("groupName", model.getGroupName());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull

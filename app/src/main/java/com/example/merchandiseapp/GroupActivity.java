@@ -128,13 +128,21 @@ public class GroupActivity extends AppCompatActivity implements NavigationView.O
             startActivity(intent);
 
         }
+
         else if (id == R.id.nav_orders) {
 
             Intent intent = new Intent(GroupActivity.this,ViewOrder.class);
             intent.putExtra("GroupName",global.getUsername());
             startActivity(intent);
 
-        }else if (id == R.id.nav_members) {
+        }else if (id == R.id.nav_managedMembers) {
+
+            Intent intent = new Intent(GroupActivity.this,ManageMembersActivity.class);
+            intent.putExtra("GroupName",global.getUsername());
+            startActivity(intent);
+
+        }
+        else if (id == R.id.nav_members) {
 
             Intent intent = new Intent(GroupActivity.this,AddMembersActivity.class);
             intent.putExtra("GroupName",global.getUsername());

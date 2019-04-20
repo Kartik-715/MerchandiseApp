@@ -113,12 +113,10 @@ public class CartActivity extends AppCompatActivity
 
                 if(dataSnapshot.exists())
                 {
-                    //Toast.makeText(CartActivity.this,"data exists",Toast.LENGTH_SHORT).show();
                     DataExists(queries);
                 }
                 else
                 {
-                    //Toast.makeText(CartActivity.this,"no data exists",Toast.LENGTH_SHORT).show();
                     NoDataExists();
                 }
 
