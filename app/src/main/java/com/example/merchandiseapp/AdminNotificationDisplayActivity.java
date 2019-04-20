@@ -1,20 +1,17 @@
 package com.example.merchandiseapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,19 +22,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AdminNotificationDisplayActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private String uid;
-    private RecyclerView.LayoutManager layoutManager;
-    //private Button NextProcessBtn;
     private ArrayList<String> groupNameList;
     private DatabaseReference notificationRef;
     private DatabaseReference uidReference;
-    //private Button BtnShopNow;
     private TextView notificationEmpty;
     private int countCards;
     @Override
@@ -47,17 +40,9 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
         groupNameList = new ArrayList<String>();
         recyclerView = findViewById(R.id.notificationList);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         notificationEmpty = findViewById(R.id.notiInfo);
-    }
-
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
         notificationRef = FirebaseDatabase.getInstance().getReference().child("Admin");
         final Query queries = notificationRef.orderByChild("isApproved").equalTo("No");
 
@@ -112,7 +97,7 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
             {
 
                 holder.txtGroupName.setText( model.getGroupName());
-                holder.txtEmail.setText(model.getEmail() );
+                holder.txtEmail.setText(model.getEmailID() );
                 holder.txtContact.setText(model.getContact());
                 groupNameList.add(model.getGroupName());
                 holder.removeButton.setOnClickListener(new View.OnClickListener()
@@ -152,9 +137,28 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                     public void onClick(View v)
                     {
                         notificationRef.child(model.getGroupName()).child("isApproved").setValue("Yes");
-                        uidReference = FirebaseDatabase.getInstance().getReference().child("Users").child("-2119591485");
+                        uidReference = FirebaseDatabase.getInstance().getReference().child("Users").child(model.getUID());
                         uidReference.child("notiList").setValue("1");
                         Toast.makeText(AdminNotificationDisplayActivity.this, "Request Approved Successfully", Toast.LENGTH_SHORT).show();
+                        /* Adding new Group Now */
+                        DatabaseReference newNode = FirebaseDatabase.getInstance().getReference().child("Group").child(model.getGroupName()) ;
+                        HashMap<String,String> a = new HashMap<>() ;
+                        a.put(model.getUID(), model.getEmailID()) ;
+
+//
+                        newNode.child("Authorized_Members").child("Email_ID").setValue(a) ; // Set the Value of Authorized Members //
+
+                        // Setting the Details //
+                        newNode.child("Details").child("Contact").setValue(model.getContact()) ;
+                        newNode.child("Details").child("EmailID").setValue(model.getEmailID()) ;
+                        newNode.child("Details").child("GroupName").setValue(model.getGroupName()) ;
+                        newNode.child("Details").child("UPI").setValue(model.getUPI()) ;
+
+                        // Setting the Members by default the creator //
+                        newNode.child("Members").child("Email_ID").setValue(a) ; // Set the Value of Members //
+
+
+
                     }
                 });
 
