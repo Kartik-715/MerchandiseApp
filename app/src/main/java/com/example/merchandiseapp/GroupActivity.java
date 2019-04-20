@@ -33,8 +33,10 @@ public class GroupActivity extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor);
 
+
         global = (G_var) getApplicationContext();
 
+        global.setUsername("CSEA");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

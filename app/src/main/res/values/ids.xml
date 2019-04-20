@@ -4,4 +4,5 @@
     <item name="asd" type="id" />
     <item name="sendNoti" type="id" />
     <item name="rel1" type="id" />
+    <item name="status" type="id" />
 </resources>
