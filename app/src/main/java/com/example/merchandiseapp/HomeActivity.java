@@ -71,16 +71,6 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Setting up current User //
-
-            String User_Email = "mayank@iitg.ac.in";
-            int temp = User_Email.hashCode();
-            final String hashcode = Integer.toString(temp);
-
-            Prevalent.currentOnlineUser = hashcode;
-            Prevalent.currentEmail = User_Email;
-
-        // Setting up current User //
 
         global = (G_var) getApplicationContext();
         System.out.println("Hey : " + global.getUsername());
@@ -96,8 +86,8 @@ public class HomeActivity extends AppCompatActivity
 
         Prevalent.currentOrderType = orderType;
         Prevalent.currentPhone = contact;
-        Prevalent.currentEmail = "mayank@iitg.ac.in";
-        //Prevalent.currentEmail = email;
+        //Prevalent.currentEmail = "mayank@iitg.ac.in";
+        Prevalent.currentEmail = email;
         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
         Prevalent.currentWalletMoney = wallet;
         Prevalent.currentGender = gender;
@@ -135,7 +125,12 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                final List<String> accessibleGroups = (List<String>) dataSnapshot.getValue();
+                System.out.println(dataSnapshot.getValue());
+                final List<String> accessibleGroups = new ArrayList<>() ;
+                for(DataSnapshot x: dataSnapshot.getChildren())
+                {
+                    accessibleGroups.add(x.getKey()) ;
+                }
                 System.out.println(accessibleGroups);
 
                 final String orderType = Prevalent.currentOrderType; // Selecting Order Type //

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.PublicClientApplication;
 
@@ -36,7 +37,7 @@ public class GroupActivity extends AppCompatActivity implements NavigationView.O
 
         global = (G_var) getApplicationContext();
 
-        global.setUsername("CSEA");
+        global.setUsername(Prevalent_Groups.currentGroupName);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -131,11 +131,11 @@ public class  SplashScreen extends AppCompatActivity {
 
 
                         global.setUsername(grpName);
-                        global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
+                        global.setImageLocation(dataSnapshot.child("Image_Location").getValue().toString());
                         global.setEmail(dataSnapshot.child("EmailID").getValue().toString());
                         global.setContact(dataSnapshot.child("Contact").getValue().toString());
                         global.setUPI(dataSnapshot.child("UPI").getValue().toString());
-                        global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
+                        global.setImageLocation(dataSnapshot.child("Image_Location").getValue().toString());
                         getImage();
 
                         new Handler().postDelayed(new Runnable() {

@@ -88,7 +88,7 @@ public class AddMembersActivity extends AppCompatActivity
         }
 
         //FOR TESTING REMOVE ONCE WE HAVE ADDED CURRENTGROUPNAME FROM CODE
-        Prevalent_Groups.currentGroupName ="CSEA";
+        //Prevalent_Groups.currentGroupName ="CSEA";
         int temp = inputText.hashCode();
         final String hashcode = Integer.toString(temp);
         Toast.makeText(AddMembersActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();

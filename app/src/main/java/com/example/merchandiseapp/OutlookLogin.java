@@ -269,12 +269,8 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 {
                     if (dataSnapshot.child("Password").getValue().toString().equals(Password))
                     {
-                        flag = true;
                         Intent intent = new Intent(OutlookLogin.this, RedirectActivity.class);
                         intent.putExtra("email", Email);
-                        Intent intent = new Intent(OutlookLogin.this, SplashScreen.class);
-                        intent.putExtra("Type", "users");
-                        intent.putExtra("Email", email.getText().toString() );
                         Prevalent.currentEmail = email.getText().toString();
                         Prevalent.currentOnlineUser = Integer.toString(Prevalent.currentEmail.hashCode());
                         startActivity(intent);
