@@ -1,8 +1,11 @@
 package com.example.merchandiseapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +33,13 @@ public class SplashScreen extends AppCompatActivity {
     String grpName;
     String email;
     Intent i;
+
     private static int SPLASH_TIME_OUT = 5000;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
@@ -43,21 +48,57 @@ public class SplashScreen extends AppCompatActivity {
         global = (G_var) getApplicationContext();
 
         Bundle b = getIntent().getExtras();
-        if(b!=null){
-            //Toast.makeText(getApplicationContext(),"bundle non null",Toast.LENGTH_SHORT).show();
+
+        if(b != null)
+        {
             type = (String) b.get("Type");
             email = (String) b.get("Email");
+
             int temp = email.trim().hashCode();
             uid = Integer.toString(temp);
+
             global.setUid(uid);
-            //Toast.makeText(getApplicationContext(), (String)b.get("uid")+" " +this.uid,Toast.LENGTH_LONG).show();
 
-            if(type.equals("users")){
+            if( type.equals("users") )
+            {
                 DatabaseReference UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(global.getUid());
-                UserData.addValueEventListener(new ValueEventListener() {
+                UserData.addValueEventListener(new ValueEventListener()
+                {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot)
+                    {
+                        final String usrUID = Integer.toString(email.hashCode());
+                        new Handler().postDelayed(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                String imageLocation = "images/users/"+usrUID;
+                                final StorageReference ref = FirebaseStorage.getInstance().getReference().child(imageLocation);
 
+                                ((StorageReference) ref).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                                {
+                                    @Override
+                                    public void onSuccess(Uri downloadUrl)
+                                    {
+                                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+
+                                        intent.putExtra("orderType", "1");
+                                        intent.putExtra("name", dataSnapshot.child("Name").getValue().toString());
+                                        intent.putExtra("address", dataSnapshot.child("Address").getValue().toString());
+                                        intent.putExtra("contact", dataSnapshot.child("Contact").getValue().toString());
+                                        intent.putExtra("email", dataSnapshot.child("Email_ID").getValue().toString());
+                                        intent.putExtra("gender", dataSnapshot.child("Gender").getValue().toString());
+                                        intent.putExtra("wallet", dataSnapshot.child("Wallet_Money").getValue().toString());
+                                        intent.putExtra("image",downloadUrl);
+                                        startActivity(intent);
+                                        finish();
+                                        System.out.println(downloadUrl);
+                                    }
+                                });
+
+                            }
+                        }, SPLASH_TIME_OUT);
 
                         global.setUsername(dataSnapshot.child("Name").getValue().toString());
                         global.setAddress(dataSnapshot.child("Address").getValue().toString());
@@ -74,12 +115,18 @@ public class SplashScreen extends AppCompatActivity {
                 });
             }
 
-            else{
+            else
+            {
                 grpName = (String) b.get("Name");
                 DatabaseReference GrpData = FirebaseDatabase.getInstance().getReference().child("Group").child(grpName).child("Details");
-                GrpData.addValueEventListener(new ValueEventListener() {
+
+                GrpData.addValueEventListener(new ValueEventListener()
+                {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+
+
                         global.setUsername(grpName);
                         global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
                         global.setEmail(dataSnapshot.child("EmailID").getValue().toString());
@@ -87,8 +134,6 @@ public class SplashScreen extends AppCompatActivity {
                         global.setUPI(dataSnapshot.child("UPI").getValue().toString());
                         global.setImageLocation(dataSnapshot.child("Image Location").getValue().toString());
                         getImage();
-
-
                     }
 
                     @Override
@@ -97,51 +142,57 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 });
             }
-
         }
 
-        new Handler().postDelayed(new Runnable() {
-
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
+       /* new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
                 if(type.equals("users"))
                 {
-                    i = new Intent(getApplicationContext(),HomeActivity.class);
-                    i.putExtra("orderType", "1");
+                    *//*i = new Intent(getApplicationContext(),HomeActivity.class);
+                    i.putExtra("orderType", "1");*//*
+                    intent = new Intent(getApplicationContext(),HomeActivity.class);
+                    intent.putExtra("orderType", "2");
 
                 }
+
                 else
                 {
-                    i = new Intent(getApplicationContext(),GroupActivity.class);
+                    intent = new Intent(getApplicationContext(),GroupActivity.class);
                 }
-                startActivity(i);
-
-                // close this activity
+                startActivity(intent);
                 finish();
             }
-        }, SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT);*/
+
+
     }
+
+
+
     @Override
-    public void onResume(){
+    public void onResume()
+    {
         super.onResume();
         hideNav();
     }
 
-    public void getImage(){
+    public void getImage()
+    {
         StorageReference mImageRef;
 
-        if(type.equals("users")) mImageRef = FirebaseStorage.getInstance().getReference().child("images/users/"+uid);
-        else mImageRef = FirebaseStorage.getInstance().getReference().child(global.getImageLocation());
+        if(type.equals("users"))
+            mImageRef = FirebaseStorage.getInstance().getReference().child("images/users/"+uid);
+
+        else
+            mImageRef = FirebaseStorage.getInstance().getReference().child(global.getImageLocation());
+
+
         final long ONE_MEGABYTE = 1024 * 1024 * 20;
         mImageRef.getBytes(ONE_MEGABYTE)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                .addOnSuccessListener(new OnSuccessListener<byte[]>()
+                {
                     @Override
                     public void onSuccess(byte[] bytes) {
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -149,7 +200,8 @@ public class SplashScreen extends AppCompatActivity {
                         global.setBitmap(bm);
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
+                .addOnFailureListener(new OnFailureListener()
+                {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
@@ -157,7 +209,8 @@ public class SplashScreen extends AppCompatActivity {
                 });
     }
 
-    public void hideNav(){
+    public void hideNav()
+    {
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

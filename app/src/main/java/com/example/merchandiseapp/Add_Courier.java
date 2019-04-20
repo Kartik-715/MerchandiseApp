@@ -97,7 +97,7 @@ public class Add_Courier extends AppCompatActivity {
 
             User_data usr = new User_data(Username_str,Contact_str,password_str,emailid_str,upi_str,"1",address_str);
 
-            databaseUserData_courier.child(id[0]).setValue(usr);
+           databaseUserData_courier.child(id[0]).setValue(usr);
         }else{
             Toast.makeText(this,"Please fill all the Feilds",Toast.LENGTH_LONG).show();
         }

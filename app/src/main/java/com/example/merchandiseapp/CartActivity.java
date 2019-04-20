@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +38,7 @@ public class CartActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
     private ArrayList<String> orderid_list;
-    private ArrayList<String> group_list;
+    private ArrayList<String> group_list,product_list;
     private DatabaseReference cartListRef;
     private ImageView ImageEmptyCart;
     private Button BtnShopNow;
@@ -53,6 +54,7 @@ public class CartActivity extends AppCompatActivity
         setContentView(R.layout.activity_cart);
         orderid_list = new ArrayList<>();
         group_list = new ArrayList<>();
+        product_list = new ArrayList<>();
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -86,6 +88,8 @@ public class CartActivity extends AppCompatActivity
         Intent intent = new Intent(CartActivity.this, DetailsActivity.class);
         intent.putExtra("orderid_list", orderid_list);
         intent.putExtra("group_list", group_list);
+        intent.putExtra("product_list", product_list);
+
         //intent.putExtra("total_money", totalPrice);
         startActivity(intent);
         finish();
@@ -131,6 +135,7 @@ public class CartActivity extends AppCompatActivity
     public void onBackPressed()
     {
         Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
         intent.putExtra("orderType", Prevalent.currentOrderType);
         startActivity(intent);
     }
@@ -150,6 +155,7 @@ public class CartActivity extends AppCompatActivity
             {
                 Intent intent = new Intent(CartActivity.this, HomeActivity.class);
                 intent.putExtra("orderType", Prevalent.currentOrderType);
+                Prevalent_Intent.setIntent(intent);
                 startActivity(intent);
             }
         });
@@ -170,22 +176,19 @@ public class CartActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull final Order model)
             {
-                System.out.println("okkkies");
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price: " + model.getPrice() + "$");
-                holder.txtProductName.setText(model.getGroupName());
+                holder.txtProductPrice.setText("Price: Rs" + model.getPrice() );
+                holder.txtProductName.setText("Delivered By :" + model.getGroupName());
+
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.CartImage);
 
                 orderid_list.add(model.getOrderID());
                 group_list.add(model.getGroupName());
+                product_list.add(model.getProductID());
 
                 int oneTypeProductPrice = ( Integer.valueOf(model.getPrice()) ) * ( Integer.valueOf(model.getQuantity()) ) ;
                 overTotalPrice = overTotalPrice +  oneTypeProductPrice;
-
-                System.out.println("Disha2 : " + overTotalPrice);
-                System.out.println("Disha3 : " + oneTypeProductPrice);
-                System.out.println("Disha4 : " + overTotalPrice);
 
 
                 holder.DeleteButton.setOnClickListener(new View.OnClickListener()

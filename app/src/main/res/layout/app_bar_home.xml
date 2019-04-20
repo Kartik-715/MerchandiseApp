@@ -18,7 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:minHeight="80dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"

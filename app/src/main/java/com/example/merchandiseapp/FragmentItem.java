@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,7 +27,7 @@ import java.util.Set;
 
 public class FragmentItem extends Fragment
 {
-    private HomeActivity mHomeActivity;
+    private Context mHomeActivity;
     Bundle bundle;
     ProgressDialog loadingBar;
     private List<Merchandise> list ;
@@ -35,7 +36,7 @@ public class FragmentItem extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mHomeActivity = (HomeActivity) getActivity();
+        mHomeActivity = getActivity();
         bundle = this.getArguments();
     }
 

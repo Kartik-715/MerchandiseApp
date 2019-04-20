@@ -1,6 +1,7 @@
 package com.example.merchandiseapp;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -40,8 +42,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ManageProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -56,6 +65,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     ImageView content_imageView;
     ImageView profilePic;
     ImageView bar_imageView;
+    ProgressDialog progressDialog;
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -128,14 +138,6 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             }
         });
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                updateUser();
-//            }
-//        });
-//
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -173,13 +175,10 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
@@ -230,7 +229,8 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         //Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
     }
 
-    public void updateUser(){
+    public void updateUser()
+    {
 
         UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(global.getUid());
 
@@ -244,6 +244,11 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         global.setAddress(address.getText().toString());
 
         Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ManageProfile.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
+        intent.putExtra("orderType", Prevalent.currentOrderType);
+        startActivity(intent);
     }
 
 
@@ -278,7 +283,9 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMax(100);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
@@ -287,7 +294,8 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
 
             ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
@@ -314,27 +322,16 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    public void addImage(ImageView imageView){
-//        StorageReference mImageRef = global.getImageRef();
-//        final long ONE_MEGABYTE = 1024 * 1024 * 20;
-//        mImageRef.getBytes(ONE_MEGABYTE)
-//                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        DisplayMetrics dm = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-                        imageView.setMinimumHeight(dm.heightPixels);
-                        imageView.setMinimumWidth(dm.widthPixels);
-                        imageView.setImageBitmap(global.getBitmap());
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle any errors
-//            }
-//        });
+    public void addImage(ImageView imageView)
+    {
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        imageView.setMinimumHeight(dm.heightPixels);
+        imageView.setMinimumWidth(dm.widthPixels);
+        imageView.setImageBitmap(global.getBitmap());
     }
 
 }

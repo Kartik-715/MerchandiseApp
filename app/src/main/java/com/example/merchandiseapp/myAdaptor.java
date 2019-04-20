@@ -84,6 +84,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.MyViewHolder> {
         }
 
         //loadingBar.dismiss();
+        // loadingBar.dismiss();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

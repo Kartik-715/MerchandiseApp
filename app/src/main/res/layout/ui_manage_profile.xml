@@ -44,7 +44,7 @@
             android:textSize="16sp"
             android:text="aayushmakharia1999@gmail.com"/>
 
-        <ImageView
+        <!--<ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
@@ -52,7 +52,7 @@
             android:layout_marginTop="15dp"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/settings_nav" />
+            app:srcCompat="@drawable/settings_nav" />-->
 
     </RelativeLayout>
 
