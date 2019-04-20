@@ -10,13 +10,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 public class UPIActivity extends AppCompatActivity
 {
 
-    EditText amountEt, noteEt, nameEt, upiIdEt;
+    EditText noteEt;
+    TextView amountEt, upiIdEt, nameEt ;
     Button send;
 
     final int UPI_PAYMENT = 0;
@@ -28,6 +30,8 @@ public class UPIActivity extends AppCompatActivity
         setContentView(R.layout.activity_upi);
 
         initializeViews();
+
+        amountEt.setText(getIntent().getStringExtra("amount"));
 
         send.setOnClickListener(new View.OnClickListener()
         {
@@ -111,40 +115,37 @@ public class UPIActivity extends AppCompatActivity
 
     private void upiPaymentDataOperation(ArrayList<String> data)
     {
-        if (isConnectionAvailable(UPIActivity.this))
-        {
+        if (isConnectionAvailable(UPIActivity.this)) {
             String str = data.get(0);
             String paymentCancel = "";
-            if(str == null) str = "discard";
+            if (str == null) str = "discard";
             String status = "";
             String approvalRefNo = "";
             String response[] = str.split("&");
-            for (int i = 0; i < response.length; i++)
-            {
-                String equalStr[] = response[i].split("=");
 
-                if(equalStr.length >= 2)
-                {
+            System.out.println("RESPONSE: " + response.toString());
+            for (int i = 0; i < response.length; i++) {
+                String equalStr[] = response[i].split("=");
+                System.out.println("equalStr: " + equalStr.toString());
+
+
+                if (equalStr.length >= 2) {
                     if (equalStr[0].toLowerCase().equals("Status".toLowerCase()))
                         status = equalStr[1].toLowerCase();
 
                     else if (equalStr[0].toLowerCase().equals("ApprovalRefNo".toLowerCase()) || equalStr[0].toLowerCase().equals("txnRef".toLowerCase()))
                         approvalRefNo = equalStr[1];
-                }
-                else
+                } else
                     paymentCancel = "Payment cancelled by user.";
             }
 
-            if (status.equals("success"))
-            {
+            if (status.equals("success")) {
                 Toast.makeText(UPIActivity.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
-            }
-
-            else if("Payment cancelled by user.".equals(paymentCancel))
+            } else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(UPIActivity.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
-
-            else
+            } else {
                 Toast.makeText(UPIActivity.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
+            }
         }
 
         else

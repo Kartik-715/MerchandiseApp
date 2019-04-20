@@ -1,16 +1,12 @@
 package com.example.merchandiseapp;
 
 import android.content.Intent;
-import android.service.autofill.UserData;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatRadioButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -30,9 +26,7 @@ import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import java.util.HashMap;
 import java.util.UUID;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity
 {
@@ -50,9 +44,8 @@ public class PaymentActivity extends AppCompatActivity
 
         Btn_Payment = findViewById(R.id.Btn_Payment);
         radioGroup = findViewById(R.id.radiogroup);
-        Prevalent.currentMoney = "50";
-        Prevalent.currentWalletMoney = "75";
-        amount = "2";
+        amount = Prevalent.currentMoney ;
+        System.out.println("Current Money: " + amount);
 
         updateWallet();
 
@@ -79,6 +72,7 @@ public class PaymentActivity extends AppCompatActivity
         if(radioButton.getText().toString().equals("UPI"))
         {
             Intent intent = new Intent(this, UPIActivity.class);
+            intent.putExtra("amount", amount) ;
             startActivity(intent);
         }
         if(radioButton.getText().toString().equals("Wallet Money"))
@@ -210,26 +204,30 @@ public class PaymentActivity extends AppCompatActivity
         ).enqueue(new Callback<Checksum>()
         {
             @Override
-            public void onResponse(Call<Checksum> call, Response<Checksum> response)
+            public void onResponse(retrofit2.Call<Checksum> call, retrofit2.Response<Checksum> response)
             {
+
                 if (response.isSuccessful())
                 {
                     processToPay(response.body().getChecksumHash(),paytm);
                 }
+
             }
 
             @Override
-            public void onFailure(Call<Checksum> call, Throwable t)
-            {
+            public void onFailure(retrofit2.Call<Checksum> call, Throwable t) {
+
                 // This method gets called if transaction failed. //
                 // Here in this case transaction is completed, but with
                 // a failure. // Error Message describes the reason for
                 // failure. // Response bundle contains the merchant
                 // response parameters.
-               /* Log.d("LOG", "Payment Transaction Failed " + inErrorMessage);
+                Log.d("LOG", "Payment Transaction Failed " );
                 Toast.makeText(getBaseContext(), "Payment Transaction Failed ", Toast.LENGTH_LONG).show();
-            } */
             }
+
+
+
         });
     }
 
@@ -264,6 +262,12 @@ public class PaymentActivity extends AppCompatActivity
                 // initialization of webview. // Error Message details
                 // the error occurred.
             }
+
+            public void onTransactionSuccess(Bundle inResponse)
+            {
+                Toast.makeText(PaymentActivity.this, "Transaction Successful", Toast.LENGTH_SHORT).show();
+            }
+
             public void onTransactionResponse(Bundle inResponse)
             {
                 Toast.makeText(PaymentActivity.this, inResponse.toString(), Toast.LENGTH_SHORT).show();
@@ -290,7 +294,7 @@ public class PaymentActivity extends AppCompatActivity
 
             public void onBackPressedCancelTransaction()
             {
-                Toast.makeText(PaymentActivity.this, "Back pressed. Transaction cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(PaymentActivity.this, "Something pressed. Transaction cancelled", Toast.LENGTH_LONG).show();
                 finish();
             }
 
