@@ -101,6 +101,7 @@
             android:layout_toRightOf="@id/userName"
             android:layout_below="@id/status"
             android:text="Update Status"
+            android:id="@+id/update"
             />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

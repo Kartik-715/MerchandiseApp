@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,10 +47,12 @@ public class orderRequestDetails extends AppCompatActivity {
     private   ArrayList<String> Size ;
     private   ArrayList<String> UserName ;
     private   ArrayList<String> UserID ;
+    private   ArrayList<String> OrderID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_request_details);
+
 
         Category = getIntent().getStringExtra("Category");
         PID = getIntent().getStringExtra("PID");
@@ -77,6 +80,7 @@ public class orderRequestDetails extends AppCompatActivity {
                 Size = new ArrayList<String>();
                 UserName = new ArrayList<String>();
                 UserID = new ArrayList<String>();
+                OrderID= new ArrayList<String>();
 
                 for (DataSnapshot ds : dataSnapshot.child("Orders").getChildren()) {
 
@@ -88,6 +92,7 @@ public class orderRequestDetails extends AppCompatActivity {
                     Quantity.add((String) ds.child("Quantity").getValue());
                     Size.add((String) ds.child("Size").getValue());
                     UserName.add((String) ds.child("UserName").getValue());
+                    OrderID.add((String) ds.child("OrderID").getValue());
 
 //                                    System.out.println( ds.child("UserID").toString());
 ////                                    System.out.println( ds.child("Contact").toString());
@@ -128,8 +133,9 @@ public class orderRequestDetails extends AppCompatActivity {
                                 Email,
                                 Quantity,
                                 Size,
-                                UserName
-
+                                UserName,PID,
+                                OrderID
+                                ,UserID
                         );
                         listView.setAdapter(customAdapter);
 
