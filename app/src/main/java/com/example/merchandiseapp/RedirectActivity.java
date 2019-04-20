@@ -98,7 +98,7 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
             public void onClick(View v) {
                 int temp = email.hashCode();
                 UID = Integer.toString(temp);
-                Toast.makeText(getApplicationContext(),UID,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),UID,Toast.LENGTH_SHORT).show();
                 if(radioButton2.isChecked()) redirect_group();
                 else redirect_user();
 
@@ -174,6 +174,8 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                             areas.add(areaname);
                         }
                 }
+
+
                 if(flag!=0) {
                     areaSpinner.setVisibility(View.VISIBLE);
                     ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(RedirectActivity.this, android.R.layout.simple_spinner_item, areas);
@@ -184,30 +186,19 @@ public class RedirectActivity extends AppCompatActivity implements AdapterView.O
                 }
 
                 if(flag == 0){
-                    Toast.makeText(getApplicationContext(),"No Such User Found",Toast.LENGTH_SHORT).show();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RedirectActivity.this);
-
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(),"Group Register",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
-                            if(b.getString("email", null) != null)
-                            {
-                                email = b.getString("email");
-                                intent.putExtra("email",email) ;
-                            }
-                            else
-                            {
-                                intent.putExtra("user",Juser.toString());
-                            }
-                            startActivity(intent);
-                        }
-                    });
-                    builder.setNegativeButton("Cancel",null).setCancelable(false);
-                    builder.setTitle("Send request for a new Group??");
-                    builder.create().show();
+                    Toast.makeText(getApplicationContext(),"You are not in Any Group!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Sending You to Group Register",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(),GroupRegister.class);
+                    if(b.getString("email", null) != null)
+                    {
+                        email = b.getString("email");
+                        intent.putExtra("email",email) ;
+                    }
+                    else
+                    {
+                        intent.putExtra("user",Juser.toString());
+                    }
+                    startActivity(intent);
                 }
             }
 

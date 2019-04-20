@@ -143,7 +143,8 @@ public class GroupRegister extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(validate_entries()) sendCode();
+                //if(validate_entries()) sendCode();
+                update_info();
             }
         });
 
