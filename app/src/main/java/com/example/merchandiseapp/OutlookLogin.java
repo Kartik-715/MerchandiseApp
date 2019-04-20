@@ -183,7 +183,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                     }
                 }
 
-                else Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_LONG).show();
+                else Toast.makeText(getApplicationContext(), "Invalid ", Toast.LENGTH_LONG).show();
             }
 
             @Override
