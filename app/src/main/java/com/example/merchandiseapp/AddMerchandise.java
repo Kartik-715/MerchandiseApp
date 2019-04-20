@@ -24,6 +24,8 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -122,7 +124,7 @@ public class AddMerchandise extends AppCompatActivity {
         accessGroupListView = (ListView) findViewById(R.id.listView_accessgroup);
         sizeQtyListView =(ListView) findViewById(R.id.listView_size_qty);
 
-        GroupName = "CSEA";
+        GroupName = Prevalent_Groups.currentGroupName ;
 
 
 
@@ -195,7 +197,7 @@ public class AddMerchandise extends AppCompatActivity {
 
                 System.out.println(GroupName+Category+Image+Material+PID+Price);
 
-                if(listSQ.size()==0)
+                if(listSQ.size()==0 && OrderType.equals("1"))
                 {
                     Toast.makeText(getApplicationContext(),"Enter Valid Quantity and Size",Toast.LENGTH_LONG).show();
                 }

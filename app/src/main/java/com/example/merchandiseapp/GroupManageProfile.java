@@ -274,39 +274,6 @@ public class GroupManageProfile extends AppCompatActivity {
            if(location.equals(areas.get(i))) return true;
 
        return false;
-//       final DatabaseReference location_check = FirebaseDatabase.getInstance().getReference().child("Group").child(name.getText().toString()).child("Details").child("Locations");
-//
-//       location_check.addValueEventListener(new ValueEventListener() {
-//           @Override
-//           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//               String areaname;
-//               for (DataSnapshot Snapshot : dataSnapshot.getChildren()){
-//                   areaname = Snapshot.getValue().toString();
-//                   if(areaname.equals(location)) {
-//                       flag_locationCheck = 1;
-//                       break;
-//                   }
-//
-//               }
-//
-//           }
-//
-//           @Override
-//           public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//           }
-//       });
-//
-//       Toast.makeText(getApplicationContext(),Integer.toString(flag_locationCheck),Toast.LENGTH_SHORT).show();
-//
-//       if(flag_locationCheck == 1) {
-//
-//
-//           flag_locationCheck = 0;
-//           return true;
-//       }
-//         else return false;
    }
     public void hideNav(){
         this.getWindow().getDecorView().setSystemUiVisibility(
