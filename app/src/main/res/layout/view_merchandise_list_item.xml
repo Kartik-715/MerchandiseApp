@@ -16,15 +16,15 @@
 
         <ImageView
             android:id="@+id/product_image"
-            android:layout_width="151dp"
-            android:layout_height="164dp"
+            android:layout_width="135dp"
+            android:layout_height="163dp"
             android:layout_below="@+id/cart_product_status"
             android:layout_marginTop="12dp"
             android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/cart_product_name"
-            android:layout_width="213dp"
+            android:layout_width="233dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_status"
             android:layout_marginLeft="14dp"
@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/cart_product_quantity"
-            android:layout_width="202dp"
+            android:layout_width="231dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_name"
             android:layout_marginLeft="16dp"
@@ -52,7 +52,7 @@
 
         <TextView
             android:id="@+id/cart_product_quantity2"
-            android:layout_width="202dp"
+            android:layout_width="231dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_name"
             android:layout_marginLeft="16dp"
@@ -62,29 +62,29 @@
             android:text="Size:Quantity"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic" />
 
         <Spinner
             android:id="@+id/product_quantity_spinner"
             style="@style/FirebaseUI.CountrySpinner"
-            android:layout_width="202dp"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/cart_product_quantity"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="37dp"
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/product_image"
             android:background="@android:drawable/btn_dropdown"
             android:paddingLeft="40dp"
-            android:spinnerMode="dropdown"
+            android:spinnerMode="dialog"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:theme="@style/Base.TextAppearance.AppCompat.Title" />
+            android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/cart_product_price"
-            android:layout_width="201dp"
-            android:layout_height="32dp"
+            android:layout_width="224dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/product_quantity_spinner"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="6dp"
