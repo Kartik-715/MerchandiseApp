@@ -292,8 +292,9 @@ public class GroupRegister extends AppCompatActivity {
         GroupData.child(grpName.getText().toString().trim()).setValue(groupInfo);
 
         GroupData = GroupData.child(grpName.getText().toString().trim());
-        GroupData.child("UID").setValue(grpEmail.getText().toString().hashCode());
-        GroupData.child("Image Location").setValue(imageLocation);
+        int temp = grpEmail.getText().toString().hashCode();
+        GroupData.child("UID").setValue(Integer.toString(temp));
+        GroupData.child("Image_Location").setValue(imageLocation);
         GroupData.child("isApproved").setValue("No");
 
         Toast.makeText(getApplicationContext(),"Group Created",Toast.LENGTH_SHORT).show();
