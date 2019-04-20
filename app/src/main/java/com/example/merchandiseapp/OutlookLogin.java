@@ -10,9 +10,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +55,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     DatabaseReference ref;
     boolean flag = false;
     EditText email,password;
+    CheckBox showPasswordChk;
 
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
@@ -64,6 +67,7 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outlook_login);
         hideNav();
+        showPasswordChk = (CheckBox) findViewById(R.id.showpassword_chk);
         callGraphButton = (Button) findViewById(R.id.callGraph);
         LoginButton = (Button) findViewById(R.id.Login);
        // signOutButton = (Button) findViewById(R.id.clearCache);
@@ -132,6 +136,23 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
 
     }
 
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        if(checked == true)
+        {
+            password.setTransformationMethod(null);
+        }
+        else
+        {
+            password.setTransformationMethod(new PasswordTransformationMethod());
+
+        }
+
+    }
     @Override
     public void onResume(){
         super.onResume();

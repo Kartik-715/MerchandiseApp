@@ -41,6 +41,15 @@
         android:layout_marginTop="6dp"
         android:textColor="@color/black"
         android:textColorHint="@color/Gray" />
+
+    <CheckBox
+        android:id="@+id/showpassword_chk_outlook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show password"
+        android:onClick="onCheckboxClicked"
+        android:layout_marginLeft="3dp"
+        />
     <Button
         android:id="@+id/Login"
         android:layout_width="match_parent"
