@@ -68,8 +68,6 @@ String PID;
 
     ) {
         this.context = applicationContext;
-
-
         this.Contact = Contact;
         this.Email = Email;
         this.Quantity = Quantity;
