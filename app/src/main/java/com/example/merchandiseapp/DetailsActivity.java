@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class DetailsActivity extends AppCompatActivity
 {
     private ArrayList<String> orderid_list;
-    private ArrayList<String> group_list;
+    private ArrayList<String> group_list, product_list;
     private EditText PhoneNumber, Address, Email_ID;
     private Button Payment;
     private TextView Txt_Total_Price;
@@ -42,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity
 
         orderid_list = getIntent().getStringArrayListExtra("orderid_list");
         group_list = getIntent().getStringArrayListExtra("group_list");
+        product_list = getIntent().getStringArrayListExtra("product_list");
 
         PhoneNumber = (EditText) findViewById(R.id.Booking_Phone_Number);
         Address = (EditText) findViewById(R.id.Booking_Address);
@@ -95,9 +96,10 @@ public class DetailsActivity extends AppCompatActivity
         {
             String orderid = orderid_list.get(i);
             String group_name = group_list.get(i);
+            String product_name = product_list.get(i);
 
             final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Orders_Temp").child(Prevalent.currentOnlineUser).child(orderid);
-            final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(Prevalent.currentOnlineUser).child(orderid);
+            final DatabaseReference cartListRef2 = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders").child(product_name).child("Orders").child(orderid);
 
             final HashMap<String, Object> cartMap = new HashMap<>();
             cartMap.put("Contact", PhoneNumber.getText().toString());
@@ -123,24 +125,13 @@ public class DetailsActivity extends AppCompatActivity
 
                         }
                     });
+
             cartListRef.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    /*String price = dataSnapshot.child("Price").getValue().toString();
-                    System.out.println("Price: " + price);
-                    int price_amount = Integer.parseInt(price);
 
-                    String global_price = Prevalent.currentMoney;
-                    int global_amount = Integer.parseInt(global_price);
-                    System.out.println("Global Price : " + price);
-
-                    global_amount += price_amount;
-                    String global_price2 = Integer.toString(global_amount);
-                    Prevalent.currentMoney = global_price2;
-
-                    System.out.println("Global_Price_Adding : " + Prevalent.currentMoney);*/
                 }
 
                 @Override

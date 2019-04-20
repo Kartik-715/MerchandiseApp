@@ -46,6 +46,8 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
         groupName = getIntent().getStringExtra("group_name");
         productID = getIntent().getStringExtra("product_id");
 
+        Toast.makeText(this, Prevalent.currentMoney, Toast.LENGTH_SHORT).show();
+
         final DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference().child("Requests_Temp").child(Prevalent.currentOnlineUser).child(orderID);
 
         requestRef.addListenerForSingleValueEvent(new ValueEventListener()
@@ -122,7 +124,9 @@ public class TakeRequestDetailsActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<Void> task)
             {
-                Toast.makeText(TakeRequestDetailsActivity.this, "Successfully Paid", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(TakeRequestDetailsActivity.this, PaymentActivity.class);
+                startActivity(intent);
+                //Toast.makeText(TakeRequestDetailsActivity.this, "Successfully Paid", Toast.LENGTH_SHORT).show();
             }
         });
     }

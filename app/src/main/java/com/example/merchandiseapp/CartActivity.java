@@ -38,7 +38,7 @@ public class CartActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
     private ArrayList<String> orderid_list;
-    private ArrayList<String> group_list;
+    private ArrayList<String> group_list,product_list;
     private DatabaseReference cartListRef;
     private ImageView ImageEmptyCart;
     private Button BtnShopNow;
@@ -54,6 +54,7 @@ public class CartActivity extends AppCompatActivity
         setContentView(R.layout.activity_cart);
         orderid_list = new ArrayList<>();
         group_list = new ArrayList<>();
+        product_list = new ArrayList<>();
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -87,6 +88,8 @@ public class CartActivity extends AppCompatActivity
         Intent intent = new Intent(CartActivity.this, DetailsActivity.class);
         intent.putExtra("orderid_list", orderid_list);
         intent.putExtra("group_list", group_list);
+        intent.putExtra("product_list", product_list);
+
         //intent.putExtra("total_money", totalPrice);
         startActivity(intent);
         finish();
@@ -182,6 +185,7 @@ public class CartActivity extends AppCompatActivity
 
                 orderid_list.add(model.getOrderID());
                 group_list.add(model.getGroupName());
+                product_list.add(model.getProductID());
 
                 int oneTypeProductPrice = ( Integer.valueOf(model.getPrice()) ) * ( Integer.valueOf(model.getQuantity()) ) ;
                 overTotalPrice = overTotalPrice +  oneTypeProductPrice;

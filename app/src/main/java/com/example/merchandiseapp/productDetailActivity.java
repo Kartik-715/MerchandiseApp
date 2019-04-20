@@ -114,6 +114,8 @@ public class productDetailActivity extends AppCompatActivity
         productPrice = findViewById(R.id.productPrice);
         shareButton = findViewById(R.id.share_button);
 
+        shareButton.setVisibility(View.INVISIBLE);
+
         ViewPager viewPager = findViewById(R.id.ViewPager_Inside_Image);
         ImageAdapter adapter = new ImageAdapter(this, image_src, "0");
         viewPager.setAdapter(adapter);
@@ -172,7 +174,6 @@ public class productDetailActivity extends AppCompatActivity
                         }
                     });
                 }
-
             }
         });
 
@@ -237,7 +238,6 @@ public class productDetailActivity extends AppCompatActivity
         {
             neworderID = saveCurrentDate + " " + saveCurrentTime;
             orderID = orderID;
-
         }
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Group").child(group_name).child("Orders");
@@ -262,9 +262,6 @@ public class productDetailActivity extends AppCompatActivity
         });
 
 
-
-
-
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("ProductID",productID);
         //cartMap.put("pname",productName.getText().toString());
@@ -286,6 +283,7 @@ public class productDetailActivity extends AppCompatActivity
 
         //Removing the previous one and making new one
         final int oneTypeProductPrice = ( Integer.valueOf(productPrice.getText().toString()) ) * ( Integer.valueOf(numberButton.getNumber()) ) ;
+
         cartListRef.child(productID).child("Orders").child(orderID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
@@ -346,9 +344,12 @@ public class productDetailActivity extends AppCompatActivity
                                 Prevalent.currentMoney = Integer.toString(oneTypeProductPrice);
                                 orderid_list.add(orderID);
                                 group_list.add(group_name);
+                                ArrayList<String> product_list = new ArrayList<>();
+                                product_list.add(productID);
                                 Intent intent = new Intent(productDetailActivity.this, DetailsActivity.class);
                                 intent.putExtra("orderid_list", orderid_list);
                                 intent.putExtra("group_list", group_list);
+                                intent.putExtra("product_list", product_list);
                                 startActivity(intent);
                             }
                         }
