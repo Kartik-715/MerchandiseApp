@@ -10,9 +10,11 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,10 +59,10 @@ public class UserRegister extends AppCompatActivity {
     ImageView usrPic;
     EditText usrPassword;
     String UID;
-
     Button choose;
     Button upload;
     Button update;
+    CheckBox showPassword;
 
     int flag = 0;
 
@@ -98,6 +100,7 @@ public class UserRegister extends AppCompatActivity {
 
         hideNav();
 
+        showPassword = findViewById(R.id.showpassword_chk); //checkbox for show password
         usrEmail = findViewById(R.id.user_email);
         usrName = findViewById(R.id.user_name);
         usrPhone = findViewById(R.id.user_contact);
@@ -161,11 +164,37 @@ public class UserRegister extends AppCompatActivity {
 
     }
 
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        if(checked == true)
+        {
+            usrPassword.setTransformationMethod(null);
+        }
+        else
+        {
+            usrPassword.setTransformationMethod(new PasswordTransformationMethod());
+
+        }
+
+    }
+
     @Override
     public void onResume(){
         super.onResume();
         hideNav();
     }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        hideNav();
+    }
+
 
     private void chooseimage(){
         Intent intent = new Intent();

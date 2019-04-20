@@ -1,7 +1,10 @@
 package com.example.merchandiseapp;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +25,7 @@ import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -42,6 +46,8 @@ public class PaymentWalletActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_wallet);
+
+        System.out.println(Prevalent.currentWalletMoney + "qwerty");
 
         Btn_Payment = findViewById(R.id.Btn_Payment);
         radioGroup = findViewById(R.id.radiogroup);
@@ -69,8 +75,16 @@ public class PaymentWalletActivity extends AppCompatActivity
 
         if(radioButton.getText().toString().equals("UPI"))
         {
+            ArrayList<String> orderid_list = new ArrayList<>();
+            ArrayList<String> group_list = new ArrayList<>();
+            ArrayList<String> product_list = new ArrayList<>();
+
             Intent intent = new Intent(this, UPIActivity.class);
             intent.putExtra("amount", amount) ;
+            intent.putExtra("orderid_list", orderid_list);
+            intent.putExtra("group_list", group_list);
+            intent.putExtra("product_list", product_list);
+            intent.putExtra("mode", "Wallet");
             startActivity(intent);
         }
     }
@@ -144,7 +158,6 @@ public class PaymentWalletActivity extends AppCompatActivity
 
         Service.startPaymentTransaction(this, true, true, new PaytmPaymentTransactionCallback()
         {
-            /*Call Backs*/
             public void someUIErrorOccurred(String inErrorMessage)
             {
                 // Some UI Error Occurred in Payment Gateway Activity.
@@ -155,6 +168,19 @@ public class PaymentWalletActivity extends AppCompatActivity
             }
             public void onTransactionResponse(Bundle inResponse)
             {
+                final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser);
+                String current_wallet_money = Prevalent.currentWalletMoney;
+                System.out.println("Initial " + Prevalent.currentWalletMoney);
+                System.out.println("Initial " + amount);
+                int current_w_money = Integer.parseInt(current_wallet_money);
+                int added_w_money = Integer.parseInt(amount);
+
+                current_w_money += added_w_money;
+                current_wallet_money = Integer.toString(current_w_money);
+
+                userRef.child("Wallet_Money").setValue(current_wallet_money);
+                Prevalent.currentWalletMoney = current_wallet_money;
+
                 Toast.makeText(PaymentWalletActivity.this, inResponse.toString(), Toast.LENGTH_SHORT).show();
 
             }
@@ -196,5 +222,13 @@ public class PaymentWalletActivity extends AppCompatActivity
     {
         String uuid = UUID.randomUUID().toString();
         return uuid.replaceAll("-", "");
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(PaymentWalletActivity.this, myWallet.class);
+        startActivity(intent);
+
     }
 }

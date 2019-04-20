@@ -106,8 +106,5 @@
            android:onClick="onClick"
            />
 
-
-
-
    </LinearLayout>
 </RelativeLayout>

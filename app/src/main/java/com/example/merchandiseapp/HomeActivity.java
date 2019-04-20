@@ -340,7 +340,10 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, DeliveredActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_logout) {
+        }
+
+        else if (id == R.id.nav_logout)
+        {
             PublicClientApplication sampleApp = new PublicClientApplication(
                     this.getApplicationContext(),
                     R.raw.auth_config);
@@ -397,7 +400,12 @@ public class HomeActivity extends AppCompatActivity
         {
             Intent intent = new Intent(HomeActivity.this, ViewRequestsActivity.class);
             startActivity(intent);
+        }
 
+        else if(id == R.id.order_status)
+        {
+            Intent intent = new Intent(HomeActivity.this, OrderStatusActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
