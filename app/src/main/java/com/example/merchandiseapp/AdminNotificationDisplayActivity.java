@@ -148,8 +148,6 @@ public class AdminNotificationDisplayActivity extends AppCompatActivity {
                         HashMap<String,String> a = new HashMap<>() ;
                         a.put(model.getUID(), model.getEmailID()) ;
 
-                        //newNode.child("Authorized_Members").child("Email_ID").setValue(a) ;
-                        // Setting the Details //
                         newNode.child("Details").child("Contact").setValue(model.getContact()) ;
                         newNode.child("Details").child("EmailID").setValue(model.getEmailID()) ;
                         newNode.child("Details").child("GroupName").setValue(model.getGroupName()) ;

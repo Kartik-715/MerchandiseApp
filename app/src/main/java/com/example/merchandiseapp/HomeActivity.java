@@ -340,7 +340,7 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
@@ -351,7 +351,7 @@ public class HomeActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -383,6 +383,7 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(this,myWallet.class);
             startActivity(intent);
         }
+
 
         else if (id == R.id.nav_share)
         {

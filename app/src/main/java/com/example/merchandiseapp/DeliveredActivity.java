@@ -63,7 +63,7 @@ public class DeliveredActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull DeliveredViewHolder holder, int position, @NonNull final Order model)
             {
-                holder.txtProductDeliveryDate.setText("Delivered on : ");
+                holder.txtProductDeliveryDate.setText("Delivered on : 19 April 2019");
                 holder.txtProductName.setText(model.getGroupName());
                 if(model.getImage() != null)
                     Picasso.get().load(model.getImage().get(0)).into(holder.DeliveredImage);
