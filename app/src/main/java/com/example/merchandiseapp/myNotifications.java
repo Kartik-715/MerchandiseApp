@@ -26,21 +26,25 @@ public class myNotifications extends AppCompatActivity {
     private DatabaseReference notificationRef;
     private int count;
     private DatabaseReference stringNot;
-    private String [] arr ={"your group request is accepted","your request for a group is not accepted"};
     private String notiId;
-    private Integer val;
-    private String uid;
+    private String val;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_notifications);
-        notificationRef = FirebaseDatabase.getInstance().getReference().child("User").child("-2119591485");
+
+        //TODO: email to be updated
+        String emailForNoti = "gupta170101019@iitg.ac.in";
+        int hash = emailForNoti.trim().hashCode();
+        final String hashValue = Integer.toString(hash);
+        String uidNoti = hashValue;
+        notificationRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uidNoti);
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 notiId =  dataSnapshot.getValue(userFetch.class).getNotiList();
-                val = Integer.parseInt(notiId);
-                Toast.makeText(myNotifications.this, "****" + arr[val]  , Toast.LENGTH_SHORT).show();
+               // val = Integer.parseInt(notiId);
+                //Toast.makeText(myNotifications.this, "****" + arr[val]  , Toast.LENGTH_SHORT).show();
                 NotificationManager mNotificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -52,8 +56,8 @@ public class myNotifications extends AppCompatActivity {
                 }
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("title")
-                        .setContentText(arr[val])
+                        .setContentTitle("Merchandise App:Delivery Status")
+                        .setContentText(notiId)
                         .setAutoCancel(true);
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 PendingIntent pi = PendingIntent.getActivity(myNotifications.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
