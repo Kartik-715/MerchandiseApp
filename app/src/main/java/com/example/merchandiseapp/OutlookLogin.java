@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
@@ -353,7 +354,11 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
 
-                updateGraphUI(response);
+                try {
+                    updateGraphUI(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -407,10 +412,13 @@ public class OutlookLogin<Password, Webmail, login_button> extends AppCompatActi
     //
 
     /* Sets the graph response */
-    private void updateGraphUI(JSONObject graphResponse)
-    {
+    private void updateGraphUI(JSONObject graphResponse) throws JSONException {
         Intent i = new Intent(OutlookLogin.this, RedirectActivity.class);
         i.putExtra("user", graphResponse.toString());
+//        graphResponse.getString("mail");
+//        graphResponse.
+        Prevalent.currentEmail = graphResponse.getString("mail");
+        Prevalent.currentOnlineUser = Integer.toString(graphResponse.getString("mail").hashCode());
 
         startActivity(i);
     }

@@ -76,7 +76,6 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-git lo
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -87,12 +86,15 @@ git lo
 
         //*****************FOR NOTIFICATION***********************//
 
-        String uidNoti = Prevalent.currentOnlineUser;
+        final String uidNoti = Prevalent.currentOnlineUser;
         notificationRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uidNoti);
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 notiId =  dataSnapshot.getValue(userFetch.class).getNotiList();
+
+                if(notiId != null){
+                if( dataSnapshot.getValue(userFetch.class).getNotiList() != null){
                 // val = Integer.parseInt(notiId);
                 //Toast.makeText(myNotifications.this, "****" + arr[val]  , Toast.LENGTH_SHORT).show();
                 NotificationManager mNotificationManager =
@@ -113,6 +115,12 @@ git lo
                 PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(pi);
                 mNotificationManager.notify(0, mBuilder.build());
+
+                     FirebaseDatabase.getInstance().getReference().child("Users").child(uidNoti).child("notiList").removeValue();
+                }
+                }
+
+
             }
 
             @Override
