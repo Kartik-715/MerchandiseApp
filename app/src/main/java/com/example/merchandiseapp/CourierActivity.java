@@ -62,7 +62,7 @@ public class CourierActivity extends AppCompatActivity
         Prevalent.currentEmail = User_Email;
 
 
-        ProductRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+       /* ProductRef = FirebaseDatabase.getInstance().getReference().child("Orders");
         ProductRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -136,7 +136,7 @@ public class CourierActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);*/
     }
 
     @Override

@@ -84,6 +84,7 @@
         android:background="#F2F2F2"
         android:textSize="17sp"
         android:textStyle="bold"/>
+
     <Button
         android:id="@+id/button_staff"
         android:layout_width="match_parent"
@@ -92,7 +93,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="225dp"
-        android:onClick="onClick"
-        android:text="Add" />
+        android:text="Add"
+        android:textColorLink="@color/BlueViolet" />
 
 </LinearLayout>

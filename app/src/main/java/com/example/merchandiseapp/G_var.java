@@ -11,8 +11,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.microsoft.identity.client.PublicClientApplication;
 
-public class G_var extends Application {
+public class G_var extends Application
+{
 
     private String username;
     private String Email;
@@ -22,11 +24,23 @@ public class G_var extends Application {
     private String gender;
     private StorageReference imageRef;
     private Bitmap bitmap;
-
+    private String UPI;
+    private String ImageLocation;
+    private PublicClientApplication sampleApp;
 
 
 
     public G_var() {
+    }
+
+    public PublicClientApplication getSampleApp()
+    {
+        return sampleApp;
+    }
+
+    public void setSampleApp(PublicClientApplication sampleApp)
+    {
+        this.sampleApp = sampleApp;
     }
 
     public String getUsername() {
@@ -77,7 +91,8 @@ public class G_var extends Application {
         this.imageRef = imageRef;
     }
 
-    public String getEmail() {
+    public String getEmail()
+    {
         return Email;
     }
 
@@ -91,5 +106,21 @@ public class G_var extends Application {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public String getUPI() {
+        return UPI;
+    }
+
+    public void setUPI(String UPI) {
+        this.UPI = UPI;
+    }
+
+    public String getImageLocation() {
+        return ImageLocation;
+    }
+
+    public void setImageLocation(String imageLocation) {
+        ImageLocation = imageLocation;
     }
 }

@@ -98,7 +98,7 @@ public class productsCourrier extends AppCompatActivity {
         productBuyer = findViewById(R.id.productBuyer);
         productQuantity = findViewById(R.id.productQuantity);
 
-        getProductDetails(productID);
+        //getProductDetails(productID);
 
         Spinner dropdown = findViewById(R.id.spinner1);
         String[] items = new String[]{"Packed and ready to be shipped"
@@ -108,7 +108,7 @@ public class productsCourrier extends AppCompatActivity {
 
     }
 
-    private void getProductDetails(String productID)
+    /*private void getProductDetails(String productID)
     {
         final DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser);
         System.out.println(Prevalent.currentOnlineUser + Prevalent.currentEmail + " 123");
@@ -258,7 +258,7 @@ public class productsCourrier extends AppCompatActivity {
         protected void onPostExecute(String result){
             Toast.makeText(getApplicationContext(),"Message Sent",Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 }
 
 

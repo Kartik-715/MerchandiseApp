@@ -51,10 +51,10 @@ public class DeliveredActivity extends AppCompatActivity
     {
         super.onStart();
 
-        final DatabaseReference deliveredList = FirebaseDatabase.getInstance().getReference().child("Orders");
+        final DatabaseReference deliveredList = FirebaseDatabase.getInstance().getReference().child("Orders_Temp");
 
         FirebaseRecyclerOptions<Order> options = new FirebaseRecyclerOptions.Builder<Order>()
-                .setQuery(deliveredList.child(Prevalent.currentOnlineUser).orderByChild("status").equalTo("delivered"), Order.class)
+                .setQuery(deliveredList.child(Prevalent.currentOnlineUser).orderByChild("Status").equalTo("Delivered"), Order.class)
                 .build();
 
         FirebaseRecyclerAdapter<Order, DeliveredViewHolder> adapter
@@ -63,11 +63,24 @@ public class DeliveredActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull DeliveredViewHolder holder, int position, @NonNull final Order model)
             {
-                holder.txtProductDeliveryDate.setText("Delivered on : ");
-                holder.txtProductName.setText(model.getPname());
-                Picasso.get().load(model.getImage()).into(holder.DeliveredImage);
-                orderid_list.add(model.getOrderid());
+                holder.txtProductDeliveryDate.setText("Delivered on : 19 April 2019");
+                holder.txtProductName.setText(model.getGroupName());
+                if(model.getImage() != null)
+                    Picasso.get().load(model.getImage().get(0)).into(holder.DeliveredImage);
+                orderid_list.add(model.getOrderID());
 
+                holder.Review_Btn.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(DeliveredActivity.this, GiveRatingsActivity.class);
+                        intent.putExtra("category", model.getCategory());
+                        intent.putExtra("productID", model.getProductID());
+                        intent.putExtra("groupName", model.getGroupName());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull

@@ -1,0 +1,14 @@
+{
+  "client_id" : "49325855-8489-4362-86da-71ef3125a401",
+  "authorization_user_agent" : "DEFAULT",
+  "redirect_uri" : "msal49325855-8489-4362-86da-71ef3125a401://auth",
+  "authorities" : [
+    {
+      "type": "AAD",
+      "audience": {
+        "type": "AzureADandPersonalMicrosoftAccount",
+        "tenant_id": "common"
+      }
+    }
+  ]
+}

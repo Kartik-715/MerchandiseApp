@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:theme="@style/AppTheme.NoActionBar"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad"
+    android:orientation="vertical"
+    tools:context="com.example.merchandiseapp.OutlookLogin">
+
+    <ImageView
+        android:id="@+id/Imagelogo"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_below="@+id/Imagelogo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="  Email"
+        android:textSize="20dp"
+        android:textColorHint="@color/Gray"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/black"
+        android:background="@drawable/roundtextbox"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_below="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundtextbox"
+        android:hint="  Password"
+        android:inputType="textPassword"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/Gray" />
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/admin"
+        android:layout_below="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login As Admin"
+        android:layout_marginLeft="15dp"
+         />
+    <Button
+        android:id="@+id/Login"
+        android:layout_below="@+id/admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundbutton"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+    <Button
+        android:id="@+id/JoinNow"
+        android:layout_below="@+id/Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundbutton"
+        android:text="Join Now"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:id="@+id/Or"
+        android:layout_below="@+id/JoinNow"
+        android:layout_marginTop="5dp"
+        android:textSize="15dp"/>
+    <Button
+        android:id="@+id/callGraph"
+        android:layout_below="@+id/Or"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/roundbutton"
+        android:text="Login With Outlook"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>

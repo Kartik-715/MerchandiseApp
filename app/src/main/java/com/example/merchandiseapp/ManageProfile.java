@@ -1,6 +1,8 @@
 package com.example.merchandiseapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,9 +30,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
+import com.example.merchandiseapp.Prevalent.Prevalent_Intent;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,8 +52,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class ManageProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -50,15 +71,27 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     EditText name;
     EditText address;
     EditText contact;
-    ImageView imageView;
+    TextView email;
+    ImageView nav_imageView;
+    ImageView content_imageView;
+    ImageView profilePic;
+    ImageView bar_imageView;
+    ProgressDialog progressDialog;
+
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
 
     FirebaseStorage storage;
     StorageReference storageReference;
+    private static final String TAG =ManageProfile.class.getSimpleName();
 
     G_var global;
 
+    private FirebaseAuth fbAuth;
+
+    private String phoneVerificationId;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
+    private PhoneAuthProvider.ForceResendingToken resendToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +99,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.activity_manage_profile);
 
         global = (G_var) getApplicationContext();
+        fbAuth = FirebaseAuth.getInstance();
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -75,25 +109,38 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         headerView = navigationView.getHeaderView(0);
 
-        name = findViewById(R.id.edit_name);
-        address = findViewById(R.id.edit_address);
-        contact = findViewById(R.id.edit_contact);
+        name = findViewById(R.id.edit_name_ui);
+        address = findViewById(R.id.edit_address_ui);
+        contact = findViewById(R.id.edit_contact_ui);
+        email = findViewById(R.id.edit_email_ui);
 
         name.setText(global.getUsername());
         address.setText(global.getAddress());
         contact.setText(global.getContact());
+        email.setText(global.getEmail());
+
+        nav_imageView = headerView.findViewById(R.id.imageView);
+        content_imageView = findViewById(R.id.profilePic_ui);
+
+        addImage(nav_imageView);
+        addImage(content_imageView);
+
+        Prevalent.currentPhone = "";
+        Prevalent.currentPhone = contact.getText().toString();
+        Prevalent.currentAddress = "";
+        Prevalent.currentAddress = address.getText().toString();
 
 //        getInfo();
 
-        Button button = findViewById(R.id.updateBtn);
+        Button button = findViewById(R.id.updateBtn_ui);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUser();
+                sendCode();
             }
         });
 
-        Button imageButton1 = findViewById(R.id.chooseBtn);
+        Button imageButton1 = findViewById(R.id.chooseBtn_ui);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,19 +148,11 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        Button imageButton2 = findViewById(R.id.uploadBtn);
+        Button imageButton2 = findViewById(R.id.uploadBtn_ui);
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadimage();
-            }
-        });
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateUser();
             }
         });
 
@@ -137,7 +176,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -154,13 +193,10 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
@@ -168,7 +204,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+   @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -196,8 +232,8 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         TextView navUsername = headerView.findViewById(R.id.NameTextView);
 
-        TextView profileUsername = findViewById(R.id.profile_name) ;
-        profileUsername.setText(global.getUsername());
+//        TextView profileUsername = findViewById(R.id.profile_name) ;
+//        profileUsername.setText(global.getUsername());
 
         TextView navemail = headerView.findViewById(R.id.emailtextView);
         navUsername.setText(global.getUsername());
@@ -205,16 +241,14 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         navemail.setText(global.getEmail());
 
-        TextView Email = findViewById(R.id.edit_email);
-        Email.setText(global.getEmail());
-
-        imageView = headerView.findViewById(R.id.imageView);
-        addImage();
+//        TextView Email = findViewById(R.id.edit_email);
+//        Email.setText(global.getEmail());
 
         //Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
     }
 
-    public void updateUser(){
+    public void updateUser()
+    {
 
         UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(global.getUid());
 
@@ -228,6 +262,11 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         global.setAddress(address.getText().toString());
 
         Toast.makeText(getApplicationContext(), "Updated Successfully",Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ManageProfile.this, HomeActivity.class);
+        Prevalent_Intent.setIntent(intent);
+        intent.putExtra("orderType", Prevalent.currentOrderType);
+        startActivity(intent);
     }
 
 
@@ -241,7 +280,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imageView = findViewById(R.id.profilePic);
+
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -249,7 +288,7 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 global.setBitmap(bitmap);
-                addImage();
+                addImage(content_imageView);
             }
             catch (IOException e)
             {
@@ -262,22 +301,24 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
 
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMax(100);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            final StorageReference ref = storageReference.child("images/"+global.getUid());
+            final StorageReference ref = storageReference.child("images/users/"+global.getUid());
 
             Toast.makeText(getApplicationContext(),"Hi",Toast.LENGTH_LONG).show();
 
             ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(ManageProfile.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
-                            change_images();
+                            addImage(nav_imageView);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -299,36 +340,140 @@ public class ManageProfile extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    public void addImage(){
-//        StorageReference mImageRef = global.getImageRef();
-//        final long ONE_MEGABYTE = 1024 * 1024 * 20;
-//        mImageRef.getBytes(ONE_MEGABYTE)
-//                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//                    @Override
-//                    public void onSuccess(byte[] bytes) {
-//                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        DisplayMetrics dm = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-                        imageView.setMinimumHeight(dm.heightPixels);
-                        imageView.setMinimumWidth(dm.widthPixels);
-                        imageView.setImageBitmap(global.getBitmap());
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle any errors
-//            }
-//        });
+    public void addImage(ImageView imageView)
+    {
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        imageView.setMinimumHeight(dm.heightPixels);
+        imageView.setMinimumWidth(dm.widthPixels);
+        imageView.setImageBitmap(global.getBitmap());
     }
 
-    public void change_images(){
+    public void sendCode() {
 
-        imageView = findViewById(R.id.manage_profile_image);
-        addImage();
+        String phoneNumber = contact.getText().toString();
 
-        imageView = findViewById(R.id.imageView);
-        addImage();
+        setUpVerificatonCallbacks();
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                verificationCallbacks);
     }
+
+    private void setUpVerificatonCallbacks() {
+
+        verificationCallbacks =
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                    @Override
+                    public void onVerificationCompleted(
+                            PhoneAuthCredential credential) {
+
+                        signInWithPhoneAuthCredential(credential);
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+
+                        if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                            // Invalid request
+                            Log.d(TAG, "Invalid credential: "
+                                    + e.getLocalizedMessage());
+                        } else if (e instanceof FirebaseTooManyRequestsException) {
+                            // SMS quota exceeded
+                            Log.d(TAG, "SMS Quota exceeded.");
+                        }
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId,
+                                           PhoneAuthProvider.ForceResendingToken token) {
+
+                        phoneVerificationId = verificationId;
+                        resendToken = token;
+
+                        callAlertDialog();
+                    }
+                };
+    }
+
+    public void verifyCode(String code) {
+
+        PhoneAuthCredential credential =
+                PhoneAuthProvider.getCredential(phoneVerificationId, code);
+        Toast.makeText(ManageProfile.this,"Verified Done",Toast.LENGTH_SHORT).show();
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        fbAuth.signInWithCredential(credential)
+                .addOnCompleteListener(ManageProfile.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ManageProfile.this,"Login Successful",Toast.LENGTH_SHORT).show();
+                            updateUser();
+                        } else {
+                            if (task.getException() instanceof
+                                    FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                Toast.makeText(getApplicationContext(),"OTP ENTERED WAS INVALID",Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void resendCode() {
+
+        String phoneNumber = contact.getText().toString();
+
+        setUpVerificatonCallbacks();
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                verificationCallbacks,
+                resendToken);
+    }
+
+    public void callAlertDialog(){
+
+        final View view = getLayoutInflater().inflate(R.layout.otp_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ManageProfile.this);
+        builder.setTitle("OTP Verification");
+        builder.setCancelable(false);
+
+
+        final EditText otp = (EditText) view.findViewById(R.id.otp);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ManageProfile.this,"Login Successful",Toast.LENGTH_SHORT).show();
+                verifyCode(otp.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Resend", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resendCode();
+            }
+        }).setCancelable(false);
+
+
+        builder.setView(view);
+        builder.create().show();
+    }
+
 
 }

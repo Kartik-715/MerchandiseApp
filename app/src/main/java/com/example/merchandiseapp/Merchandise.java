@@ -18,6 +18,7 @@ public class Merchandise
     private ArrayList<String> Size;
     private ArrayList<String> AccessGroup;
     private String OrderType;
+    private String IsOpen;
 
     public Merchandise()
     {
@@ -26,7 +27,7 @@ public class Merchandise
 
     public Merchandise(String groupName, String category, ArrayList<String> image,
                        String material, String PID, String price, ArrayList<String> quantity, ArrayList<String> size,
-                       ArrayList<String> accessGroup, String orderType) {
+                       ArrayList<String> accessGroup, String orderType, String isOpen) {
         GroupName = groupName;
         Category = category;
         Image = image;
@@ -37,6 +38,7 @@ public class Merchandise
         Size = size;
         AccessGroup = accessGroup;
         OrderType = orderType;
+        IsOpen = isOpen;
     }
 
 
@@ -49,13 +51,22 @@ public class Merchandise
         result.put("Material",Material);
         result.put("PID",PID);
         result.put("Price",Price);
-        result.put("Qunatity",Quantity);
+        result.put("Quantity",Quantity);
         result.put("Size", Size);
         result.put("AccessGroup",AccessGroup);
         result.put("OrderType",OrderType);
+        result.put("IsOpen",IsOpen);
 
         return result ;
 
+    }
+
+    public String getIsOpen() {
+        return IsOpen;
+    }
+
+    public void setIsOpen(String isOpen) {
+        IsOpen = isOpen;
     }
 
     public String getGroupName() {

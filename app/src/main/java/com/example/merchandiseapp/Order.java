@@ -1,178 +1,210 @@
 package com.example.merchandiseapp;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class Order
 {
 
-    private String contact;
-    private String address;
-    private String date;
-    private String email;
-    private String orderid;
-    private String uid;
-    private String isplaced;
-    private String pid;
-    private String pname;
-    private String price;
-    private String quantity;
-    private String status;
-    private String time;
-    private String image;
-    private String category;
-    private String size;
+    private String Address;
+    private String Category;
+    private String Contact;
+    private String Date;
+    private String Email;
+    private String GroupName;
+    private String IsPlaced;
+    private String OrderID;
+    private String Price;
+    private String ProductID;
+    private String Quantity;
+    private String Size;
+    private String Status;
+    private ArrayList<String> Image;
+    private String Time;
+    private String UserID;
 
     public Order( ) {
     }
 
-    public Order(String contact, String address, String date, String email, String orderid, String uid, String isplaced, String pid, String pname, String price, String quantity, String status, String time, String image, String category, String size) {
-        this.contact = contact;
-        this.address = address;
-        this.date = date;
-        this.email = email;
-        this.orderid = orderid;
-        this.uid = uid;
-        this.isplaced = isplaced;
-        this.pid = pid;
-        this.pname = pname;
-        this.price = price;
-        this.quantity = quantity;
-        this.status = status;
-        this.time = time;
-        this.image = image;
-        this.category = category;
-        this.size = size;
+    public Order(String address, String category, String contact, String date, String email, String groupName, String isPlaced, String orderID, String price, String productID, String quantity, String size, String status, ArrayList<String> image, String time, String userID)
+    {
+        Address = address;
+        Category = category;
+        Contact = contact;
+        Date = date;
+        Email = email;
+        GroupName = groupName;
+        IsPlaced = isPlaced;
+        OrderID = orderID;
+        Price = price;
+        ProductID = productID;
+        Quantity = quantity;
+        Size = size;
+        Status = status;
+        Image = image;
+        Time = time;
+        UserID = userID;
     }
 
-    public String getContact() {
-        return contact;
+    public String getAddress()
+    {
+        return Address;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setAddress(String address)
+    {
+        Address = address;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCategory()
+    {
+        return Category;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCategory(String category)
+    {
+        Category = category;
     }
 
-    public String getDate() {
-        return date;
+    public String getContact()
+    {
+        return Contact;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setContact(String contact)
+    {
+        Contact = contact;
     }
 
-    public String getEmail() {
-        return email;
+    public String getDate()
+    {
+        return Date;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setDate(String date)
+    {
+        Date = date;
     }
 
-    public String getOrderid() {
-        return orderid;
+    public String getEmail()
+    {
+        return Email;
     }
 
-    public void setOrderid(String orderid) {
-        this.orderid = orderid;
+    public void setEmail(String email)
+    {
+        Email = email;
     }
 
-    public String getUid() {
-        return uid;
+    public String getGroupName()
+    {
+        return GroupName;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setGroupName(String groupName)
+    {
+        GroupName = groupName;
     }
 
-    public String getIsplaced() {
-        return isplaced;
+    public String getIsPlaced()
+    {
+        return IsPlaced;
     }
 
-    public void setIsplaced(String isplaced) {
-        this.isplaced = isplaced;
+    public void setIsPlaced(String isPlaced)
+    {
+        IsPlaced = isPlaced;
     }
 
-    public String getPid() {
-        return pid;
+    public String getOrderID()
+    {
+        return OrderID;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setOrderID(String orderID)
+    {
+        OrderID = orderID;
     }
 
-    public String getPname() {
-        return pname;
+    public String getPrice()
+    {
+        return Price;
     }
 
-    public void setPname(String pname) {
-        this.pname = pname;
+    public void setPrice(String price)
+    {
+        Price = price;
     }
 
-    public String getPrice() {
-        return price;
+    public String getProductID()
+    {
+        return ProductID;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setProductID(String productID)
+    {
+        ProductID = productID;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public String getQuantity()
+    {
+        return Quantity;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setQuantity(String quantity)
+    {
+        Quantity = quantity;
     }
 
-    public String getStatus() {
-        return status;
+    public String getSize()
+    {
+        return Size;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setSize(String size)
+    {
+        Size = size;
     }
 
-    public String getTime() {
-        return time;
+    public String getStatus()
+    {
+        return Status;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStatus(String status)
+    {
+        Status = status;
     }
 
-    public String getImage() {
-        return image;
+    public ArrayList<String> getImage()
+    {
+        return Image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(ArrayList<String> image)
+    {
+        Image = image;
     }
 
-    public String getCategory() {
-        return category;
+    public String getTime()
+    {
+        return Time;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setTime(String time)
+    {
+        Time = time;
     }
 
-    public String getSize() {
-        return size;
+    public String getUserID()
+    {
+        return UserID;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setUserID(String userID)
+    {
+        UserID = userID;
     }
-
-
 }

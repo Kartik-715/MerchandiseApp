@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AddMerchandise"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        >
+
+        <TextView
+            android:id="@+id/textView_Category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Category:"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/EditText_Price"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/textView_Category"
+            android:hint="Price"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/EditText_Material"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/EditText_Price"
+            android:hint="Material" />
+
+        <TextView
+            android:id="@+id/textView_PID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Product ID:"
+            android:layout_below="@+id/EditText_Material"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/TextView_accessGroups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_PID"
+            android:layout_marginTop="10dp"
+            android:hint="Access Groups"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <ListView
+            android:id="@+id/listView_accessgroup"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/TextView_accessGroups"
+            android:background="@color/BlanchedAlmond"
+            android:scrollbars="vertical">
+
+        </ListView>
+
+
+        <EditText
+            android:id="@+id/editText_accessgroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_accessGroups"
+            android:layout_marginTop="31dp"
+            android:ems="10"
+            android:hint="Group Name"
+            android:layout_marginStart="220dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="textPersonName"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button_add_accessgroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_accessgroup"
+
+            android:layout_marginStart="220dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:text="ADD" />
+
+
+        <TextView
+            android:id="@+id/TextView_Size_qty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listView_accessgroup"
+            android:layout_marginTop="10dp"
+            android:hint="Quantity : Size"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+
+        <ListView
+            android:id="@+id/listView_size_qty"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/TextView_Size_qty"
+            android:layout_marginTop="5dp"
+            android:background="@color/BlanchedAlmond"
+            android:scrollbars="vertical">
+
+        </ListView>
+
+
+        <EditText
+            android:id="@+id/editText_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TextView_Size_qty"
+            android:layout_marginStart="220dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="Quantity"
+            android:inputType="number"
+            android:text="" />
+        <EditText
+            android:id="@+id/editText_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_qty"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Size"
+            android:layout_marginStart="220dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="text"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button_size_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_size"
+
+            android:layout_marginStart="220dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="ADD" />
+
+        <Button
+            android:id="@+id/button_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/listView_size_qty"/>
+
+
+    </RelativeLayout>
+</ScrollView>

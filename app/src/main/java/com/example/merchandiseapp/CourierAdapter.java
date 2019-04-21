@@ -69,7 +69,7 @@ public class CourierAdapter extends RecyclerView.Adapter<CourierAdapter.MyViewHo
 
         //holder.ImageProduct.setImageBitmap();
         holder.price.setText("Rs."+mData.get(position).getPrice());
-        holder.productName.setText(mData.get(position).getPname());
+        holder.productName.setText(mData.get(position).getGroupName());
         holder.productDescription.setText(mData.get(position).getQuantity());
         holder.productStatus.setText(mData.get(position).getStatus());
         //Picasso.get().load(mData.get(position).getImage()).into(holder.ImageProduct);
@@ -80,7 +80,7 @@ public class CourierAdapter extends RecyclerView.Adapter<CourierAdapter.MyViewHo
         public void onClick (View view)
         {
             Intent intent = new Intent( mContext , productsCourrier.class );
-            intent.putExtra("pid",mData.get(position).getPid());
+            intent.putExtra("pid",mData.get(position).getProductID());
             intent.putExtra("pdate",mData.get(position).getDate());
             intent.putExtra("ptime",mData.get(position).getTime());
 

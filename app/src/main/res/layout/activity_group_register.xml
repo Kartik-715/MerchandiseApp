@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GroupRegister">
+
+        <RelativeLayout
+            android:id="@+id/Rellay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grp_grad"
+            android:paddingBottom="10dp">
+
+            <RelativeLayout
+                android:id="@+id/ImgUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rectangle_border">
+
+                <ImageView
+                    android:id="@+id/groupPic"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="9dp"
+                    android:adjustViewBounds="true"
+                    android:padding="3dp"
+                    android:scaleType="centerInside" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/admin_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ImgUser"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/Linlay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Rellay1"
+            android:layout_marginTop="-5dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#2980B9"
+                android:gravity="center"
+                android:paddingBottom="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="#2980B9"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Choose Image"
+                        android:textColor="@color/Black"
+                        android:textSize="20sp"
+                        android:id="@+id/Grp_chooseBtn"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#6DD5FA"
+                android:gravity="center"
+                android:paddingBottom="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="#6DD5FA"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Upload Image"
+                        android:textColor="@color/Black"
+                        android:textSize="20sp"
+                        android:id="@+id/Grp_uploadBtn"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_gravity="center"
+                 android:layout_below="@+id/Linlay1">
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_centerInParent="true"
+                     android:layout_marginLeft="30dp"
+                     android:layout_marginTop="10dp"
+                     android:layout_marginRight="30dp"
+                     android:orientation="vertical">
+
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical">
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="Group Name"
+                             android:textColor="#3797CF"
+                             android:textSize="13sp" />
+
+                         <EditText
+                             android:id="@+id/Grp_name"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:background="@android:color/transparent"
+                             android:fontFamily="sans-serif-light"
+                             android:inputType="text"
+                             android:textColor="#000000"
+                             android:textSize="18sp" />
+
+                         <View
+                             android:layout_width="match_parent"
+                             android:layout_height="1dp"
+                             android:layout_marginTop="15dp"
+                             android:background="@color/Gray" />
+
+                     </LinearLayout>
+
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="15dp"
+                         android:orientation="vertical">
+
+                         <TextView
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:text="Phone"
+                             android:textColor="#3797CF"
+                             android:textSize="13sp" />
+
+                         <EditText
+                             android:id="@+id/admin_contact"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:background="@android:color/transparent"
+                             android:fontFamily="sans-serif-light"
+                             android:inputType="text"
+                             android:textColor="#000000"
+                             android:textSize="18sp" />
+
+                         <View
+                             android:layout_width="match_parent"
+                             android:layout_height="1dp"
+                             android:layout_marginTop="15dp"
+                             android:background="@color/Gray" />
+
+                     </LinearLayout>
+
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="15dp"
+                         android:orientation="vertical">
+
+                         <TextView
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:text="UPI"
+                             android:textColor="#3797CF"
+                             android:textSize="13sp" />
+
+                         <EditText
+                             android:id="@+id/grp_upi"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:background="@android:color/transparent"
+                             android:fontFamily="sans-serif-light"
+                             android:inputType="text"
+                             android:textColor="#000000"
+                             android:textSize="18sp" />
+
+                         <View
+                             android:layout_width="match_parent"
+                             android:layout_height="1dp"
+                             android:layout_marginTop="15dp"
+                             android:background="@color/Gray" />
+
+                     </LinearLayout>
+
+                     <Button
+                         android:layout_width="140dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:layout_marginTop="15dp"
+                         android:background="@drawable/grp_grad"
+                         android:fontFamily="sans-serif-light"
+                         android:text="Update Profile"
+                         android:textColor="@android:color/black"
+                         android:id="@+id/Grp_update"/>
+
+                 </LinearLayout>
+
+             </RelativeLayout>
+
+</RelativeLayout>
+
+
+</ScrollView>
