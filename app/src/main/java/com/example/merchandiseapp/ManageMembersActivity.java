@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.merchandiseapp.Prevalent.Prevalent;
 import com.example.merchandiseapp.Prevalent.Prevalent_Groups;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,15 +56,7 @@ public class ManageMembersActivity extends AppCompatActivity {
         memberListView = (ListView) findViewById(R.id.listView_members);
 
 
-
-
-
-
-        // TODO : FOR TESTING REMOVE ONCE WE HAVE ADDED CURRENTGROUPNAME FROM CODE
-        Prevalent_Groups.currentGroupName ="CSEA";
-//        Prevalent_Groups.currentGroupMemberEmail ="aryan170101013@iitg.ac.in";
-
-        userEmail = "aryan170101013@iitg.ac.in";
+        userEmail = Prevalent.currentEmail ;
 
 
 
@@ -327,7 +320,6 @@ public class ManageMembersActivity extends AppCompatActivity {
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Group").child(Prevalent_Groups.currentGroupName).child("Members").child("Email_ID");
         int hash = email.trim().hashCode();
         final String hashValue = Integer.toString(hash);
-        System.out.println("adahfdkfhasdkjh"+hashValue);
         ref.child(hashValue).removeValue().addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
